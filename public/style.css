@@ -1,0 +1,69 @@
+:root {
+    --color: #bebebe;
+}
+
+html, body {
+    margin: 0;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--color);
+    background: transparent;
+}
+
+body a {
+    color: var(--color);
+}
+
+html {
+    overflow-x:hidden;
+    overflow-y:scroll;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background:
+        linear-gradient(to bottom, #000000a6 0px, #000000 900px),
+        url("background.jpg");
+    background-size: cover;
+    background-position: top;
+    background-position: fixed;
+    background-repeat: no-repeat;
+    z-index: -1;
+    animation-name: fadeOpacity;
+    animation-duration: 3s;
+}
+
+@keyframes fadeOpacity {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.title {
+    font-size: 48px;
+    letter-spacing: 36px;
+    margin-right: -36px;
+    line-height: 1;
+    text-align: center;
+}
+
+.banner {
+    text-align: center;
+}
+
+.banner-item {
+    margin-inline: 18px;
+    display: inline;
+    font-size: 17px;
+}
+
+#active {
+    border-bottom: 1px solid #ff0000;
+}
