@@ -4,6 +4,7 @@
 
 html, body {
     margin: 0;
+    padding: 0;
     font-family: "Times New Roman", Times, serif;
     font-size: 16px;
     line-height: 1.5;
@@ -16,8 +17,8 @@ body a {
 }
 
 html {
-    overflow-x:hidden;
-    overflow-y:scroll;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 body::before {
@@ -46,6 +47,16 @@ body::before {
     }
 }
 
+hr {
+    display: block;
+    height: 1px;
+    width: 384px;
+    border: 0;
+    border-top: 1px solid var(--color);
+    margin: 1em auto;
+    padding: 0;
+}
+
 .title {
     font-size: 48px;
     letter-spacing: 36px;
@@ -59,11 +70,31 @@ body::before {
 }
 
 .banner-item {
-    margin-inline: 18px;
+    margin-inline: 16px;
     display: inline;
-    font-size: 17px;
+    font-size: 18px;
 }
 
 #active {
-    border-bottom: 1px solid #ff0000;
+    color: #be5c5c;
+}
+
+.header {
+    width: 100%;
+    height: auto;
+    padding-top: 8px;
+}
+
+.main {
+    width: 100%;
+    height: auto;
+}
+
+.footer {
+    width: 100%;
+    height: auto;
+    padding-bottom: 20px;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
 }
