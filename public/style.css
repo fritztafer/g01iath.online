@@ -10,6 +10,9 @@ html, body {
     line-height: 1.5;
     color: var(--color);
     background: transparent;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
 }
 
 body a {
@@ -95,6 +98,4 @@ hr {
     height: auto;
     padding-bottom: 20px;
     text-align: center;
-    position: absolute;
-    bottom: 0;
 }
