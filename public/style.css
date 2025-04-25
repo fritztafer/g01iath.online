@@ -1,18 +1,19 @@
 :root {
     --color: #bebebe;
+    --time: 2501ms;
 }
 
-html, body {
-    margin: 0;
-    padding: 0;
+body {
     font-family: "Times New Roman", Times, serif;
     font-size: 16px;
     line-height: 1.5;
     color: var(--color);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
     background: transparent;
     display: grid;
     grid-template-rows: auto 1fr auto;
-    min-height: 100vh;
 }
 
 body a {
@@ -26,28 +27,57 @@ html {
 
 body::before {
     content: "";
-    position: fixed;
     width: 100vw;
     height: 100vh;
+    position: fixed;
     background:
         linear-gradient(to bottom, #000000a6 0px, #000000 900px),
         url("background.jpg");
     background-size: cover;
     background-position: top;
-    background-position: fixed;
     background-repeat: no-repeat;
     z-index: -1;
-    animation-name: fadeOpacity;
-    animation-duration: 3s;
+    animation: fadeIn var(--time) forwards;
 }
 
-@keyframes fadeOpacity {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+.fade-in {
+    animation: fadeIn var(--time) forwards;
+}
+
+.fade-out {
+    animation: fadeOut var(--time) forwards;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to   {opacity: 1;}
+}
+
+@keyframes fadeOut {
+    from {opacity: 1;}
+    to   {opacity: 0;}
+}
+
+.active-in {
+    animation: activeIn var(--time) forwards;
+}
+
+.active-out {
+    animation: activeOut var(--time) forwards;
+}
+
+@keyframes activeIn {
+    from {color: var(--color);}
+    to   {color: #be5c5c;}
+}
+
+@keyframes activeOut {
+    from {color: #be5c5c;}
+    to   {color: var(--color);}
+}
+
+.reset-animation {
+    animation: none;
 }
 
 hr {
@@ -64,38 +94,31 @@ hr {
     font-size: 48px;
     letter-spacing: 36px;
     margin-right: -36px;
+    padding-top: 8px;
     line-height: 1;
     text-align: center;
 }
 
-.banner {
-    text-align: center;
-}
-
-.banner-item {
+.header-item {
     margin-inline: 16px;
     display: inline;
     font-size: 18px;
 }
 
-#active {
-    color: #be5c5c;
-}
-
-.header {
+header {
     width: 100%;
     height: auto;
-    padding-top: 8px;
+    padding-top: 4px;
+    text-align: center;
 }
 
-.main {
+main {
     width: 100%;
     height: auto;
 }
 
-.footer {
+footer {
     width: 100%;
     height: auto;
-    padding-bottom: 20px;
     text-align: center;
 }
