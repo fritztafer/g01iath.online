@@ -6,6 +6,7 @@ let elements = [];
 
 function run(content) {
     if (transitioning) return;
+    if (content?.toUpperCase() === document.getElementById("active")?.textContent && content != null) return;
     transitioning = true;
 
     if (content === undefined) {
@@ -24,7 +25,7 @@ function run(content) {
     }
 
     setTimeout(() => {
-        try {document.head.querySelector("script:nth-of-type(2)").remove();} catch {}
+        document.head.querySelector("script:nth-of-type(2)")?.remove();
         let js = Object.assign(document.createElement("script"),{
             src: "js/" + content + ".js",
             onload: () => {
