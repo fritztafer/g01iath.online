@@ -1,12 +1,15 @@
 # https://docs.python.org/3/library/http.server.html
-# Can run with command after changing to root directory: python -m http.server 80 --bind 127.0.0.1
 
 import http.server
-import socketserver
 
+ADDRESS = ""
 PORT = 80
-Handler = http.server.SimpleHTTPRequestHandler
+DIRECTORY = "public"
 
-with socketserver.TCPServer(("", PORT), Handler) as httpd:
-    print("serving at localhost:" + str(PORT))
+class Handler(http.server.SimpleHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=DIRECTORY, **kwargs)
+
+with http.server.HTTPServer((ADDRESS, PORT), Handler) as httpd:
+    print(f"serving {DIRECTORY}/ at {ADDRESS}:{str(PORT)}")
     httpd.serve_forever()
