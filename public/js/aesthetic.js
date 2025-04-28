@@ -4,6 +4,7 @@ var index = 0;
 var amount = 12;
 var images = [];
 var loading = false;
+var timeout;
 var ready = fetch("gallery/.file-list.json")
     .then(res => res.json())
     .then(array => {
@@ -15,15 +16,20 @@ var ready = fetch("gallery/.file-list.json")
 
 async function aesthetic() {
     await ready;
-    document.querySelector("main").innerHTML =
-        '<div class="aesthetic"></div>';
-    loadImages()
+    let parent = Object.assign(document.createElement("div"), {className: "aesthetic"}),
+        main = document.querySelector("main");
+
+    loadImages(parent);
+
+    setTimeout(() => {
+        main.innerHTML = "";
+        main.appendChild(parent);
+    }, time);
 }
 
-function loadImages() {
-    if (loading) return;
+function loadImages(parent) {
+    if (loading || index > images.length) return;
     loading = true;
-    let gallery = document.querySelector(".aesthetic");
     let chunk = images.slice(index, index + amount).map(filename => {
         let img = Object.assign(document.createElement("img"),{
             className: "aesthetic-item",
@@ -37,7 +43,13 @@ function loadImages() {
         })
         return img;
     });
-    gallery.append(...chunk);
+
+    for (let item of chunk) {
+        let img = new Image();
+        img.item = item;
+    }
+
+    parent.append(...chunk);
     index += amount;
     loading = false;
 }
@@ -51,7 +63,7 @@ function shuffleArray(array) { // Durstenfeld shuffle
 }
 
 function setImageSpan(img) {
-    let gap = 8;
+    let gap = 6; // grid-auto-rows + gap, properties of .aesthetic
     let imgHeight = img.height;
     let span = Math.floor((imgHeight + gap) / gap);
     let remainder = (imgHeight + gap) % gap;
@@ -59,10 +71,12 @@ function setImageSpan(img) {
     img.style.setProperty('--span', span);
 }
 
-window.addEventListener("scroll", async () => {
-    await ready;
-    let bottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 200;
-    if (bottom && index < images.length) {
-        loadImages();
-    }
-});
+var onScroll = () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+        let bottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 450;
+        if (bottom && index < images.length && !loading) {loadImages(document.querySelector(".aesthetic"));}
+        else if (index >= images.length && !loading) {window.removeEventListener("scroll", onScroll);}
+    }, 100);
+}
+window.addEventListener("scroll", onScroll);

@@ -20,38 +20,43 @@ document.querySelector("header").innerHTML =
 document.querySelector("footer").innerHTML = 
     '<div class="footer-item">//G01IATH.ONLINE/2025/</div>';
 
-let time = 2501;
-let transitioning = false;
+time = 2501; // out + in transition time, can we set :root property ?
 
+let transitioning = false;
 function run(content) {
-    if (transitioning) return;
+    if (transitioning) return; // prevent interrupting transition, below prevents active & allows initialization
     if (content?.toUpperCase() === document.getElementById("active")?.textContent && content != null) return;
-    
-    transitioning = true;
-    if (content === undefined) {
+
+    transitioning = true; 
+
+    if (content === undefined) { // initialization
         content = "socials";
         fadeGroup(selectElements(".header-item, hr, .footer-item"), "in");
     } else {
         fadeGroup(selectElements("main, #active"), "out");
     }
 
-    setTimeout(() => {
+    // start transition
+    document.head.querySelector("script:nth-of-type(2)")?.remove();
+    let js = Object.assign(document.createElement("script"),{
+        src: "js/" + content + ".js",
+        onload: () => runContent(content)});
+    document.head.appendChild(js);
+    
+    // mid transition
+    setTimeout(() => { 
         let items = Object.values(selectElements(".header-item"));
-        for (let item of items) {
+        for (let item of items) { // change active
             if (item.textContent === content.toUpperCase()) {item.id = "active";}
             else {item.removeAttribute("id");}
-        }
-
-        document.head.querySelector("script:nth-of-type(2)")?.remove();
-        let js = Object.assign(document.createElement("script"),{
-            src: "js/" + content + ".js",
-            onload: () => {
-                runContent(content);
-                fadeGroup(selectElements("main, #active"), "in");
-                setTimeout(() => {transitioning = false;}, time);
-            }});
-        document.head.appendChild(js);
+        }    
+        fadeGroup(selectElements("main, #active"), "in");
     }, time);
+
+    // end transition
+    setTimeout(() => {
+        transitioning = false;
+    }, time * 2);
 }
 
 function selectElements(elements) {
