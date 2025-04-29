@@ -2,7 +2,7 @@
 
 import http.server
 
-ADDRESS = ""
+ADDRESS = "localhost"
 PORT = 80
 DIRECTORY = "public"
 
