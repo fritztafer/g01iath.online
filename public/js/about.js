@@ -1,7 +1,8 @@
 // about.js
 
 function about() {
-    let parent = Object.assign(document.createElement("div"),{className: "aesthetic", style: "width: 900px; margin: auto;"}),
+    let main = document.querySelector("main"),
+        parent = Object.assign(document.createElement("div"),{className: "about", style: "width: 900px; margin: auto;"}),
         aboutImg = Object.assign(document.createElement("div"),{
             style: "float: left; text-align: center; width: 300px; padding-right: 16px;",
             innerHTML: '<img src="img/2012.jpg" style="height: auto; width: inherit; margin-bottom: -10px;"><div style="width: inherit;">circa 2012</div>'
@@ -13,12 +14,11 @@ function about() {
             
             Figuratively speaking, music is the Goliath to my David. This journey has brought more pain than joy, I won't lie...but if you're reading this...I slayed the giant and the beast's head lay severed at my feet. If you are familiar with the story you know what happens next...`
         }),
-        children = [aboutImg, aboutBio],
-        main = document.querySelector("main");
+        children = [aboutImg, aboutBio];
 
     for (let child of children) {parent.append(child);}
     setTimeout(() => {
-        main.innerHTML = "";
         main.append(parent);
+        main.firstElementChild.remove();
     }, time);
 }

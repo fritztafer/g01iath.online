@@ -1,8 +1,8 @@
 // listen.js
 
 function listen() {
-    let parent = Object.assign(document.createElement("div"),{className: "listen"}),
-        main = document.querySelector("main"),
+    let main = document.querySelector("main"),
+        parent = Object.assign(document.createElement("div"),{className: "listen"}),
         sources = [
             "https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1354507834&show_artwork=true&show_comments=false",
             "https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1289073427&show_artwork=true&show_comments=false",

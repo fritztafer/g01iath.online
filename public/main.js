@@ -20,7 +20,7 @@ document.querySelector("header").innerHTML =
 document.querySelector("footer").innerHTML = 
     '<div class="footer-item">//G01IATH.ONLINE/2025/</div>';
 
-time = 2501; // out + in transition time, can we set :root property ?
+time = 2501; // out + in transition time, used in all other scripts. Can we set :root property in style.css?
 
 let transitioning = false;
 function run(content) {
@@ -92,6 +92,6 @@ function runContent(content) {
     else if (content === "about") {return about();}
 }
 
-window.onbeforeunload = function () {
+window.onload = function() {
     window.scrollTo(0, 0);
-  }
+};

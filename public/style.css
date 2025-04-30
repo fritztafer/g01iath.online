@@ -7,6 +7,8 @@ html, body {
     width: 100%;
     overflow-x: hidden;
     overflow-y: auto;
+    margin: 0;
+    padding: 0;
 }
 
 body {
@@ -14,9 +16,7 @@ body {
     font-size: 16px;
     line-height: 1.5;
     color: var(--color);
-    margin: 0;
-    padding: 0;
-    width: 100vw;
+    width: 100%;
     min-height: 100vh;
     background: transparent;
     display: grid;
@@ -43,19 +43,19 @@ body::before {
 }
 
 header {
-    width: 100vw;
+    width: 100%;
     height: auto;
     padding-top: 12px;
     text-align: center;
 }
 
 main {
-    width: 100vw;
+    width: 100%;
     height: auto;
 }
 
 footer {
-    width: 100vw;
+    width: 100%;
     height: auto;
     text-align: center;
 }
@@ -129,7 +129,7 @@ hr {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /*filter: brightness(69%);*/
+    filter: brightness(69%); /* delete when new images are in */
 }
 
 a.social-item {
@@ -160,22 +160,25 @@ a.social-item img {
 }
 
 .aesthetic {
-    width: 1088px;
-    margin: auto;
-    margin-bottom: 1px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 1px;
-    gap: 2px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    column-gap: 4px;
+    align-items: flex-start;
+}
+
+.aesthetic-column {
+    width: 300px;
 }
 
 .aesthetic-item {
-    width: 360px;
+    width: 100%;
     height: auto;
+    margin-bottom: 4px;
     display: block;
-    grid-row-end: span var(--span);
     opacity: 0;
-    transition: opacity 2.5s ease-in-out;
+    transition: opacity var(--time) ease-in-out;
 }
 
 .aesthetic-item.loaded {
@@ -184,20 +187,9 @@ a.social-item img {
 
 /* about */
 
-@media (max-width: 1132px) {
-    .aesthetic {
-        width: 724px;
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
+@media (max-width: 639px) {
     .listen {
         width: 300px;
-        grid-template-columns: repeat(1, 1fr);
-    }
-    .aesthetic {
-        width: 360px;
         grid-template-columns: repeat(1, 1fr);
     }
 }
@@ -239,7 +231,7 @@ a.social-item img {
     }
 }
 
-@media (max-width: 359px) {
+@media (max-width: 314px) {
     body:before {
         content: "you zoomed in or your screen hella small bruh xD";
     }
