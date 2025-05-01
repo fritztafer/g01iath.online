@@ -143,10 +143,10 @@ a.social-item img {
 }
 
 .listen {
-    width: 616px;
+    width: 924px;
     margin: auto;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
 }
 
@@ -185,6 +185,13 @@ a.social-item img {
 }
 
 /* about */
+
+@media (max-width: 959px) {
+    .listen {
+        width: 616px;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 
 @media (max-width: 639px) {
     .listen {

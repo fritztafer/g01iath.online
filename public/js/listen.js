@@ -16,10 +16,12 @@ function listen() {
         let iframe = Object.assign(document.createElement("iframe"),{
             src: src,
             style: "top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0; visibility: hidden;",
-            allowFullscreen: false});
+            allowFullscreen: false,
+            scrolling: "no"
+        });
         let div = Object.assign(document.createElement("div"), {
             className: "listen-item",
-            style: "display: contents"});
+            style: "display: contents;"});
         div.appendChild(iframe);
         parent.appendChild(div);
     }
