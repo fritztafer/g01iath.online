@@ -128,12 +128,10 @@ hr {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    filter: brightness(69%); /* delete when new images are in */
 }
 
 a.social-item {
     margin: auto;
-    transform: scale(.7);
 }
 
 a.social-item img {
@@ -221,19 +219,19 @@ a.social-item img {
     }
 
     a.social-item.one {
-        width: 323px;
+        width: 240px;
     }
 
     a.social-item.two {
-        width: 232px;
+        width: 172px;
     }
 
     a.social-item.three {
-        width: 215px;
+        width: 156px;
     }
 
     a.social-item.four {
-        width: 141px;
+        width: 105px;
     }
 }
 
