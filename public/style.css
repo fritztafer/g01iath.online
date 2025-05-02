@@ -74,7 +74,7 @@ footer {
     font-size: 18px;
 }
 
-hr {
+header hr {
     display: block;
     height: 1px;
     width: 372px;
@@ -178,6 +178,22 @@ a.social-item img {
     transition: opacity var(--time) ease-in-out;
 }
 
+.aesthetic-item-quote {
+    text-align: center;
+    margin: 16px;
+    margin-bottom: 32px;
+    padding-top: 48px;
+    border-top: 1px var(--color) solid;
+}
+
+.aesthetic-item-person {
+    font-weight: bold;
+    text-align: center;
+    margin: 16px;
+    padding-bottom: 48px;
+    border-bottom: 1px var(--color) solid;
+}
+
 .aesthetic-item.loaded {
     opacity: 1;
 }
@@ -214,7 +230,7 @@ a.social-item img {
         font-size: 12px;
     }
 
-    hr {
+    header hr {
         width: 260px;
     }
 
