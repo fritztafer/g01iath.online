@@ -20,7 +20,7 @@ document.querySelector("header").innerHTML =
 document.querySelector("footer").innerHTML = 
     '<div class="footer-item">//G01IATH.ONLINE/2025/</div>';
 
-time = 2501; // out + in transition time, used in all other scripts. Can we set :root property in style.css?
+time = 2501; // out + in transition time, used in all other scripts. Can we set value of :root property in style.css?
 
 let transitioning = false;
 function run(content) {
@@ -36,11 +36,11 @@ function run(content) {
         fadeGroup(selectElements("main, #active"), "out");
     }
 
-    // start transition
     document.head.querySelector("script:nth-of-type(2)")?.remove();
     let js = Object.assign(document.createElement("script"),{
         src: "js/" + content + ".js",
         onload: async () => {
+            // start transition
             await runContent(content);
 
             // mid transition
