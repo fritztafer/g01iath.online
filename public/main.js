@@ -27,7 +27,7 @@ function run(content) {
     if (transitioning) return; // prevent interrupting transition, below prevents active & allows initialization
     if (content?.toUpperCase() === document.getElementById("active")?.textContent && content != null) return;
 
-    transitioning = true; 
+    transitioning = true;
 
     if (content === undefined) { // initialization
         content = "socials";
@@ -40,23 +40,25 @@ function run(content) {
     document.head.querySelector("script:nth-of-type(2)")?.remove();
     let js = Object.assign(document.createElement("script"),{
         src: "js/" + content + ".js",
-        onload: () => runContent(content)});
-    document.head.appendChild(js);
-    
-    // mid transition
-    setTimeout(() => { 
-        let items = Object.values(selectElements(".header-item"));
-        for (let item of items) { // change active
-            if (item.textContent === content.toUpperCase()) {item.id = "active";}
-            else {item.removeAttribute("id");}
-        }    
-        fadeGroup(selectElements("main, #active"), "in");
-    }, time);
+        onload: async () => {
+            await runContent(content);
 
-    // end transition
-    setTimeout(() => {
-        transitioning = false;
-    }, time * 2);
+            // mid transition
+            setTimeout(() => { 
+                let items = Object.values(selectElements(".header-item"));
+                for (let item of items) { // change active
+                    if (item.textContent === content.toUpperCase()) {item.id = "active";}
+                    else {item.removeAttribute("id");}
+                }
+                fadeGroup(selectElements("main, #active"), "in");
+            }, time);
+
+            // end transition
+            setTimeout(() => {
+                transitioning = false;
+            }, time * 2);
+        }});
+    document.head.appendChild(js);
 }
 
 function selectElements(elements) {
