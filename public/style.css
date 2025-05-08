@@ -120,7 +120,7 @@ header hr {
     to   {color: var(--color);}
 }
 
-.social {
+.socials {
     height: 75vh;
     width: 100%;
     margin: auto;
@@ -130,11 +130,11 @@ header hr {
     align-items: center;
 }
 
-a.social-item {
+a.socials-item {
     margin: auto;
 }
 
-a.social-item img {
+a.socials-item img {
     max-width: 100%;
     height: auto;
     display: block;

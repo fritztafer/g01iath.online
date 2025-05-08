@@ -20,7 +20,7 @@ document.querySelector("header").innerHTML =
 document.querySelector("footer").innerHTML = 
     '<div class="footer-item">//G01IATH.ONLINE/2025/</div>';
 
-time = 2501; // out + in transition time, used in all other scripts. Can we set value of :root property in style.css?
+let time = 2501; // out + in transition time
 
 let transitioning = false;
 function run(content) {
@@ -41,7 +41,8 @@ function run(content) {
         src: "js/" + content + ".js",
         onload: async () => {
             // start transition
-            await runContent(content);
+            let parent = await runContent(content);
+            document.querySelector("main").append(parent);
 
             // mid transition
             setTimeout(() => { 
@@ -50,6 +51,8 @@ function run(content) {
                     if (item.textContent === content.toUpperCase()) {item.id = "active";}
                     else {item.removeAttribute("id");}
                 }
+                // need something to handle sc widget removal for slow connections
+                transitionHandler(parent);
                 fadeGroup(selectElements("main, #active"), "in");
             }, time);
 
@@ -92,6 +95,41 @@ function runContent(content) {
     else if (content === "listen") {return listen();}
     else if (content === "aesthetic") {return aesthetic();}
     else if (content === "about") {return about();}
+}
+
+function transitionHandler(parent) {
+    let main = document.querySelector("main");
+
+    if (parent.className === main.firstElementChild.className) { // initialization
+        parent.style.visibility = "visible";
+        parent.style.maxHeight = "none";
+        parent.style.overflow = "visible";
+    }
+    else if (parent.className === "socials") {
+        parent.style.visibility = "visible";
+        parent.style.maxHeight = "none";
+        parent.style.overflow = "visible";
+        main.firstElementChild.remove();
+    }
+    else if (parent.className === "listen") {
+        parent.querySelectorAll('iframe').forEach(iframe => {
+            iframe.style.visibility = "visible";
+            iframe.parentElement.style.display = "block";
+        });
+        main.firstElementChild.remove();
+    }
+    else if (parent.className === "aesthetic") {
+        parent.style.visibility = "visible";
+        parent.style.maxHeight = "none";
+        parent.style.overflow = "visible";
+        main.firstElementChild.remove();
+    }
+    else if (parent.className === "about") {
+        parent.style.visibility = "visible";
+        parent.style.maxHeight = "none";
+        parent.style.overflow = "visible";
+        main.firstElementChild.remove();
+    }
 }
 
 window.onload = function() {

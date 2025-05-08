@@ -11,30 +11,19 @@ var index = 0, // track which files loaded
         .catch(err => {console.error("error loading gallery", err);});
 
 async function aesthetic() {
+    let parent = Object.assign(document.createElement("div"),{className: "aesthetic", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
+        colAmt = (function() {
+                if (window.innerWidth < 640) {return 1;}
+            else if (window.innerWidth < 960) {return 2;}
+            else if (window.innerWidth < 1280) {return 3;}
+            else if (window.innerWidth >= 1280) {return 4;}
+        })();
+    loadColumns(colAmt, parent);
+
     await ready;
+    loadItems(parent);
 
-    return new Promise(resolve => {
-        let main = document.querySelector("main"),
-            parent = Object.assign(document.createElement("div"),{className: "aesthetic", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
-            colAmt = (function() {
-                    if (window.innerWidth < 640) {return 1;}
-                else if (window.innerWidth < 960) {return 2;}
-                else if (window.innerWidth < 1280) {return 3;}
-                else if (window.innerWidth >= 1280) {return 4;}
-            })();
-        loadColumns(colAmt, parent);
-        loadItems(parent);
-
-        main.appendChild(parent);
-        setTimeout(() => {
-            parent.style.visibility = "visible";
-            parent.style.maxHeight = "none";
-            parent.style.overflow = "auto";
-            main.firstElementChild.remove();
-        }, time);
-
-        resolve();
-    });
+    return parent;
 }
 
 function loadItems(parent) {
