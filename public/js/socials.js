@@ -8,7 +8,7 @@ function socials() {
         socialItem4 = Object.assign(document.createElement("a"), {className: "socials-item four", href: "//youtube.com/@g01iath", innerHTML: "<img src=\"img/yt.png\">"}),
         children = [socialItem1, socialItem2, socialItem3, socialItem4];
 
-    for (let child of children) {parent.append(child);}
+    parent.append(...children)
 
     return parent;
 }

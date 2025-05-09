@@ -17,7 +17,7 @@ function about() {
         }),
         children = [aboutContact, aboutImg, aboutBio];
 
-    for (let child of children) {parent.append(child);}
+    parent.append(...children);
 
     return parent;
 }

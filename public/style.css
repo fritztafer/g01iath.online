@@ -18,6 +18,7 @@ body {
     color: var(--color);
     min-height: 100vh;
     background: transparent;
+    background-color: #000000;
     display: grid;
     grid-template-rows: auto 1fr auto;
 }
@@ -234,19 +235,19 @@ a.socials-item img {
         width: 260px;
     }
 
-    a.social-item.one {
+    a.socials-item.one {
         width: 240px;
     }
 
-    a.social-item.two {
+    a.socials-item.two {
         width: 172px;
     }
 
-    a.social-item.three {
+    a.socials-item.three {
         width: 156px;
     }
 
-    a.social-item.four {
+    a.socials-item.four {
         width: 105px;
     }
 }
