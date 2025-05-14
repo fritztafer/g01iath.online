@@ -131,7 +131,7 @@ function scrollHandler() {
         let bottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 200;
         if (bottom && index < files.length && !loading) {loadItems(document.getElementsByClassName("aesthetic")[0]);}
         else if (index >= files.length && !loading) {window.removeEventListener("scroll", scrollHandler);}
-    }, 500);
+    }, 100);
 }
 
 window.addEventListener("resize", resizeHandler)
