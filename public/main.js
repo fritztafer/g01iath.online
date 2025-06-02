@@ -1,15 +1,13 @@
 // main.js
 
 title = Object.assign(document.createElement("title"),{textContent: "GØ1IATH.ONLINE"});
-style = Object.assign(document.createElement("link"),{href: "style.css", rel: "stylesheet"});
 header = Object.assign(document.createElement("header"));
 main = Object.assign(document.createElement("main"));
 footer = Object.assign(document.createElement("footer"));
 document.head.prepend(title);
-document.head.append(style);
 document.body = document.createElement("body");
 document.body.append(header, main, footer);
-for (let v of ["title", "style", "header", "main", "footer"]) {delete window[v];}
+for (let v of ["title", "header", "main", "footer"]) {delete window[v];}
 document.querySelector("header").innerHTML = 
     '<div class="title">GØ1IATH</div>' +
     '<a class="header-item" href="javascript:" onclick="run(\'socials\');">SOCIALS</a>' +
