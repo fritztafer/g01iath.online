@@ -142,10 +142,10 @@ a.socials-item img {
 }
 
 .listen {
-    width: 924px;
+    width: 300px;
     margin: auto;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     gap: 8px;
 }
 
@@ -197,22 +197,6 @@ a.socials-item img {
 
 .aesthetic-item.loaded {
     opacity: 1;
-}
-
-/* about */
-
-@media (max-width: 959px) {
-    .listen {
-        width: 616px;
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 639px) {
-    .listen {
-        width: 300px;
-        grid-template-columns: repeat(1, 1fr);
-    }
 }
 
 @media (max-width: 449px) {
