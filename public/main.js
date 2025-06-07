@@ -1,15 +1,13 @@
 // main.js
 
 title = Object.assign(document.createElement("title"),{textContent: "GØ1IATH.ONLINE"});
-style = Object.assign(document.createElement("link"),{href: "style.css", rel: "stylesheet"});
 header = Object.assign(document.createElement("header"));
 main = Object.assign(document.createElement("main"));
 footer = Object.assign(document.createElement("footer"));
 document.head.prepend(title);
-document.head.append(style);
 document.body = document.createElement("body");
 document.body.append(header, main, footer);
-for (let v of ["title", "style", "header", "main", "footer"]) {delete window[v];}
+for (let v of ["title", "header", "main", "footer"]) {delete window[v];}
 document.querySelector("header").innerHTML = 
     '<div class="title">GØ1IATH</div>' +
     '<a class="header-item" href="javascript:" onclick="run(\'socials\');">SOCIALS</a>' +
@@ -21,8 +19,8 @@ document.querySelector("footer").innerHTML =
     '<div class="footer-item">//G01IATH.ONLINE/2025/</div>';
 
 let time = 2501; // out + in transition time
-
 let transitioning = false;
+
 function run(content) {
     if (transitioning) return; // prevent interrupting transition, below prevents active & allows initialization
     if (content?.toUpperCase() === document.getElementById("active")?.textContent && content != null) return;
@@ -39,28 +37,7 @@ function run(content) {
     document.head.querySelector("script:nth-of-type(2)")?.remove();
     let js = Object.assign(document.createElement("script"),{
         src: "js/" + content + ".js",
-        onload: async () => {
-            // start transition
-            let parent = await runContent(content);
-            document.querySelector("main").append(parent);
-
-            // mid transition
-            setTimeout(() => { 
-                let items = Object.values(selectElements(".header-item"));
-                for (let item of items) { // change active
-                    if (item.textContent === content.toUpperCase()) {item.id = "active";}
-                    else {item.removeAttribute("id");}
-                }
-                // need something to handle sc widget removal for slow connections
-                transitionHandler(parent);
-                fadeGroup(selectElements("main, #active"), "in");
-            }, time);
-
-            // end transition
-            setTimeout(() => {
-                transitioning = false;
-            }, time * 2);
-        }});
+        onload: async () => {switchScene(content, await runContent(content));}});
     document.head.appendChild(js);
 }
 
@@ -88,6 +65,28 @@ function fadeElement(el, type) {
 
 function fadeGroup(elements, type) {
     elements.forEach(el => fadeElement(el, type));
+}
+
+function switchScene(content, parent) {
+    // start transition
+    document.querySelector("main").append(parent);
+
+    // mid transition
+    setTimeout(() => { 
+        let items = Object.values(selectElements(".header-item"));
+        for (let item of items) { // change active
+            if (item.textContent === content.toUpperCase()) {item.id = "active";}
+            else {item.removeAttribute("id");}
+        }
+        // need something to handle unloaded children for slow connections
+        transitionHandler(parent);
+        fadeGroup(selectElements("main, #active"), "in");
+    }, time);
+
+    // end transition
+    setTimeout(() => {
+        transitioning = false;
+    }, time * 2);
 }
 
 function runContent(content) {
