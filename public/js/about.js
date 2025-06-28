@@ -1,5 +1,3 @@
-// about.js
-
 function about() {
     let parent = Object.assign(document.createElement("div"),{className: "about", style: "margin: auto; visibility: hidden; max-height: 0; overflow: hidden;"}),
         aboutContact = Object.assign(document.createElement("div"),{
@@ -11,9 +9,7 @@ function about() {
             innerHTML: '<img src="img/2012.jpg" style="height: auto; width: inherit;">'
         }),
         aboutBio = Object.assign(document.createElement("div"),{className: "about-bio", style: "text-align: center; margin: auto;", innerHTML: 
-            `
-            <div style="font-size: 36px; letter-spacing: 24px; margin-right: -24px; line-height: 1; margin-bottom: 24px;">GØ1IATH</div>
-            `
+            `<div style="font-size: 36px; letter-spacing: 24px; margin-right: -24px; line-height: 1; margin-bottom: 24px;">GØ1IATH</div>`
         }),
         children = [aboutContact, aboutImg, aboutBio];
 

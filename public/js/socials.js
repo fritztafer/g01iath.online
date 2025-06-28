@@ -1,5 +1,3 @@
-// socials.js
-
 function socials() {
     let parent = Object.assign(document.createElement("div"), {className: "socials", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
         socialItem1 = Object.assign(document.createElement("a"), {className: "socials-item one", href: "//soundcloud.com/g01iathonline", innerHTML: "<img src=\"img/sc.png\">"}),

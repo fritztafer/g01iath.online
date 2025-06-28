@@ -1,5 +1,3 @@
-// main.js
-
 title = Object.assign(document.createElement("title"),{textContent: "GØ1IATH.ONLINE"});
 header = Object.assign(document.createElement("header"));
 main = Object.assign(document.createElement("main"));
@@ -7,37 +5,33 @@ footer = Object.assign(document.createElement("footer"));
 document.head.prepend(title);
 document.body = document.createElement("body");
 document.body.append(header, main, footer);
-for (let v of ["title", "header", "main", "footer"]) {delete window[v];}
+for (let v of ["title", "header", "main", "footer"]) {delete window[v]}
 document.querySelector("header").innerHTML = 
-    '<div class="title">GØ1IATH</div>' +
-    '<a class="header-item" href="javascript:" onclick="run(\'socials\');">SOCIALS</a>' +
-    '<a class="header-item" href="javascript:" onclick="run(\'listen\');">LISTEN</a>' +
-    '<a class="header-item" href="javascript:" onclick="run(\'aesthetic\');">AESTHETIC</a>' +
-    '<a class="header-item" href="javascript:" onclick="run(\'about\');">ABOUT</a>' +
-    '<hr>';
+    `<div class="title">GØ1IATH</div>
+    <a class="header-item" href="javascript:" onclick="run('socials');">SOCIALS</a>
+    <a class="header-item" href="javascript:" onclick="run('listen');">LISTEN</a>
+    <a class="header-item" href="javascript:" onclick="run('aesthetic');">AESTHETIC</a>
+    <a class="header-item" href="javascript:" onclick="run('about');">ABOUT</a>
+    <hr>`;
 document.querySelector("footer").innerHTML = 
-    '<div class="footer-item">//G01IATH.ONLINE/2025/</div>';
+    `<div class="footer-item">//G01IATH.ONLINE/2025/</div>`;
 
-let time = 2501; // out + in transition time
+let time = 2501;
 let transitioning = false;
 
 function run(content) {
     if (transitioning) return; // prevent interrupting transition, below prevents active & allows initialization
-    if (content?.toUpperCase() === document.getElementById("active")?.textContent && content != null) return;
-
-    transitioning = true;
+    if (content?.toUpperCase() === document.getElementById("active")?.textContent && content !== undefined) return;
 
     if (content === undefined) { // initialization
         content = "socials";
         fadeGroup(selectElements(".header-item, hr, .footer-item"), "in");
-    } else {
-        fadeGroup(selectElements("main, #active"), "out");
     }
 
     document.head.querySelector("script:nth-of-type(2)")?.remove();
     let js = Object.assign(document.createElement("script"),{
         src: "js/" + content + ".js",
-        onload: async () => {switchScene(content, await runContent(content));}});
+        onload: async () => {switchScene(content, await loadContent(content))}});
     document.head.appendChild(js);
 }
 
@@ -46,8 +40,8 @@ function selectElements(elements) {
 }
 
 function fadeElement(el, type) {
-    let outClass = "fade-out";
-    let inClass = "fade-in";
+    let outClass = "fade-out",
+        inClass = "fade-in";
 
     if (el.id === "active") {
         outClass = "active-out";
@@ -69,31 +63,31 @@ function fadeGroup(elements, type) {
 
 function switchScene(content, parent) {
     // start transition
+    transitioning = true;
     document.querySelector("main").append(parent);
+    fadeGroup(selectElements("main, #active"), "out");
 
-    // mid transition
-    setTimeout(() => { 
+    setTimeout(() => { // mid transition
         let items = Object.values(selectElements(".header-item"));
         for (let item of items) { // change active
-            if (item.textContent === content.toUpperCase()) {item.id = "active";}
-            else {item.removeAttribute("id");}
+            if (item.textContent === content.toUpperCase()) {item.id = "active"}
+            else {item.removeAttribute("id")}
         }
-        // need something to handle unloaded children for slow connections
+        // need something to handle loading children for slow connections
         transitionHandler(parent);
         fadeGroup(selectElements("main, #active"), "in");
     }, time);
 
-    // end transition
-    setTimeout(() => {
+    setTimeout(() => { // end transition
         transitioning = false;
     }, time * 2);
 }
 
-function runContent(content) {
-    if (content === "socials") {return socials();}
-    else if (content === "listen") {return listen();}
-    else if (content === "aesthetic") {return aesthetic();}
-    else if (content === "about") {return about();}
+function loadContent(content) {
+    if (content === "socials") return socials();
+    else if (content === "listen") return listen();
+    else if (content === "aesthetic") return aesthetic();
+    else if (content === "about") return about();
 }
 
 function transitionHandler(parent) {
@@ -133,4 +127,4 @@ function transitionHandler(parent) {
 
 window.onload = function() {
     window.scrollTo(0, 0);
-};
+}
