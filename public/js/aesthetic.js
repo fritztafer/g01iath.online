@@ -10,12 +10,12 @@ var index = 0, // track which files loaded
 
 async function aesthetic() {
     let parent = Object.assign(document.createElement("div"),{className: "aesthetic", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
-        colAmt = (function() {
-                if (window.innerWidth < 640) {return 1}
-            else if (window.innerWidth < 960) {return 2}
-            else if (window.innerWidth < 1280) {return 3}
-            else if (window.innerWidth >= 1280) {return 4}
-        })();
+        colAmt = function() {
+                if (window.innerWidth < 640) return 1;
+            else if (window.innerWidth < 960) return 2;
+            else if (window.innerWidth < 1280) return 3;
+            else if (window.innerWidth >= 1280) return 4;
+        }();
     loadColumns(colAmt, parent);
 
     await ready;
@@ -29,7 +29,7 @@ function loadItems(parent) {
     loading = true;
     let columns = parent.childNodes;
     files.slice(index, index + amount).map(filename => {
-        if (filename.lastIndexOf(".txt") === filename.length - 4) {
+        if (filename.lastIndexOf(".txt") == filename.length - 4) {
             !async function() {
                 let item = Object.assign(document.createElement("div"),{className: "aesthetic-item"}),
                     quote = Object.assign(document.createElement("div"),{className: "aesthetic-item-quote"}),
@@ -44,11 +44,11 @@ function loadItems(parent) {
                 renderItem(item, columns);
             }();
         } else {
-            let img = Object.assign(document.createElement("img"),{
+            let item = Object.assign(document.createElement("img"),{
                 className: "aesthetic-item",
                 src: `gallery/${filename}`,
                 alt: "",
-                onload: () => renderItem(img, columns)
+                onload: () => renderItem(item, columns)
             });
         }
     });
@@ -115,18 +115,18 @@ function shuffleArray(array) { // Durstenfeld shuffle
 
 function resizeHandler() {
     let columns = document.getElementsByClassName("aesthetic-column");
-         if (window.innerWidth < 640 && columns.length !== 1) {adoptItems(1)}
-    else if (window.innerWidth >= 640 && window.innerWidth < 960 && columns.length !== 2) {adoptItems(2)}
-    else if (window.innerWidth >= 960 && window.innerWidth < 1280 && columns.length !== 3) {adoptItems(3)}
-    else if (window.innerWidth >= 1280 && columns.length !== 4) {adoptItems(4)}
+         if (columns.length != 1 && window.innerWidth < 640) adoptItems(1);
+    else if (columns.length != 2 && window.innerWidth >= 640 && window.innerWidth < 960) adoptItems(2);
+    else if (columns.length != 3 && window.innerWidth >= 960 && window.innerWidth < 1280) adoptItems(3);
+    else if (columns.length != 4 && window.innerWidth >= 1280) adoptItems(4);
 };
 
 function scrollHandler() {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
         let bottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 200;
-        if (bottom && index < files.length && !loading) {loadItems(document.getElementsByClassName("aesthetic")[0])}
-        else if (index >= files.length && !loading) {window.removeEventListener("scroll", scrollHandler)}
+        if (bottom && index < files.length && !loading) loadItems(document.getElementsByClassName("aesthetic")[0]);
+        else if (index >= files.length && !loading) window.removeEventListener("scroll", scrollHandler);
     }, 100);
 }
 
