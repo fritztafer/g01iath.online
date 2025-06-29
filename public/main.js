@@ -1,11 +1,10 @@
-title = Object.assign(document.createElement("title"),{textContent: "GØ1IATH.ONLINE"});
-header = Object.assign(document.createElement("header"));
-main = Object.assign(document.createElement("main"));
-footer = Object.assign(document.createElement("footer"));
-document.head.prepend(title);
+document.head.prepend(Object.assign(document.createElement("title"),{textContent: "GØ1IATH.ONLINE"}));
 document.body = document.createElement("body");
-document.body.append(header, main, footer);
-for (let v of ["title", "header", "main", "footer"]) {delete window[v]}
+document.body.append(
+    Object.assign(document.createElement("header")),
+    Object.assign(document.createElement("main")),
+    Object.assign(document.createElement("footer"))
+);
 document.querySelector("header").innerHTML = 
     `<div class="title">GØ1IATH</div>
     <a class="header-item" href="javascript:" onclick="run('socials');">SOCIALS</a>
@@ -21,18 +20,21 @@ let transitioning = false;
 
 function run(content) {
     if (transitioning) return; // prevent interrupting transition, below prevents active & allows initialization
-    if (content?.toUpperCase() === document.getElementById("active")?.textContent && content !== undefined) return;
-
+    else if (content?.toUpperCase() === document.getElementById("active")?.textContent && content !== undefined) return;
+    
     if (content === undefined) { // initialization
         content = "socials";
         fadeGroup(selectElements(".header-item, hr, .footer-item"), "in");
+    } else if (document.querySelector("main").firstChild.className === "aesthetic") { // clean up
+        window.removeEventListener("resize", resizeHandler);
+        window.removeEventListener("scroll", scrollHandler);
     }
 
     document.head.querySelector("script:nth-of-type(2)")?.remove();
-    let js = Object.assign(document.createElement("script"),{
+    document.head.appendChild(Object.assign(document.createElement("script"),{
         src: "js/" + content + ".js",
-        onload: async () => {switchScene(content, await loadContent(content))}});
-    document.head.appendChild(js);
+        onload: async () => switchScene(content, await loadContent(content))
+    }));
 }
 
 function selectElements(elements) {
@@ -70,10 +72,9 @@ function switchScene(content, parent) {
     setTimeout(() => { // mid transition
         let items = Object.values(selectElements(".header-item"));
         for (let item of items) { // change active
-            if (item.textContent === content.toUpperCase()) {item.id = "active"}
-            else {item.removeAttribute("id")}
+            if (item.textContent === content.toUpperCase()) item.id = "active";
+            else item.removeAttribute("id");
         }
-        // need something to handle loading children for slow connections
         transitionHandler(parent);
         fadeGroup(selectElements("main, #active"), "in");
     }, time);
@@ -125,6 +126,4 @@ function transitionHandler(parent) {
     }
 }
 
-window.onload = function() {
-    window.scrollTo(0, 0);
-}
+window.onload = function() {window.scrollTo(0, 0)}
