@@ -1,5 +1,3 @@
-# https://docs.python.org/3/library/http.server.html
-
 import http.server
 
 ADDRESS = "localhost"
