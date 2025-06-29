@@ -7,10 +7,10 @@ document.body.append(
 );
 document.querySelector("header").innerHTML = 
     `<div class="title">GØ1IATH</div>
-    <a class="header-item" href="javascript:" onclick="run('socials');">SOCIALS</a>
-    <a class="header-item" href="javascript:" onclick="run('listen');">LISTEN</a>
-    <a class="header-item" href="javascript:" onclick="run('aesthetic');">AESTHETIC</a>
-    <a class="header-item" href="javascript:" onclick="run('about');">ABOUT</a>
+    <a class="header-item" href="javascript:" onclick="run('socials')">SOCIALS</a>
+    <a class="header-item" href="javascript:" onclick="run('listen')">LISTEN</a>
+    <a class="header-item" href="javascript:" onclick="run('aesthetic')">AESTHETIC</a>
+    <a class="header-item" href="javascript:" onclick="run('about')">ABOUT</a>
     <hr>`;
 document.querySelector("footer").innerHTML = 
     `<div class="footer-item">//G01IATH.ONLINE/2025/</div>`;
