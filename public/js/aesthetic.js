@@ -60,7 +60,7 @@ function renderItem(file, columns) {
     let lengths = Array.from(columns).map(col => col.offsetHeight),
         column = lengths.indexOf(Math.min(...lengths));
     columns[column].appendChild(file);
-    setTimeout(() => file.classList.add("loaded"), 100); // timeout for animation
+    setTimeout(() => file.classList.add("loaded"), 100); // timeout for animation bug
 }
 
 function adoptItems(colAmt) {
