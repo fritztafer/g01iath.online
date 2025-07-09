@@ -20,7 +20,7 @@ let transitioning = false;
 function run(content) {
     if (transitioning) return; // prevent interrupting transition, below prevents active & allows initialization
     else if (content?.toUpperCase() === document.getElementById("active")?.textContent && content !== undefined) return;
-    
+
     if (content === undefined) { // initialization
         content = "socials";
         fadeGroup(selectElements(".header-item, hr, .footer-item"), "in");
