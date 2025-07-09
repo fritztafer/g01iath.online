@@ -1,4 +1,3 @@
-document.head.prepend(Object.assign(document.createElement("title"),{textContent: "GØ1IATH.ONLINE"}));
 document.body = document.createElement("body");
 document.body.append(
     Object.assign(document.createElement("header")),
