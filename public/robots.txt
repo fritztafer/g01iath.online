@@ -1,4 +1,5 @@
 User-agent: *
-Allow: /$
-Allow: /thumb.png
 Disallow: /
+Allow: /$
+Allow: /index.html
+Allow: /thumb.png
