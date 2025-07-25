@@ -60,6 +60,11 @@ footer {
     text-align: center;
 }
 
+img {
+    pointer-events: none;
+    user-select: none;
+}
+
 .title {
     font-size: 48px;
     letter-spacing: 36px;
