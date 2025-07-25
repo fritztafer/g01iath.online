@@ -119,7 +119,7 @@ function resizeHandler() {
     else if (columns.length != 2 && window.innerWidth >= 640 && window.innerWidth < 960) adoptItems(2);
     else if (columns.length != 3 && window.innerWidth >= 960 && window.innerWidth < 1280) adoptItems(3);
     else if (columns.length != 4 && window.innerWidth >= 1280) adoptItems(4);
-};
+}
 
 function scrollHandler() {
     clearTimeout(timeout);
