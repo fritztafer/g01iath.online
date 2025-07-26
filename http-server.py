@@ -9,5 +9,5 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         super().__init__(*args, directory=DIRECTORY, **kwargs)
 
 with http.server.HTTPServer((ADDRESS, PORT), Handler) as httpd:
-    print(f"serving ./{DIRECTORY} at {ADDRESS}:{str(PORT)}")
+    print(f"serving ./{DIRECTORY}/ at {ADDRESS}:{str(PORT)}")
     httpd.serve_forever()
