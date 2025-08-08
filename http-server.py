@@ -1,3 +1,5 @@
+# FOR DEVELOPMENT ONLY
+
 import http.server
 
 ADDRESS = "localhost"
