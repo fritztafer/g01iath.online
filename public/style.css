@@ -204,6 +204,29 @@ a.socials-item img {
     opacity: 1;
 }
 
+.about {
+    margin: auto;
+}
+
+.about-contact {
+    text-align: center;
+    width: 300px;
+    margin: auto;
+    font-size: 21px;
+    margin-bottom: 24px;
+}
+
+.about-image {
+    text-align: center;
+    width: 300px;
+    margin: auto;
+}
+
+.about-bio {
+    text-align: center;
+    margin: auto;
+}
+
 @media (max-width: 449px) {
     body {
         font-size: 11px;

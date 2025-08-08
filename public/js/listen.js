@@ -15,9 +15,10 @@ function listen() {
             allowFullscreen: false,
             scrolling: "no"
         });
-        let div = Object.assign(document.createElement("div"), {
+        let div = Object.assign(document.createElement("div"),{
             className: "listen-item",
-            style: "display: contents;"});
+            style: "display: contents;"
+        });
         div.appendChild(iframe);
         parent.appendChild(div);
     }
