@@ -12,7 +12,7 @@ mapfile -t files < <(ls "$TARGET_DIR" | grep -Ei "\.(jpe?g|png|gif|webp|txt)$")
         [[ $i -lt $((${#files[@]} - 1)) ]] && printf ','
         printf '\n'
     done
-    printf ']\n'
+    printf ']'
 } > "$OUTPUT_FILE"
 
 head -n -1 "$OUTPUT_FILE" | tail -n +2 | wc -l
