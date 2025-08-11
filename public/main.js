@@ -24,6 +24,8 @@ function run(content) {
     if (content === undefined) { // initialization
         content = "socials";
         fadeGroup(selectElements(".header-item, hr, .footer-item"), "in");
+    } else if (content === "error") { // error handling
+        fadeGroup(selectElements(".header-item, hr, .footer-item"), "in");
     } else if (document.querySelector("main").firstChild.className === "aesthetic") { // clean up
         window.removeEventListener("resize", resizeHandler);
         window.removeEventListener("scroll", scrollHandler);
@@ -88,6 +90,7 @@ function loadContent(content) {
     else if (content === "listen") return listen();
     else if (content === "aesthetic") return aesthetic();
     else if (content === "about") return about();
+    else if (content === "error") return error();
 }
 
 function transitionHandler(parent) {
@@ -122,6 +125,11 @@ function transitionHandler(parent) {
         parent.style.maxHeight = "none";
         parent.style.overflow = "visible";
         main.firstElementChild.remove();
+    }
+    else if (parent.className === "error") { // error handling
+        parent.style.visibility = "visible";
+        parent.style.maxHeight = "none";
+        parent.style.overflow = "visible";
     }
 }
 
