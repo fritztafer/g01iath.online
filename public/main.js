@@ -33,7 +33,7 @@ function run(content) {
 
     document.head.querySelector("script:nth-of-type(2)")?.remove();
     document.head.appendChild(Object.assign(document.createElement("script"),{
-        src: "js/" + content + ".js",
+        src: `//${window.location.hostname}/js/${content}.js`,
         onload: async () => switchScene(content, await loadContent(content))
     }));
 }
