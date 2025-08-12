@@ -6,7 +6,7 @@ function about() {
         }),
         aboutImage = Object.assign(document.createElement("div"),{
             className: "about-image",
-            innerHTML: `<img src="img/2012.jpg" style="height: auto; width: inherit;">`
+            innerHTML: `<img src="//${window.location.hostname}/img/2012.jpg" style="height: auto; width: inherit;">`
         }),
         aboutBio = Object.assign(document.createElement("div"),{
             className: "about-bio",

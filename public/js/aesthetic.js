@@ -3,7 +3,7 @@ var index = 0, // track which files loaded
     files = [], // holds file names
     timeout, // debounce scroll handler
     loading = false, // debounce loadItems()
-    ready = fetch("gallery/.file-list.json")
+    ready = fetch(`//${window.location.hostname}/gallery/.file-list.json`)
         .then(res => res.json())
         .then(array => files = shuffleArray(array))
         .catch(err => console.error("error loading gallery", err));
@@ -34,7 +34,7 @@ function loadItems(parent) {
                 let item = Object.assign(document.createElement("div"),{className: "aesthetic-item"}),
                     quote = Object.assign(document.createElement("div"),{className: "aesthetic-item-quote"}),
                     person = Object.assign(document.createElement("div"),{className: "aesthetic-item-person"}),
-                    text = await fetch(`gallery/${filename}`)
+                    text = await fetch(`//${window.location.hostname}/gallery/${filename}`)
                         .then(response => response.text())
                         .then((data) => {return data.split("\r\n")}) // txt file formatting!
                         .catch(error => console.error(error));
@@ -46,7 +46,7 @@ function loadItems(parent) {
         } else {
             let item = Object.assign(document.createElement("img"),{
                 className: "aesthetic-item",
-                src: `gallery/${filename}`,
+                src: `//${window.location.hostname}/gallery/${filename}`,
                 alt: "",
                 onload: () => renderItem(item, columns)
             });
