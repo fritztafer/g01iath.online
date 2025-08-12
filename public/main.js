@@ -10,7 +10,7 @@ document.querySelector("header").innerHTML =
     '<a class="header-item" href="javascript:" onclick="run(\'listen\')">LISTEN</a>' +
     '<a class="header-item" href="javascript:" onclick="run(\'aesthetic\')">AESTHETIC</a>' +
     '<a class="header-item" href="javascript:" onclick="run(\'about\')">ABOUT</a>' +
-    <hr>`;
+    '<hr class="header-hr">';
 document.querySelector("footer").innerHTML =
     '<div class="footer-item">//G01IATH.ONLINE/2025/</div>';
 
@@ -23,9 +23,9 @@ function run(content) {
 
     if (content === undefined) { // initialization
         content = "socials";
-        fadeGroup(selectElements(".header-item, hr, .footer-item"), "in");
+        fadeGroup(selectElements(".header-item, .header-hr, .footer-item"), "in");
     } else if (content === "error") { // error handling
-        fadeGroup(selectElements(".header-item, hr, .footer-item"), "in");
+        fadeGroup(selectElements(".header-item, .header-hr, .footer-item"), "in");
     } else if (document.querySelector("main").firstChild.className === "aesthetic") { // clean up
         window.removeEventListener("resize", resizeHandler);
         window.removeEventListener("scroll", scrollHandler);
