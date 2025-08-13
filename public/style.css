@@ -80,7 +80,7 @@ img {
     font-size: 18px;
 }
 
-header hr {
+.header-hr {
     display: block;
     height: 1px;
     width: 372px;
@@ -210,7 +210,6 @@ a.socials-item img {
 
 .about-contact {
     text-align: center;
-    width: 300px;
     margin: auto;
     font-size: 21px;
     margin-bottom: 24px;
@@ -218,7 +217,6 @@ a.socials-item img {
 
 .about-image {
     text-align: center;
-    width: 300px;
     margin: auto;
 }
 
