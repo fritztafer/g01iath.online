@@ -4,9 +4,9 @@ var index = 0, // track which files loaded
     timeout, // debounce scroll handler
     loading = false, // debounce loadItems()
     ready = fetch(`//${window.location.hostname}/gallery/.file-list.json`)
-        .then(res => res.json())
+        .then(response => response.json())
         .then(array => files = shuffleArray(array))
-        .catch(err => console.error("error loading gallery", err));
+        .catch(error => console.error(error));
 
 async function aesthetic() {
     let parent = Object.assign(document.createElement("div"),{className: "aesthetic", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
