@@ -1,7 +1,7 @@
 var index = 0, // track which files loaded
     amount = 16, // amount of files per load
     files = [], // holds file names
-    timeout, // debounce scroll handler
+    timeout, // debounce scrollHandler()
     loading = false, // debounce loadItems()
     ready = fetch(`//${window.location.hostname}/gallery/.file-list.json`)
         .then(response => response.json())
@@ -10,12 +10,12 @@ var index = 0, // track which files loaded
 
 async function aesthetic() {
     let parent = Object.assign(document.createElement("div"),{className: "aesthetic", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
-        colAmt = function() {
-                if (window.innerWidth < 640) return 1;
+        colAmt = (() => {
+                 if (window.innerWidth < 640) return 1;
             else if (window.innerWidth < 960) return 2;
             else if (window.innerWidth < 1280) return 3;
             else if (window.innerWidth >= 1280) return 4;
-        }();
+        })();
     loadColumns(colAmt, parent);
 
     await ready;
