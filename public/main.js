@@ -1,4 +1,4 @@
-document.body = document.createElement("body");
+document.body = Object.assign(document.createElement("body"),{className: "dark-mode"});
 document.body.append(
     Object.assign(document.createElement("header")),
     Object.assign(document.createElement("main")),

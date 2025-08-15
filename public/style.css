@@ -1,5 +1,7 @@
 :root {
     --color: #bebebe;
+    --dark-color: #42484b;
+    --active-color: #be5c5c;
     --time: 2501ms;
 }
 
@@ -11,19 +13,15 @@ html, body {
     padding: 0;
 }
 
-body {
+body.dark-mode {
     font-family: "Times New Roman", Times, serif;
     font-size: 16px;
     line-height: 1.5;
     color: var(--color);
     min-height: 100vh;
-    background: transparent;
+    background-color: #000000;
     display: grid;
     grid-template-rows: auto 1fr auto;
-}
-
-body a {
-    color: var(--color);
 }
 
 body::before {
@@ -31,7 +29,6 @@ body::before {
     width: 100vw;
     height: 100vh;
     position: fixed;
-    background-color: #000000;
     background:
         linear-gradient(to bottom, #000000a6 0px, #000000 90vh),
         url("img/bg.jpg");
@@ -60,6 +57,10 @@ footer {
     text-align: center;
 }
 
+a {
+    color: var(--color);
+}
+
 img {
     pointer-events: none;
     user-select: none;
@@ -85,7 +86,7 @@ img {
     height: 1px;
     width: 372px;
     border: 0;
-    border-top: 1px solid var(--color);
+    border-top: 1px solid var(--dark-color);
     margin: 1em auto;
     padding: 0;
 }
@@ -118,11 +119,11 @@ img {
 
 @keyframes activeIn {
     from {color: var(--color);}
-    to   {color: #be5c5c;}
+    to   {color: var(--active-color);}
 }
 
 @keyframes activeOut {
-    from {color: #be5c5c;}
+    from {color: var(--active-color);}
     to   {color: var(--color);}
 }
 
@@ -189,7 +190,7 @@ a.socials-item img {
     margin: 16px;
     margin-bottom: 32px;
     padding-top: 48px;
-    border-top: 1px var(--color) solid;
+    border-top: 1px var(--dark-color) solid;
 }
 
 .aesthetic-item-person {
@@ -197,7 +198,7 @@ a.socials-item img {
     text-align: center;
     margin: 16px;
     padding-bottom: 48px;
-    border-bottom: 1px var(--color) solid;
+    border-bottom: 1px var(--dark-color) solid;
 }
 
 .aesthetic-item.loaded {
