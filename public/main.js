@@ -1,8 +1,8 @@
 document.body = Object.assign(document.createElement("body"),{className: "dark-mode"});
 document.body.append(
-    Object.assign(document.createElement("header")),
-    Object.assign(document.createElement("main")),
-    Object.assign(document.createElement("footer"))
+    document.createElement("header"),
+    document.createElement("main"),
+    document.createElement("footer")
 );
 document.querySelector("header").innerHTML =
     '<div class="title">GØ1IATH</div>' +
