@@ -1,4 +1,4 @@
-function listen() {
+async function listen() {
     let parent = Object.assign(document.createElement("div"),{className: "listen"}),
         sources = [
             "https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F2109535224&show_artwork=true&show_comments=false&secret_token=s-64sQfsfzWkM",

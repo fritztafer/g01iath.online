@@ -1,4 +1,4 @@
-function socials() {
+async function socials() {
     let parent = Object.assign(document.createElement("div"),{className: "socials", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
         socialItem1 = Object.assign(document.createElement("a"),{className: "socials-item one", target: "_blank", href: "//soundcloud.com/g01iathonline", innerHTML: `<img src="//${window.location.hostname}/img/sc.png" alt="SoundCloud">`}),
         socialItem2 = Object.assign(document.createElement("a"),{className: "socials-item two", target: "_blank", href: "//discord.gg/cSuzxF6ece", innerHTML: `<img src="//${window.location.hostname}/img/dc.png" alt="Discord">`}),

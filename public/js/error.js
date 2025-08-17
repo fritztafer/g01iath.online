@@ -1,4 +1,4 @@
-function error() {
+async function error() {
     const code = window.performance.getEntriesByType('navigation')[0].responseStatus;
     const message = code ? (() => {
         const status = {

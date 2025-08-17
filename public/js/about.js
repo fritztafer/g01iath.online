@@ -1,4 +1,4 @@
-function about() {
+async function about() {
     let parent = Object.assign(document.createElement("div"),{className: "about", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
         aboutContact = Object.assign(document.createElement("div"),{
             className: "about-contact",
