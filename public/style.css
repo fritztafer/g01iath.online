@@ -13,15 +13,18 @@ html, body {
     padding: 0;
 }
 
-body.dark-mode {
+body {
     font-family: "Times New Roman", Times, serif;
     font-size: 16px;
     line-height: 1.5;
-    color: var(--color);
     min-height: 100vh;
-    background-color: #000000;
     display: grid;
     grid-template-rows: auto 1fr auto;
+}
+
+body.dark-mode {
+    color: var(--color);
+    background-color: #000000;
 }
 
 body::before {
@@ -89,6 +92,10 @@ img {
     border-top: 1px solid var(--dark-color);
     margin: 1em auto;
     padding: 0;
+}
+
+.footer-item {
+    font-size: 16px;
 }
 
 .fade-in {
@@ -186,6 +193,7 @@ a.socials-item img {
 }
 
 .aesthetic-item-quote {
+    font-size: 16px;
     text-align: center;
     margin: 16px;
     margin-bottom: 32px;
@@ -194,6 +202,7 @@ a.socials-item img {
 }
 
 .aesthetic-item-person {
+    font-size: 16px;
     font-weight: bold;
     text-align: center;
     margin: 16px;
@@ -210,9 +219,9 @@ a.socials-item img {
 }
 
 .about-contact {
+    font-size: 21px;
     text-align: center;
     margin: auto;
-    font-size: 21px;
     margin-bottom: 24px;
 }
 
@@ -227,10 +236,6 @@ a.socials-item img {
 }
 
 @media (max-width: 449px) {
-    body {
-        font-size: 11px;
-    }
-
     .title {
         font-size: 36px;
         letter-spacing: 24px;
@@ -244,6 +249,10 @@ a.socials-item img {
 
     .header-hr {
         width: 260px;
+    }
+
+    .footer-item {
+        font-size: 12px;
     }
 
     a.socials-item.one {
