@@ -14,42 +14,33 @@ document.querySelector("header").innerHTML =
 document.querySelector("footer").innerHTML =
     '<div class="footer-item">//G01IATH.ONLINE/2025/</div>';
 
-let time = 2501;
-let transitioning = false;
+const time = 2501;
+let transitioning;
 
-function run(content) {
-    if (transitioning) return; // prevent interrupting transition, below prevents active & allows initialization
-    else if (content?.toUpperCase() === document.getElementById("active")?.textContent && content !== undefined) return;
+function run(content="socials") {
+    if (transitioning) return; // prevent during transition, prevent currently loaded
+    if (content === document.querySelector("main").firstElementChild?.className) return;
 
-    if (content === undefined) { // initialization
-        content = "socials";
-        fadeGroup(selectElements(".header-item, .header-hr, .footer-item"), "in");
-    } else if (content === "error") { // error handling
-        fadeGroup(selectElements(".header-item, .header-hr, .footer-item"), "in");
-    } else if (document.querySelector("main").firstChild.className === "aesthetic") { // clean up
-        window.removeEventListener("resize", resizeHandler);
-        window.removeEventListener("scroll", scrollHandler);
+    const current = document.head.querySelector("script:nth-of-type(2)");
+    if (current === null || content === "error") { // initialize
+        fadeGroup(document.querySelectorAll(".header-item, .header-hr, .footer-item"), "in");
+    } else { // clean up
+        current.remove();
+        if (document.querySelector("main").firstChild.className === "aesthetic") {
+            window.removeEventListener("resize", resizeHandler);
+            window.removeEventListener("scroll", scrollHandler);
+        }
     }
 
-    document.head.querySelector("script:nth-of-type(2)")?.remove();
     document.head.appendChild(Object.assign(document.createElement("script"),{
         src: `//${window.location.hostname}/js/${content}.js`,
         onload: async () => switchScene(content, await loadContent(content))
     }));
 }
 
-function selectElements(elements) {
-    return document.querySelectorAll(elements);
-}
-
 function fadeElement(el, type) {
-    let outClass = "fade-out",
-        inClass = "fade-in";
-
-    if (el.id === "active") {
-        outClass = "active-out";
-        inClass = "active-in";
-    }
+    const outClass = el.id === "active" ? "active-out" : "fade-out",
+        inClass = el.id === "active" ? "active-in" : "fade-in";
 
     if (type === "out") {
         el.classList.remove(inClass);
@@ -65,19 +56,17 @@ function fadeGroup(elements, type) {
 }
 
 function switchScene(content, parent) {
-    // start transition
-    transitioning = true;
+    transitioning = true; // start transition
     document.querySelector("main").append(parent);
-    fadeGroup(selectElements("main, #active"), "out");
+    fadeGroup(document.querySelectorAll("main, #active"), "out");
 
     setTimeout(() => { // mid transition
-        let items = Object.values(selectElements(".header-item"));
-        for (let item of items) { // change active
-            if (item.textContent === content.toUpperCase()) item.id = "active";
+        for (let item of Object.values(document.querySelectorAll(".header-item"))) {
+            if (item.textContent.toLowerCase() === content) item.id = "active";
             else item.removeAttribute("id");
         }
         transitionHandler(parent);
-        fadeGroup(selectElements("main, #active"), "in");
+        fadeGroup(document.querySelectorAll("main, #active"), "in");
     }, time);
 
     setTimeout(() => { // end transition
@@ -86,51 +75,34 @@ function switchScene(content, parent) {
 }
 
 function loadContent(content) {
-    if (content === "socials") return socials();
-    else if (content === "listen") return listen();
-    else if (content === "aesthetic") return aesthetic();
-    else if (content === "about") return about();
-    else if (content === "error") return error();
+    switch (content) {
+        case "socials": return socials();
+        case "listen": return listen();
+        case "aesthetic": return aesthetic();
+        case "about": return about();
+        default: return error();
+    }
 }
 
 function transitionHandler(parent) {
-    let main = document.querySelector("main");
+    const main = document.querySelector("main");
 
-    if (parent.className === main.firstElementChild.className) { // initialization
-        parent.style.visibility = "visible";
-        parent.style.maxHeight = "none";
-        parent.style.overflow = "visible";
-    }
-    else if (parent.className === "socials") {
-        parent.style.visibility = "visible";
-        parent.style.maxHeight = "none";
-        parent.style.overflow = "visible";
-        main.firstElementChild.remove();
-    }
-    else if (parent.className === "listen") {
-        parent.querySelectorAll('iframe').forEach(iframe => {
-            iframe.style.visibility = "visible";
-            iframe.parentElement.style.display = "block";
-        });
-        main.firstElementChild.remove();
-    }
-    else if (parent.className === "aesthetic") {
-        parent.style.visibility = "visible";
-        parent.style.maxHeight = "none";
-        parent.style.overflow = "visible";
-        main.firstElementChild.remove();
-    }
-    else if (parent.className === "about") {
-        parent.style.visibility = "visible";
-        parent.style.maxHeight = "none";
-        parent.style.overflow = "visible";
-        main.firstElementChild.remove();
-    }
-    else if (parent.className === "error") { // error handling
-        parent.style.visibility = "visible";
-        parent.style.maxHeight = "none";
-        parent.style.overflow = "visible";
+    switch (parent.className) {
+        case "listen":
+            main.firstElementChild.remove();
+            parent.querySelectorAll('iframe').forEach(iframe => {
+                iframe.style.visibility = "visible";
+                iframe.parentElement.style.display = "block";
+            });
+            break
+        default:
+            if (parent.className !== main.firstElementChild.className) {
+                main.firstElementChild.remove();
+            }
+            parent.style.visibility = "visible";
+            parent.style.maxHeight = "none";
+            parent.style.overflow = "visible";
     }
 }
 
-window.onload = function() {window.scrollTo(0, 0)}
+window.onload = () => window.scrollTo(0, 0);
