@@ -136,7 +136,7 @@ img {
     border: none;
     position: fixed;
     cursor: pointer;
-    transition: 
+    transition:
         opacity calc(var(--time) / 4) ease,
         visibility calc(var(--time) / 4) ease;
     opacity: 0;
