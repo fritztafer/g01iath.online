@@ -191,19 +191,19 @@ img {
 }
 
 .active-in::after {
-    animation: activeInBg var(--time) forwards;
+    animation: activeInAfter var(--time) forwards;
 }
 
 .active-out::after {
-    animation: activeOutBg var(--time);
+    animation: activeOutAfter var(--time);
 }
 
-@keyframes activeInBg {
+@keyframes activeInAfter {
     0%   {background: var(--color);}
     100% {background: var(--active-color);}
 }
 
-@keyframes activeOutBg {
+@keyframes activeOutAfter {
     0%   {background: var(--active-color);}
     100% {background: var(--color);}
 }
