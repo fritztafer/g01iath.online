@@ -1,18 +1,19 @@
 document.body = Object.assign(document.createElement("body"),{className: "dark-mode"});
 document.body.append(
-    document.createElement("header"),
+    Object.assign(document.createElement("header"),{
+        innerHTML:
+            '<div class="title">GØ1IATH</div>' +
+            '<a class="header-item" href="javascript:" onclick="run(\'socials\')">SOCIALS</a>' +
+            '<a class="header-item" href="javascript:" onclick="run(\'listen\')">LISTEN</a>' +
+            '<a class="header-item" href="javascript:" onclick="run(\'aesthetic\')">AESTHETIC</a>' +
+            '<a class="header-item" href="javascript:" onclick="run(\'about\')">ABOUT</a>' +
+            '<hr class="header-hr">'
+    }),
     document.createElement("main"),
-    document.createElement("footer")
+    Object.assign(document.createElement("footer"),{
+        innerHTML: '<div class="footer-item">//G01IATH.ONLINE/2025/</div>'
+    })
 );
-document.querySelector("header").innerHTML =
-    '<div class="title">GØ1IATH</div>' +
-    '<a class="header-item" href="javascript:" onclick="run(\'socials\')">SOCIALS</a>' +
-    '<a class="header-item" href="javascript:" onclick="run(\'listen\')">LISTEN</a>' +
-    '<a class="header-item" href="javascript:" onclick="run(\'aesthetic\')">AESTHETIC</a>' +
-    '<a class="header-item" href="javascript:" onclick="run(\'about\')">ABOUT</a>' +
-    '<hr class="header-hr">';
-document.querySelector("footer").innerHTML =
-    '<div class="footer-item">//G01IATH.ONLINE/2025/</div>';
 
 const time = 2501;
 let transitioning;
@@ -105,4 +106,18 @@ function transitionHandler(parent) {
     }
 }
 
-window.onload = () => window.scrollTo(0, 0);
+window.onscroll = () => {
+    const scrollTop = document.querySelector(".scroll-top");
+    if (!scrollTop && document.documentElement.scrollTop >= 100) {
+        const button = Object.assign(document.createElement("button"),{
+            className: "scroll-top",
+            onclick: () => window.scrollTo({top: 0, behavior: "smooth"}),
+            innerHTML: "↑"
+        });
+        document.body.append(button);
+        setTimeout(() => button.classList.add("visible"), 0);
+    } else if (scrollTop && document.documentElement.scrollTop < 100) {
+        scrollTop.classList.remove("visible");
+        setTimeout(() => scrollTop.remove(), time / 4);
+    }
+}
