@@ -6,7 +6,7 @@ async function socials() {
         socialItem4 = Object.assign(document.createElement("a"),{className: "socials-item four", target: "_blank", href: "//youtube.com/@g01iath", innerHTML: `<img src="//${window.location.hostname}/img/yt.png" alt="YouTube">`}),
         children = [socialItem1, socialItem2, socialItem3, socialItem4];
 
-    parent.append(...children)
+    parent.append(...children);
 
     return parent;
 }
