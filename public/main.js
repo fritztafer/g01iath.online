@@ -21,6 +21,7 @@ let transitioning;
 function run(content="socials") {
     if (transitioning) return; // prevent during transition, prevent currently loaded
     if (content === document.querySelector("main").firstElementChild?.className) return;
+    transitioning = true;
 
     const current = document.head.querySelector("script:nth-of-type(2)");
     if (current === null || content === "error") { // initialize
@@ -57,7 +58,7 @@ function fadeGroup(elements, type) {
 }
 
 function switchScene(content, parent) {
-    transitioning = true; // start transition
+    // start transition
     document.querySelector("main").append(parent);
     fadeGroup(document.querySelectorAll("main, #active"), "out");
 
