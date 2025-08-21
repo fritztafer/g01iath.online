@@ -69,11 +69,11 @@ function switchScene(content, parent) {
         }
         transitionHandler(parent);
         fadeGroup(document.querySelectorAll("main, #active"), "in");
-    }, time);
+    }, time / 2);
 
     setTimeout(() => { // end transition
         transitioning = false;
-    }, time * 2);
+    }, time);
 }
 
 function loadContent(content) {

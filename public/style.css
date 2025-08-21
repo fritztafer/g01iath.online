@@ -39,7 +39,7 @@ body::before {
     background-position: top;
     background-repeat: no-repeat;
     z-index: -1;
-    animation: fadeIn var(--time) forwards;
+    animation: fadeIn calc(var(--time) / 2) forwards;
 }
 
 header {
@@ -156,11 +156,11 @@ img {
 }
 
 .fade-in {
-    animation: fadeIn var(--time) forwards;
+    animation: fadeIn calc(var(--time) / 2) forwards;
 }
 
 .fade-out {
-    animation: fadeOut var(--time) forwards;
+    animation: fadeOut calc(var(--time) / 2) forwards;
 }
 
 @keyframes fadeIn {
@@ -174,11 +174,11 @@ img {
 }
 
 .active-in {
-    animation: activeIn var(--time) forwards;
+    animation: activeIn calc(var(--time) / 2) forwards;
 }
 
 .active-out {
-    animation: activeOut var(--time);
+    animation: activeOut calc(var(--time) / 2);
 }
 
 @keyframes activeIn {
@@ -192,11 +192,11 @@ img {
 }
 
 .active-in::after {
-    animation: activeInAfter var(--time) forwards;
+    animation: activeInAfter calc(var(--time) / 2) forwards;
 }
 
 .active-out::after {
-    animation: activeOutAfter var(--time);
+    animation: activeOutAfter calc(var(--time) / 2);
 }
 
 @keyframes activeInAfter {
@@ -264,7 +264,7 @@ a.socials-item img {
     margin-bottom: 4px;
     display: block;
     opacity: 0;
-    transition: opacity var(--time) ease-in-out;
+    transition: opacity calc(var(--time) / 2) ease-in-out;
 }
 
 .aesthetic-item-quote {
