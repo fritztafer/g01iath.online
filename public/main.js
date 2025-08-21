@@ -24,7 +24,7 @@ function run(content="socials") {
     transitioning = true;
 
     const current = document.head.querySelector("script:nth-of-type(2)");
-    if (current === null || content === "error") { // initialize
+    if (!current) { // initialize
         fadeGroup(document.querySelectorAll(".header-item, .header-hr, .footer-item"), "in");
     } else { // clean up
         current.remove();
