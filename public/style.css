@@ -64,6 +64,10 @@ a {
     color: var(--color);
 }
 
+a:active {
+    color: #ffffff;
+}
+
 img {
     pointer-events: none;
     user-select: none;
@@ -102,10 +106,6 @@ img {
 .header-item:hover::after {
     width: 90%;
     left: 5%;
-}
-
-.header-item:active {
-    color: #ffffff;
 }
 
 .header-item:active::after {
