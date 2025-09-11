@@ -210,21 +210,26 @@ img {
 }
 
 .socials {
-    height: 75vh;
+    height: 95%;
     width: 100%;
     margin: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-rows: auto;
 }
 
 a.socials-item {
     margin: auto;
+    width: 72px;
+    transition: width calc(var(--time) / 12) ease;
+}
+
+a.socials-item:hover {
+    width: 96px;
+    transition: width calc(var(--time) / 12) ease;
 }
 
 a.socials-item img {
-    max-width: 100%;
+    width: 100%;
     height: auto;
     display: block;
 }
@@ -336,22 +341,6 @@ a.socials-item img {
         font-size: 40px;
         bottom: 4px;
         right: 4px;
-    }
-
-    a.socials-item.one {
-        width: 240px;
-    }
-
-    a.socials-item.two {
-        width: 172px;
-    }
-
-    a.socials-item.three {
-        width: 156px;
-    }
-
-    a.socials-item.four {
-        width: 105px;
     }
 }
 
