@@ -220,12 +220,11 @@ img {
 a.socials-item {
     margin: auto;
     width: 72px;
-    transition: width calc(var(--time) / 12) ease;
+    transition: transform calc(var(--time) / 12) ease;
 }
 
 a.socials-item:hover {
-    width: 96px;
-    transition: width calc(var(--time) / 12) ease;
+    transform: scale(1.33);
 }
 
 a.socials-item img {
