@@ -341,6 +341,10 @@ a.socials-item img {
         bottom: 4px;
         right: 4px;
     }
+
+    a.socials-item {
+        width: 48px;
+    }
 }
 
 @media (max-width: 314px) {
