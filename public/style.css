@@ -219,12 +219,13 @@ img {
 
 a.socials-item {
     margin: auto;
-    width: 72px;
+    width: 96px;
+    transform: scale(.75);
     transition: transform calc(var(--time) / 12) ease;
 }
 
 a.socials-item:hover {
-    transform: scale(1.33);
+    transform: scale(1);
 }
 
 a.socials-item img {
@@ -343,7 +344,7 @@ a.socials-item img {
     }
 
     a.socials-item {
-        width: 48px;
+        width: 64px;
     }
 }
 
