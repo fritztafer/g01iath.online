@@ -40,23 +40,6 @@ function run(content="socials") {
     }));
 }
 
-function fadeElement(el, type) {
-    const outClass = el.id === "active" ? "active-out" : "fade-out",
-        inClass = el.id === "active" ? "active-in" : "fade-in";
-
-    if (type === "out") {
-        el.classList.remove(inClass);
-        el.classList.add(outClass);
-    } else if (type === "in") {
-        el.classList.remove(outClass);
-        el.classList.add(inClass);
-    }
-}
-
-function fadeGroup(elements, type) {
-    elements.forEach(el => fadeElement(el, type));
-}
-
 function switchScene(content, parent) {
     // start transition
     document.querySelector("main").append(parent);
@@ -83,6 +66,23 @@ function loadContent(content) {
         case "aesthetic": return aesthetic();
         case "about": return about();
         default: return error();
+    }
+}
+
+function fadeGroup(elements, type) {
+    elements.forEach(el => fadeElement(el, type));
+}
+
+function fadeElement(el, type) {
+    const outClass = el.id === "active" ? "active-out" : "fade-out",
+        inClass = el.id === "active" ? "active-in" : "fade-in";
+
+    if (type === "out") {
+        el.classList.remove(inClass);
+        el.classList.add(outClass);
+    } else if (type === "in") {
+        el.classList.remove(outClass);
+        el.classList.add(inClass);
     }
 }
 
