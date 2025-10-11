@@ -152,7 +152,11 @@ img {
 }
 
 .scroll-top:hover {
-    color: var(--color)
+    color: var(--color);
+}
+
+.scroll-top:active {
+    color: #ffffff;
 }
 
 .fade-in {
@@ -225,7 +229,7 @@ a.socials-item {
 }
 
 a.socials-item:hover {
-    transform: scale(1);
+    transform: scale(.88);
 }
 
 a.socials-item img {
