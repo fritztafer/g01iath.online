@@ -214,7 +214,7 @@ img {
 }
 
 .socials {
-    height: 95%;
+    height: 97%;
     width: 100%;
     margin: auto;
     display: grid;
@@ -223,13 +223,13 @@ img {
 
 a.socials-item {
     margin: auto;
-    width: 96px;
-    transform: scale(.75);
+    width: 64px;
+    transform: scale(.87);
     transition: transform calc(var(--time) / 12) ease;
 }
 
 a.socials-item:hover {
-    transform: scale(.88);
+    transform: scale(1);
 }
 
 a.socials-item img {
@@ -238,7 +238,16 @@ a.socials-item img {
     display: block;
 }
 
-@media (max-height: 629px) {
+@media (max-height: 474px) and (min-width: 450px) {
+    .socials {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 88vw;
+    }
+}
+
+@media (max-height: 360px) {
     .socials {
         display: flex;
         justify-content: center;
@@ -357,12 +366,6 @@ a.socials-item img {
     }
 
     a.socials-item {
-        width: 64px;
-    }
-}
-
-@media (max-width: 314px) {
-    body:before {
-        content: "you zoomed in or your screen hella small bruh xD";
+        width: 48px;
     }
 }
