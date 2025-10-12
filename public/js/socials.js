@@ -1,14 +1,33 @@
 async function socials() {
-    let parent = Object.assign(document.createElement("div"),{className: "socials", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
-        children = [
-            Object.assign(document.createElement("a"),{className: "socials-item", target: "_blank", href: "//soundcloud.com/fritztafer", innerHTML: `<img src="//${window.location.hostname}/img/sc.png" alt="SoundCloud">`}),
-            Object.assign(document.createElement("a"),{className: "socials-item", target: "_blank", href: "//youtube.com/@fritztafer", innerHTML: `<img src="//${window.location.hostname}/img/yt.png" alt="YouTube">`}),
-            Object.assign(document.createElement("a"),{className: "socials-item", target: "_blank", href: "//fritztafer.bandcamp.com/", innerHTML: `<img src="//${window.location.hostname}/img/bc.png" alt="Bandcamp">`}),
-            Object.assign(document.createElement("a"),{className: "socials-item", target: "_blank", href: "//discord.gg/cSuzxF6ece", innerHTML: `<img src="//${window.location.hostname}/img/dc.png" alt="Discord">`}),
-            Object.assign(document.createElement("a"),{className: "socials-item", target: "_blank", href: "//github.com/fritztafer", innerHTML: `<img src="//${window.location.hostname}/img/gh.png" alt="GitHub">`})
-        ];
+    let parent = Object.assign(document.createElement("div"), {className: "socials", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
+        children = {
+            "BandCamp": {
+                "href": "//fritztafer.bandcamp.com/",
+                "img": "bc"
+            }, "YouTube": {
+                "href": "//youtube.com/@fritztafer",
+                "img": "yt"
+            }, "SoundCloud": {
+                "href": "//soundcloud.com/fritztafer",
+                "img": "sc"
+            }, "Discord": {
+                "href": "//discord.gg/cSuzxF6ece",
+                "img": "dc"
+            }, "GitHub": {
+                "href": "//github.com/fritztafer",
+                "img": "gh"
+            }
+        }
 
-    parent.append(...children);
+    for (let child in children) {
+        let a = Object.assign(document.createElement("a"), {
+            className: "socials-item",
+            target: "_blank",
+            href: children[child].href,
+            innerHTML: `<img src="//${window.location.hostname}/img/${children[child].img}.png" alt="${child}">`
+        });
+        parent.append(a);
+    }
 
     return parent;
 }

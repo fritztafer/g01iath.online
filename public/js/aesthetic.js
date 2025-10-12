@@ -9,7 +9,7 @@ var index = 0, // track which files loaded
         .catch(error => console.error(error));
 
 async function aesthetic() {
-    let parent = Object.assign(document.createElement("div"),{className: "aesthetic", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
+    let parent = Object.assign(document.createElement("div"), {className: "aesthetic", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
         colAmt = (() => {
                  if (window.innerWidth < 640) return 1;
             else if (window.innerWidth < 960) return 2;
@@ -31,9 +31,9 @@ function loadItems(parent) {
     files.slice(index, index + amount).map(filename => {
         if (filename.lastIndexOf(".txt") == filename.length - 4) {
             !async function() {
-                let item = Object.assign(document.createElement("div"),{className: "aesthetic-item"}),
-                    quote = Object.assign(document.createElement("div"),{className: "aesthetic-item-quote"}),
-                    person = Object.assign(document.createElement("div"),{className: "aesthetic-item-person"}),
+                let item = Object.assign(document.createElement("div"), {className: "aesthetic-item"}),
+                    quote = Object.assign(document.createElement("div"), {className: "aesthetic-item-quote"}),
+                    person = Object.assign(document.createElement("div"), {className: "aesthetic-item-person"}),
                     text = await fetch(`//${window.location.hostname}/gallery/${filename}`)
                         .then(response => response.text())
                         .then((data) => {return data.split("\r\n")}) // txt file formatting!
@@ -44,7 +44,7 @@ function loadItems(parent) {
                 renderItem(item, columns);
             }();
         } else {
-            let item = Object.assign(document.createElement("img"),{
+            let item = Object.assign(document.createElement("img"), {
                 className: "aesthetic-item",
                 src: `//${window.location.hostname}/gallery/${filename}`,
                 alt: "",
@@ -101,7 +101,7 @@ function adoptItems(colAmt) {
 function loadColumns(colAmt, parent) {
     parent.innerHTML = "";
     for (let i = 0; i < colAmt; i++) {
-        parent.appendChild(Object.assign(document.createElement("div"),{className: "aesthetic-column"}));
+        parent.appendChild(Object.assign(document.createElement("div"), {className: "aesthetic-column"}));
     }
 }
 

@@ -1,16 +1,17 @@
-document.body = Object.assign(document.createElement("body"),{className: "dark-mode"});
+document.body = Object.assign(document.createElement("body"), {className: "dark-mode"});
 document.body.append(
-    Object.assign(document.createElement("header"),{
-        innerHTML:
-            '<div class="title">GØ1IATH</div>' +
-            '<a class="header-item" href="javascript:" onclick="run(\'socials\')">SOCIALS</a>' +
-            '<a class="header-item" href="javascript:" onclick="run(\'listen\')">LISTEN</a>' +
-            '<a class="header-item" href="javascript:" onclick="run(\'aesthetic\')">AESTHETIC</a>' +
-            '<a class="header-item" href="javascript:" onclick="run(\'about\')">ABOUT</a>' +
+    Object.assign(document.createElement("header"), {
+        innerHTML: [
+            '<div class="title">GØ1IATH</div>',
+            '<a class="header-item" href="javascript:" onclick="run(\'socials\')">SOCIALS</a>',
+            '<a class="header-item" href="javascript:" onclick="run(\'listen\')">LISTEN</a>',
+            '<a class="header-item" href="javascript:" onclick="run(\'aesthetic\')">AESTHETIC</a>',
+            '<a class="header-item" href="javascript:" onclick="run(\'about\')">ABOUT</a>',
             '<hr class="header-hr">'
+        ].join('')
     }),
     document.createElement("main"),
-    Object.assign(document.createElement("footer"),{
+    Object.assign(document.createElement("footer"), {
         innerHTML: '<div class="footer-item">//G01IATH.ONLINE/2025/</div>'
     })
 );
@@ -34,7 +35,7 @@ function run(content="socials") {
         }
     }
 
-    document.head.appendChild(Object.assign(document.createElement("script"),{
+    document.head.appendChild(Object.assign(document.createElement("script"), {
         src: `//${window.location.hostname}/js/${content}.js`,
         onload: async () => switchScene(content, await loadContent(content))
     }));
@@ -110,7 +111,7 @@ function transitionHandler(parent) {
 window.onscroll = () => {
     const scrollTop = document.querySelector(".scroll-top");
     if (!scrollTop && document.documentElement.scrollTop >= 100) {
-        const button = Object.assign(document.createElement("button"),{
+        const button = Object.assign(document.createElement("button"), {
             className: "scroll-top",
             onclick: () => window.scrollTo({top: 0, behavior: "smooth"}),
             innerHTML: "↑"

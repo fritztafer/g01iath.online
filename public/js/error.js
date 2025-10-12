@@ -45,7 +45,7 @@ async function error() {
         return `${code} ${status[code] || "UNDEFINED STATUS"}`;
     })() : "HTTP ERROR CHECK CONSOLE";
 
-    return Object.assign(document.createElement("div"),{
+    return Object.assign(document.createElement("div"), {
         className: "error",
         style: "text-align: center; font-size: 18px; visibility: hidden; max-height: 0; overflow: hidden;",
         innerHTML: `${message}<br><br><a href="/">HOME</a><br><br><a href="mailto:info@g01iath.online">info@g01iath.online</a>`

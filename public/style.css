@@ -238,6 +238,15 @@ a.socials-item img {
     display: block;
 }
 
+@media (max-height: 629px) {
+    .socials {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 88vw;
+    }
+}
+
 .listen {
     width: 300px;
     margin: auto;
