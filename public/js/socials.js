@@ -17,7 +17,7 @@ async function socials() {
                 "href": "//github.com/fritztafer",
                 "img": "gh"
             }
-        }
+        };
 
     for (let child in children) {
         let a = Object.assign(document.createElement("a"), {
