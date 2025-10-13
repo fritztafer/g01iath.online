@@ -238,7 +238,7 @@ a.socials-item img {
     display: block;
 }
 
-@media (max-height: 474px) and (min-width: 450px), (max-height: 360px) {
+@media (max-height: 499px) and (min-width: 450px), (max-height: 369px) {
     .socials {
         display: flex;
         justify-content: center;
