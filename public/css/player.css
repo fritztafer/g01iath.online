@@ -90,7 +90,6 @@
     width: 0%;
     height: 100%;
     background: var(--dark-color);
-    border-radius: 1px;
     display: block;
     position: absolute;
     pointer-events: none;
