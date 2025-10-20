@@ -1,9 +1,9 @@
 var galleryIndex = 0, // track which files loaded
     galleryAmount = 16, // amount of files per load
-    galleryFiles = [], // holds file names
     galleryTimeout, // debounce scrollHandler()
     galleryLoading = false, // debounce loadItems()
-    galleryReady = fetch(`//${window.location.hostname}/gallery/.file-list.json`)
+    galleryFiles = galleryFiles ?? [], // holds file names
+    galleryReady = galleryReady ?? fetch(`//${window.location.hostname}/gallery/.file-list.json`)
         .then(response => response.json())
         .then(array => galleryFiles = shuffleArray(array))
         .catch(error => console.error(error));
@@ -60,7 +60,7 @@ function renderItem(file, columns) {
     let lengths = Array.from(columns).map(col => col.offsetHeight),
         column = lengths.indexOf(Math.min(...lengths));
     columns[column].appendChild(file);
-    setTimeout(() => file.classList.add("loaded"), 100); // timeout for animation bug
+    setTimeout(() => file.classList.add("loaded"), 100); // timeout for animation
 }
 
 function adoptItems(colAmt) {
