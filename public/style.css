@@ -70,8 +70,8 @@ a:active {
 
 img {
     pointer-events: none;
-    user-select: none;
     -webkit-user-select: none;
+    user-select: none;
 }
 
 .title {
@@ -293,7 +293,7 @@ a.socials-item img {
     pointer-events: none;
 }
 
-.listen-item:hover {
+.listen-item:active {
     color: #ffffff;
 }
 
