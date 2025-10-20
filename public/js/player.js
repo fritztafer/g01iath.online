@@ -27,6 +27,7 @@ document.body.appendChild(Object.assign(document.createElement("div"), {
 }));
 
 const audio = new Audio(),
+    tracks = window.tracks,
     playerParent = document.querySelector(".player"),
     volumeInput = document.getElementById("player-volume-range"),
     seekProgress = document.getElementById("player-time-seek-progress"),
@@ -39,7 +40,7 @@ const audio = new Audio(),
     skipNextBtn = document.getElementById("player-skip-next"),
     muteBtn = document.getElementById("player-volume-mute");
 let volumeState = 1,
-    trackIndex = 0,
+    trackIndex,
     keyDown = {};
 
 audio.volume = volumeState;
@@ -59,13 +60,16 @@ volumeInput.value = volumeState;
 })();
 
 function select(track) {
-    trackIndex = tracks.indexOf(track); // tracks declared by listen.js
-    load(track);
+    const selectionIndex = tracks.indexOf(track); // tracks declared by listen.js
+    if (selectionIndex === trackIndex) audio.paused ? audio.play() : audio.pause();
+    else {
+        trackIndex = selectionIndex;
+        load(track);
+    }
 }
 
 function load(track) {
     audio.src = track.url;
-    audio.play();
 
     playBtn.classList.add('pulse');
     playBtn.addEventListener('animationend', function removePulse() {
@@ -82,6 +86,8 @@ function load(track) {
         timeTotalText.textContent = `${totalMins}:${totalSecs}`;
         audio.removeEventListener("loadedmetadata", getMetaData);
     });
+
+    audio.play();
 }
 
 function skip(direction) {
