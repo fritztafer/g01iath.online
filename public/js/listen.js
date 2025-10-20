@@ -1,26 +1,134 @@
-async function listen() {
-    let parent = Object.assign(document.createElement("div"), {className: "listen"}),
-        children = [
-            "https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F2109535224&show_artwork=true&show_comments=false&secret_token=s-64sQfsfzWkM",
-            "https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1272412966&show_artwork=true&show_comments=false&secret_token=s-GV2pE8tDz90",
-            "https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1354507834&show_artwork=true&show_comments=false&secret_token=s-6BdGnkywT8t",
-            "https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F1242933133&show_artwork=true&show_comments=false&secret_token=s-8HKfbEp2mur"
-        ];
+var titleObserver = titleObserver ?? null,
+    playObserver = playObserver ?? null,
+    musicFiles = [],
+    musicReady = fetch(`//${window.location.hostname}/music/.file-list.json`)
+        .then(response => response.json())
+        .then(array => listenFiles = array)
+        .catch(error => console.error(error));
 
-    for (let child of children) {
-        let iframe = Object.assign(document.createElement("iframe"), {
-            src: child,
-            style: "top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0; visibility: hidden;",
-            allowFullscreen: false,
-            scrolling: "no"
+async function listen() {
+    let parent = Object.assign(document.createElement("div"), {className: "listen", style: "visibility: hidden; max-height: 0; overflow: hidden;"});
+
+    await musicReady;
+
+    tracks = []; // used by player.js
+    for (const file of listenFiles) {
+        tracks.push(
+            {
+                title: file.replace("_", " "),
+                url: `//${window.location.hostname}/music/${file}.mp3`,
+                img: `//${window.location.hostname}/music/${file}.jpg`
+            }
+        )
+    }
+
+    for (const track of tracks) {
+        const item = Object.assign(document.createElement("div"), {
+            onclick: () => {
+                player(track);
+                waitForPlayer();
+                activateItem(item);
+            },
+            href: "javascript:",
+            className: "listen-item"
+        }),
+        img = Object.assign(document.createElement("img"), {
+            src: track.img,
+            className: "listen-item-image",
+            alt: ""
+        }),
+        btn = Object.assign(document.createElement("span"), {
+            textContent: "▶",
+            className: "listen-item-button active-out"
+        }),
+        title = Object.assign(document.createElement("span"), {
+            textContent: track.title,
+            className: "listen-item-title active-out"
         });
-        let div = Object.assign(document.createElement("div"), {
-            className: "listen-item",
-            style: "display: contents;"
-        });
-        div.appendChild(iframe);
-        parent.appendChild(div);
+        item.append(img, btn, title);
+
+        const infoText = document.getElementById("player-info-text");
+        if (infoText && infoText.textContent === title.textContent) {
+            btn.textContent = document.getElementById("player-play").textContent;
+            setTimeout(() => activateItem(item), 0);
+        }
+
+        parent.appendChild(item);
     }
 
     return parent;
+}
+
+function activateItem(item) {
+    const items = document.getElementsByClassName("listen-item");
+
+    for (let i = 0; i < items.length; i++) {
+        const btn = items[i].children[1];
+        const title = items[i].children[2];
+
+        if (item === items[i]) {
+            btn.textContent = "⏸";
+            btn.classList.remove("active-out");
+            title.classList.remove("active-out");
+            btn.classList.add("active-in");
+            title.classList.add("active-in");
+        } else {
+            btn.textContent = "▶";
+            btn.classList.remove("active-in");
+            title.classList.remove("active-in");
+            btn.classList.add("active-out");
+            title.classList.add("active-out");
+        }
+    }
+}
+
+function observeTitleMutation() {
+    if (titleObserver) return;
+
+    const infoText = document.getElementById("player-info-text");
+    titleObserver = new MutationObserver((m) => {
+        const update = infoText.textContent;
+        const item = (() => {
+            const items = document.getElementsByClassName("listen-item");
+            for (const item of items) if (item.children[2].textContent === update) return item;
+        })();
+        if (item !== undefined) activateItem(item);
+    });
+
+    titleObserver.observe(infoText, {
+        childList: true
+    });
+}
+
+function observePlayMutation() {
+    if (playObserver) return;
+
+    const playBtn = document.getElementById("player-play");
+    const infoText = document.getElementById("player-info-text");
+    playObserver = new MutationObserver((m) => {
+        const update = playBtn.textContent;
+        const btn = (() => {
+            const items = document.getElementsByClassName("listen-item");
+            for (const item of items) if (item.children[2].textContent === infoText.textContent) return item.children[1];
+        })();
+        if (btn !== undefined) btn.textContent = update;
+    });
+
+    playObserver.observe(playBtn, {
+        childList: true
+    });
+}
+
+function waitForPlayer(item) {
+    const target = document.body;
+    const tempObserver = new MutationObserver((m, observer) => {
+        const infoText = document.getElementById("player-info-text");
+        if (infoText) {
+            observeTitleMutation();
+            observePlayMutation();
+            observer.disconnect();
+        }
+    });
+
+    tempObserver.observe(target, { childList: true, subtree: true });
 }

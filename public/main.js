@@ -41,8 +41,7 @@ function run(content="socials") {
     }));
 }
 
-function switchScene(content, parent) {
-    // start transition
+function switchScene(content, parent) { // start transition
     document.querySelector("main").append(parent);
     fadeGroup(document.querySelectorAll("main, #active"), "out");
 
@@ -71,33 +70,24 @@ function loadContent(content) {
 }
 
 function fadeGroup(elements, type) {
-    elements.forEach(el => fadeElement(el, type));
-}
+    elements.forEach(el => {
+        const outClass = el.id === "active" ? "active-out" : "fade-out",
+            inClass = el.id === "active" ? "active-in" : "fade-in";
 
-function fadeElement(el, type) {
-    const outClass = el.id === "active" ? "active-out" : "fade-out",
-        inClass = el.id === "active" ? "active-in" : "fade-in";
-
-    if (type === "out") {
-        el.classList.remove(inClass);
-        el.classList.add(outClass);
-    } else if (type === "in") {
-        el.classList.remove(outClass);
-        el.classList.add(inClass);
-    }
+        if (type === "out") {
+            el.classList.remove(inClass);
+            el.classList.add(outClass);
+        } else if (type === "in") {
+            el.classList.remove(outClass);
+            el.classList.add(inClass);
+        }
+    });
 }
 
 function transitionHandler(parent) {
     const main = document.querySelector("main");
 
     switch (parent.className) {
-        case "listen":
-            main.firstElementChild.remove();
-            parent.querySelectorAll('iframe').forEach(iframe => {
-                iframe.style.visibility = "visible";
-                iframe.parentElement.style.display = "block";
-            });
-            break
         default:
             if (parent.className !== main.firstElementChild.className) {
                 main.firstElementChild.remove();
@@ -108,18 +98,27 @@ function transitionHandler(parent) {
     }
 }
 
+function player(track) {
+    if (document.querySelector(".player")) return select(track);
+
+    document.body.append(Object.assign(document.createElement("script"), {
+        src: `//${window.location.hostname}/js/player.js`,
+        onload: () => select(track)
+    }));
+}
+
 window.onscroll = () => {
     const scrollTop = document.querySelector(".scroll-top");
     if (!scrollTop && document.documentElement.scrollTop >= 100) {
         const button = Object.assign(document.createElement("button"), {
-            className: "scroll-top",
+            className: "scroll-top hidden",
             onclick: () => window.scrollTo({top: 0, behavior: "smooth"}),
             innerHTML: "↑"
         });
-        document.body.append(button);
-        setTimeout(() => button.classList.add("visible"), 0);
+        document.body.appendChild(button);
+        setTimeout(() => button.classList.remove("hidden"), 0);
     } else if (scrollTop && document.documentElement.scrollTop < 100) {
-        scrollTop.classList.remove("visible");
+        scrollTop.classList.add("hidden");
         setTimeout(() => scrollTop.remove(), time / 4);
     }
 }
