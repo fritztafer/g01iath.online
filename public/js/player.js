@@ -27,7 +27,7 @@ document.body.appendChild(Object.assign(document.createElement("div"), {
 }));
 
 const audio = new Audio(),
-    tracks = window.tracks,
+    tracks = window.tracks, // tracks declared by listen.js
     playerParent = document.querySelector(".player"),
     volumeInput = document.getElementById("player-volume-range"),
     seekProgress = document.getElementById("player-time-seek-progress"),
@@ -60,7 +60,7 @@ volumeInput.value = volumeState;
 })();
 
 function select(track) {
-    const selectionIndex = tracks.indexOf(track); // tracks declared by listen.js
+    const selectionIndex = tracks.indexOf(track);
     if (selectionIndex === trackIndex) audio.paused ? audio.play() : audio.pause();
     else {
         trackIndex = selectionIndex;

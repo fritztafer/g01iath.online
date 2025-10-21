@@ -7,7 +7,8 @@ var titleObserver = titleObserver ?? null,
         .catch(error => console.error(error));
 
 async function listen() {
-    let parent = Object.assign(document.createElement("div"), {className: "listen", style: "visibility: hidden; max-height: 0; overflow: hidden;"});
+    const parent = Object.assign(document.createElement("div"), {className: "listen", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
+        infoText = document.getElementById("player-info-text");
 
     await musicReady;
 
@@ -17,6 +18,7 @@ async function listen() {
         img: `//${window.location.hostname}/music/${file}.jpg`
     }));
 
+    const tracks = window.tracks;
     for (const track of tracks) {
         const item = Object.assign(document.createElement("div"), {
             onclick: () => {
@@ -42,7 +44,6 @@ async function listen() {
         });
         item.append(img, btn, title);
 
-        const infoText = document.getElementById("player-info-text");
         if (infoText && infoText.textContent === title.textContent) {
             setTimeout(() => { // timeout for animation
                 activateItem(item)
@@ -65,16 +66,12 @@ function activateItem(item) {
 
         if (item === items[i]) {
             btn.textContent = "⏸";
-            btn.classList.remove("active-out");
-            title.classList.remove("active-out");
-            btn.classList.add("active-in");
-            title.classList.add("active-in");
+            btn.classList.replace("active-out", "active-in");
+            title.classList.replace("active-out", "active-in");
         } else {
             btn.textContent = "▶";
-            btn.classList.remove("active-in");
-            title.classList.remove("active-in");
-            btn.classList.add("active-out");
-            title.classList.add("active-out");
+            btn.classList.replace("active-in", "active-out");
+            title.classList.replace("active-in", "active-out");
         }
     }
 }
@@ -91,7 +88,6 @@ function observeTitleMutation() {
         })();
         if (item !== undefined) activateItem(item);
     });
-
     titleObserver.observe(infoText, {
         childList: true
     });
@@ -110,22 +106,22 @@ function observePlayMutation() {
         })();
         if (btn !== undefined) btn.textContent = update;
     });
-
     playObserver.observe(playBtn, {
         childList: true
     });
 }
 
 function waitForPlayer() {
-    const target = document.body;
-    const tempObserver = new MutationObserver((m, observer) => {
-        const infoText = document.getElementById("player-info-text");
-        if (infoText) {
-            observeTitleMutation();
-            observePlayMutation();
-            observer.disconnect();
-        }
-    });
-
-    tempObserver.observe(target, { childList: true, subtree: true });
+    if (!document.querySelector(".player")) {
+        const target = document.body;
+        const tempObserver = new MutationObserver((m, observer) => {
+            const infoText = document.getElementById("player-info-text");
+            if (infoText) {
+                observeTitleMutation();
+                observePlayMutation();
+                observer.disconnect();
+            }
+        });
+        tempObserver.observe(target, { childList: true, subtree: true });
+    }
 }
