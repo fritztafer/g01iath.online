@@ -1,9 +1,9 @@
 var titleObserver = titleObserver ?? null,
     playObserver = playObserver ?? null,
-    musicFiles = [],
-    musicReady = fetch(`//${window.location.hostname}/music/.file-list.json`)
+    musicFiles = musicFiles ?? [],
+    musicReady = musicReady ?? fetch(`//${window.location.hostname}/music/.file-list.json`)
         .then(response => response.json())
-        .then(array => listenFiles = array)
+        .then(array => musicFiles = array)
         .catch(error => console.error(error));
 
 async function listen() {
@@ -11,16 +11,11 @@ async function listen() {
 
     await musicReady;
 
-    tracks = []; // used by player.js
-    for (const file of listenFiles) {
-        tracks.push(
-            {
-                title: file.replace("_", " "),
-                url: `//${window.location.hostname}/music/${file}.mp3`,
-                img: `//${window.location.hostname}/music/${file}.jpg`
-            }
-        )
-    }
+    window.tracks = window.tracks ?? musicFiles.map(file => ({ // used by player.js
+        title: file.replace("_", " "),
+        url: `//${window.location.hostname}/music/${file}.mp3`,
+        img: `//${window.location.hostname}/music/${file}.jpg`
+    }));
 
     for (const track of tracks) {
         const item = Object.assign(document.createElement("div"), {
@@ -49,8 +44,10 @@ async function listen() {
 
         const infoText = document.getElementById("player-info-text");
         if (infoText && infoText.textContent === title.textContent) {
-            btn.textContent = document.getElementById("player-play").textContent;
-            setTimeout(() => activateItem(item), 0);
+            setTimeout(() => { // timeout for animation
+                activateItem(item)
+                btn.textContent = document.getElementById("player-play").textContent;
+            }, 0);
         }
 
         parent.appendChild(item);
@@ -119,7 +116,7 @@ function observePlayMutation() {
     });
 }
 
-function waitForPlayer(item) {
+function waitForPlayer() {
     const target = document.body;
     const tempObserver = new MutationObserver((m, observer) => {
         const infoText = document.getElementById("player-info-text");
