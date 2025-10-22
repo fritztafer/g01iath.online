@@ -47,7 +47,7 @@ async function listen() {
         if (infoText && infoText.textContent === title.textContent) {
             setTimeout(() => { // timeout for animation
                 activateItem(item)
-                btn.textContent = document.getElementById("player-play").textContent;
+                btn.innerHTML = document.getElementById("player-play").innerHTML;
             }, 0);
         }
 
