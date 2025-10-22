@@ -15,11 +15,23 @@ document.body.appendChild(Object.assign(document.createElement("div"), {
             '<span id="player-time-total" class="player-time player-item">0:00</span>',
         '</div>',
         '<div id="player-button-parent">',
-            '<button id="player-play" class="player-button">▶</button>',
-            '<button id="player-skip-prev" class="player-button player-item">⏮</button>',
-            '<button id="player-skip-next" class="player-button player-item">⏭</button>',
+            '<button id="player-play" class="player-button">',
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 24 12" fill="currentColor"/></svg>',
+            '</button>',
+            '<button id="player-skip-prev" class="player-button player-item">',
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">',
+                    '<path d="M0 0 0 24 2 24 2 0M13 0 2 12 13 24M24 0 13 12 24 24" fill="currentcolor"/>',
+                '</svg>',
+            '</button>',
+            '<button id="player-skip-next" class="player-button player-item">',
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">',
+                    '<path d="M0 0 0 24 11 12M11 0 11 24 22 12M22 0 22 24 24 24 24 0" fill="currentcolor"/>',
+                '</svg>',
+            '</button>',
             '<span id="player-volume-parent">',
-                '<button id="player-volume-mute" class="player-button player-item">🕪</button>',
+                '<button id="player-volume-mute" class="player-button player-item">',
+                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 6 0 18 5 18 13 24 13 0 5 6M14 15A1 1 0 0015 16Q19 12 15 8A1 1 0 0014 9Q17 12 14 15M17 18A1 1 0 0018 19Q23 12 18 5A1 1 0 0017 6Q21 12 17 18M20 21A1 1 0 0021 22Q27 12 21 2A1 1 0 0020 3Q25 12 20 21" fill="currentcolor"/></svg>',
+                '</button>',
                 '<input id="player-volume-range" type="range" min="0" max="1" step=".05" value="1">',
             '</span>',
         '</div>'
@@ -119,11 +131,13 @@ function mute() {
 function volume(level) {
     audio.volume = level;
     if (level < .05) {
-        muteBtn.textContent = "🛇";
-    } else if (level >= .05 && level < .55) {
-        muteBtn.textContent = "🕩";
-    } else if (level >= .55) {
-        muteBtn.textContent = "🕪";
+        muteBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 6 0 18 5 18 13 24 13 0 5 6M20 12 24 16 23 17 19 13M15 17 24 8 23 7 14 16M19 11 15 7 14 8 18 12" fill="currentcolor"/></svg>';
+    } else if (level >= .05 && level < .40) {
+        muteBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 6 0 18 5 18 13 24 13 0 5 6M14 15A1 1 0 0015 16Q19 12 15 8A1 1 0 0014 9Q17 12 14 15" fill="currentcolor"/></svg>';
+    } else if (level >= .40 && level < .70) {
+        muteBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 6 0 18 5 18 13 24 13 0 5 6M14 15A1 1 0 0015 16Q19 12 15 8A1 1 0 0014 9Q17 12 14 15M17 18A1 1 0 0018 19Q23 12 18 5A1 1 0 0017 6Q21 12 17 18" fill="currentcolor"/></svg>'; 
+    } else if (level >= .70) {
+        muteBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 6 0 18 5 18 13 24 13 0 5 6M14 15A1 1 0 0015 16Q19 12 15 8A1 1 0 0014 9Q17 12 14 15M17 18A1 1 0 0018 19Q23 12 18 5A1 1 0 0017 6Q21 12 17 18M20 21A1 1 0 0021 22Q27 12 21 2A1 1 0 0020 3Q25 12 20 21" fill="currentcolor"/></svg>';
     }
 }
 
@@ -165,8 +179,8 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keyup", (e) => {delete keyDown[e.key];});
 
 playBtn.addEventListener("mouseup", (e) => {if (predicate(e)) audio.paused ? audio.play() : audio.pause()});
-audio.addEventListener("play", () => {playBtn.textContent = "⏸"});
-audio.addEventListener("pause", () => {playBtn.textContent = "▶"});
+audio.addEventListener("play", () => {playBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 0 2 24 8 24 8 0M16 0 16 24 22 24 22 0" fill="currentColor"/></svg>'});
+audio.addEventListener("pause", () => {playBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 24 12" fill="currentColor"/></svg>'});
 
 skipPrevBtn.addEventListener("mouseup", (e) => {if (predicate(e)) audio.currentTime = 0});
 skipPrevBtn.addEventListener("dblclick", (e) => {if (predicate(e)) {skip("prev")}});

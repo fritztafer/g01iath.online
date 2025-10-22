@@ -35,7 +35,7 @@ async function listen() {
             alt: ""
         }),
         btn = Object.assign(document.createElement("span"), {
-            textContent: "▶",
+            innerHTML: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 24 12" fill="currentColor"/></svg>',
             className: "listen-item-button active-out"
         }),
         title = Object.assign(document.createElement("span"), {
@@ -65,11 +65,11 @@ function activateItem(item) {
         const title = items[i].children[2];
 
         if (item === items[i]) {
-            btn.textContent = "⏸";
+            btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 0 2 24 8 24 8 0M16 0 16 24 22 24 22 0" fill="currentColor"/></svg>';
             btn.classList.replace("active-out", "active-in");
             title.classList.replace("active-out", "active-in");
         } else {
-            btn.textContent = "▶";
+            btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 24 12" fill="currentColor"/></svg>';
             btn.classList.replace("active-in", "active-out");
             title.classList.replace("active-in", "active-out");
         }
@@ -97,12 +97,12 @@ function observePlayMutation() {
     const playBtn = document.getElementById("player-play");
     const infoText = document.getElementById("player-info-text");
     playObserver = new MutationObserver(() => {
-        const update = playBtn.textContent;
+        const update = playBtn.innerHTML;
         const btn = (() => {
             const items = document.getElementsByClassName("listen-item");
             for (const item of items) if (item.children[2].textContent === infoText.textContent) return item.children[1];
         })();
-        if (btn !== undefined) btn.textContent = update;
+        if (btn !== undefined) btn.innerHTML = update;
     });
     playObserver.observe(playBtn, {childList: true});
 }

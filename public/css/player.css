@@ -153,7 +153,6 @@
 .player-button {
     height: 48px;
     width: 48px;
-    font-size: 48px;
     background: none;
     color: var(--dark-color);
     border: none;
@@ -165,6 +164,11 @@
     overflow: hidden;
 }
 
+.player-button svg {
+    width: inherit;
+    height: inherit;
+}
+
 .player-button:hover {
     color: var(--color);
 }
@@ -173,14 +177,10 @@
     color: #ffffff;
 }
 
-#player-volume-mute {
-    transform: rotate(180deg) translateY(-9px);
-}
-
 #player-volume-range {
     position: absolute;
     display: none;
-    bottom: -7px;
+    bottom: -2px;
     left: 236px;
     height: 48px;
     width: 72px;
@@ -265,6 +265,5 @@
     .player-button {
         height: 40px;
         width: 40px;
-        font-size: 40px;
     }
 }

@@ -128,11 +128,10 @@ img {
 }
 
 .scroll-top {
-    height: auto;
-    width: auto;
+    height: 48px;
+    width: 48px;
     background-color: transparent;
     color: var(--dark-color);
-    font-size: 48px;
     bottom: 16px;
     right: 16px;
     border: none;
@@ -141,6 +140,11 @@ img {
     transition:
         opacity calc(var(--time) / 4) ease,
         visibility calc(var(--time) / 4) ease;
+}
+
+.scroll-top svg {
+    width: inherit;
+    height: inherit;
 }
 
 .scroll-top:hover {
@@ -272,11 +276,15 @@ a.socials-item img {
     width: 48px;
     right: 4px;
     top: 4px;
-    font-size: 24px;
     color: inherit;
     background-color: rgba(0, 0, 0, .88);
     border-radius: 50%;
     pointer-events: none;
+}
+
+.listen-item-button svg {
+    height: 50%;
+    width: 50%;
 }
 
 .listen-item-title {
@@ -399,7 +407,8 @@ a.socials-item img {
     }
 
     .scroll-top {
-        font-size: 40px;
+        width: 40px;
+        height: 40px;
         bottom: 4px;
         right: 4px;
     }
@@ -416,6 +425,5 @@ a.socials-item img {
     .listen-item-button {
         height: 36px;
         width: 36px;
-        font-size: 20px;
     }
 }
