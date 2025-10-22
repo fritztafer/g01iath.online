@@ -4,14 +4,17 @@
     left: 16px;
     height: auto;
     width: 240px;
+    outline: 4px solid transparent;
     border-radius: 4px;
     transition:
+        outline-color calc(var(--time) / 4) ease,
         background-color calc(var(--time) / 4) ease,
         opacity calc(var(--time) / 4) ease,
         visibility calc(var(--time) / 4) ease;
 }
 
 .player:hover {
+    outline-color: rgba(0, 0, 0, .88);
     background-color: rgba(0, 0, 0, .88);
 }
 
@@ -31,13 +34,14 @@
 }
 
 #player-info-parent {
-    height: 24px;
+    height: 20px;
     width: 100%;
     overflow: hidden;
     white-space: nowrap;
 }
 
 #player-info-text {
+    line-height: 1;
     display: block;
     animation: scrollRightToLeft 16s linear infinite;
     color: #ffffff;
@@ -137,6 +141,7 @@
 #player-button-parent {
     height: 48px;
     width: 100%;
+    padding-top: 4px;
     display: flex;
     justify-content: left;
     gap: 16px;
@@ -147,6 +152,7 @@
     width: 48px;
     background: none;
     color: var(--dark-color);
+    padding: 0;
     border: none;
     cursor: pointer;
     position: relative;
@@ -173,7 +179,7 @@
     position: absolute;
     display: none;
     bottom: -2px;
-    left: 236px;
+    left: 238px;
     height: 48px;
     width: 72px;
     transition:
@@ -226,17 +232,17 @@
     }
 
     #player-info-parent {
-        transform: translateX(8px) translateY(-2px);
-        width: 113px;
-        height: 19px;
+        width: 100%;
+        height: 14px;
     }
 
     #player-time-parent {
         height: 10px;
+        padding-top: 3px;
     }
 
     #player-time-seek-parent {
-        width: 113px;
+        width: 100%;
         height: 8px;
     }
 
