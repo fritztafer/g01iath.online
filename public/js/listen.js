@@ -59,17 +59,19 @@ async function listen() {
 
 function activateItem(item) {
     const items = document.getElementsByClassName("listen-item");
+    const playSVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 24 12" fill="currentColor"/></svg>';
+    const pauseSVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 5 24 5 0M12 0 12 24 17 24 17 0" fill="currentColor"/></svg>';
 
     for (let i = 0; i < items.length; i++) {
         const btn = items[i].children[1];
         const title = items[i].children[2];
 
         if (item === items[i]) {
-            btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 0 2 24 8 24 8 0M16 0 16 24 22 24 22 0" fill="currentColor"/></svg>';
+            btn.innerHTML = pauseSVG;
             btn.classList.replace("active-out", "active-in");
             title.classList.replace("active-out", "active-in");
         } else {
-            btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 24 12" fill="currentColor"/></svg>';
+            btn.innerHTML = playSVG;
             btn.classList.replace("active-in", "active-out");
             title.classList.replace("active-in", "active-out");
         }

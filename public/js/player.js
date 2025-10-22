@@ -179,7 +179,7 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keyup", (e) => {delete keyDown[e.key];});
 
 playBtn.addEventListener("mouseup", (e) => {if (predicate(e)) audio.paused ? audio.play() : audio.pause()});
-audio.addEventListener("play", () => {playBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 0 2 24 8 24 8 0M16 0 16 24 22 24 22 0" fill="currentColor"/></svg>'});
+audio.addEventListener("play", () => {playBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 5 24 5 0M12 0 12 24 17 24 17 0" fill="currentColor"/></svg>'});
 audio.addEventListener("pause", () => {playBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 24 12" fill="currentColor"/></svg>'});
 
 skipPrevBtn.addEventListener("mouseup", (e) => {if (predicate(e)) audio.currentTime = 0});
