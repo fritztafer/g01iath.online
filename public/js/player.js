@@ -159,7 +159,7 @@ function timeUpdate() {
     }
 }
 
-function seekClick(event) {
+function seekEvent(event) {
     const width = seekInput.offsetWidth;
     const clickX = event.offsetX;
     audio.currentTime = (clickX / width) * audio.duration;
@@ -188,8 +188,8 @@ skipNextBtn.addEventListener("mouseup", (e) => {if (predicate(e)) skip("next")})
 audio.addEventListener("ended", () => {skip("next")});
 
 audio.addEventListener("timeupdate", timeUpdate);
-seekInput.addEventListener("click", (e) => {if (predicate(e)) seekClick(e)});
-seekInput.addEventListener("touchstart", (e) => {if (predicate(e)) seekClick(e)});
+seekInput.addEventListener("click", (e) => {if (predicate(e)) seekEvent(e)});
+seekInput.addEventListener("touchstart", (e) => {if (predicate(e)) seekEvent(e)});
 
 volumeInput.addEventListener("input", () => {volume(volumeInput.value)});
 volumeInput.addEventListener("mouseup", () => {if (volumeInput.value > 0) volumeState = volumeInput.value});
