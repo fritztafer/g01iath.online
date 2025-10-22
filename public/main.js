@@ -114,8 +114,8 @@ window.onscroll = () => {
             className: "scroll-top hidden",
             onclick: () => window.scrollTo({top: 0, behavior: "smooth"}),
             innerHTML: [
-                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">',
-                    '<path d="M12 0 6 6 6 7 11 5 11 24 13 24 13 5 18 7 18 6" fill="currentcolor" />',
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="6 0 12 24">',
+                    '<path d="M12 0 6 6 6 7 11 5 11 24 13 24 13 5 18 7 18 6" fill="currentcolor"/>',
                 '</svg>'
             ].join('')
         });
