@@ -46,10 +46,10 @@ function switchScene(content, parent) { // start transition
     fadeGroup(document.querySelectorAll("main, #active"), "out");
 
     setTimeout(() => { // mid transition
-        for (let item of Object.values(document.querySelectorAll(".header-item"))) {
+        Object.values(document.querySelectorAll(".header-item")).forEach(item => {
             if (item.textContent.toLowerCase() === content) item.id = "active";
             else item.removeAttribute("id");
-        }
+        });
         transitionHandler(parent);
         fadeGroup(document.querySelectorAll("main, #active"), "in");
     }, time / 2);

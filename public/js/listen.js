@@ -80,7 +80,7 @@ function observeTitleMutation() {
     if (titleObserver) return;
 
     const infoText = document.getElementById("player-info-text");
-    titleObserver = new MutationObserver((m) => {
+    titleObserver = new MutationObserver(() => {
         const update = infoText.textContent;
         const item = (() => {
             const items = document.getElementsByClassName("listen-item");
@@ -88,9 +88,7 @@ function observeTitleMutation() {
         })();
         if (item !== undefined) activateItem(item);
     });
-    titleObserver.observe(infoText, {
-        childList: true
-    });
+    titleObserver.observe(infoText, {childList: true});
 }
 
 function observePlayMutation() {
@@ -98,7 +96,7 @@ function observePlayMutation() {
 
     const playBtn = document.getElementById("player-play");
     const infoText = document.getElementById("player-info-text");
-    playObserver = new MutationObserver((m) => {
+    playObserver = new MutationObserver(() => {
         const update = playBtn.textContent;
         const btn = (() => {
             const items = document.getElementsByClassName("listen-item");
@@ -106,15 +104,13 @@ function observePlayMutation() {
         })();
         if (btn !== undefined) btn.textContent = update;
     });
-    playObserver.observe(playBtn, {
-        childList: true
-    });
+    playObserver.observe(playBtn, {childList: true});
 }
 
 function waitForPlayer() {
     if (!document.querySelector(".player")) {
         const target = document.body;
-        const tempObserver = new MutationObserver((m, observer) => {
+        const tempObserver = new MutationObserver((_, observer) => {
             const infoText = document.getElementById("player-info-text");
             if (infoText) {
                 observeTitleMutation();
@@ -122,6 +118,6 @@ function waitForPlayer() {
                 observer.disconnect();
             }
         });
-        tempObserver.observe(target, { childList: true, subtree: true });
+        tempObserver.observe(target, {childList: true});
     }
 }
