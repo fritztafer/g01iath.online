@@ -17,6 +17,7 @@ body {
     font-family: "Times New Roman", Times, serif;
     font-size: 16px;
     line-height: 1.5;
+    text-shadow: 0 0 3px #000000;
     min-height: 100vh;
     display: grid;
     grid-template-rows: auto 1fr auto;
@@ -66,6 +67,7 @@ a {
 
 a:active {
     color: #ffffff;
+    text-shadow: 0 0 3px var(--dark-color);
 }
 
 img {
@@ -248,39 +250,58 @@ a.socials-item img {
     width: fit-content;
     height: 100%;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 4px;
-    align-content: flex-start;
+}
+
+.listen-current {
+    width: fit-content;
+    height: 256px;
+    margin: 0 auto;
+}
+
+.listen-current .pos0 {
+    width: auto;
+    height: inherit;
+}
+
+.listen-playlist {
+    width: 300px;
+    height: fit-content;
+    margin: 0 auto;
 }
 
 .listen-item {
     display: flex;
     position: relative;
-    width: 300px;
-    height: 300px;
+    width: 100%;
+    height: 48px;
+    margin-top: 8px;
+    margin-bottom: 8px;
     color: var(--color);
-    cursor: pointer
+    cursor: pointer;
 }
 
-.listen-item-image {
-    width: 100%;
-    height: auto;
+.listen-item:active {
+    color: #ffffff;
+    text-shadow: 0 0 3px var(--dark-color);
+}
+
+.listen-item img {
+    width: auto;
+    height: inherit;
+    display: inline;
+    border-radius: 50%;
 }
 
 .listen-item-button {
     width: 48px;
-    height: 48px;
-    right: 4px;
-    top: 4px;
+    height: inherit;
     position: absolute;
-    display: flex;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
     color: inherit;
-    background-color: rgba(0, 0, 0, .88);
+    background-color: rgb(0, 0, 0, .67);
     border-radius: 50%;
-    pointer-events: none;
 }
 
 .listen-item-button svg {
@@ -290,25 +311,34 @@ a.socials-item img {
 }
 
 .listen-item-title {
-    position: absolute;
-    max-width: calc(100% - 20px);
-    left: 4px;
-    bottom: 4px;
+    height: inherit;
+    position: relative;
     color: inherit;
-    display: inline;
-    padding-left: 6px;
-    padding-right: 6px;
-    background-color: rgba(0, 0, 0, .88);
-    border-radius: 4px;
+    display: inline-flex;
+    flex-grow: 1;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-inline: 8px;
     pointer-events: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
-.listen-item:active {
-    color: #ffffff;
-}
-
-.listen-active {
-    color: var(--active-color);
+.listen-item-time {
+    min-width: fit-content;
+    height: inherit;
+    position: relative;
+    color: inherit;
+    display: inline-flex;
+    flex-shrink: 1;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-inline: 8px;
+    pointer-events: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .aesthetic {
@@ -378,6 +408,10 @@ a.socials-item img {
     margin: auto;
 }
 
+.active {
+     color: var(--active-color) !important; 
+}
+
 .hidden {
     opacity: 0;
     visibility: hidden;
@@ -417,15 +451,5 @@ a.socials-item img {
 
     a.socials-item {
         width: 48px;
-    }
-
-    .listen-item {
-        width: 192px;
-        height: 192px;
-    }
-
-    .listen-item-button {
-        width: 36px;
-        height: 36px;
     }
 }
