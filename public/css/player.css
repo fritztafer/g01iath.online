@@ -60,6 +60,10 @@
     display: block;
     animation: scrollRightToLeft 16s linear infinite;
     color: #ffffff;
+    text-shadow: 0 0 3px var(--dark-color);
+    pointer-events: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 @keyframes scrollRightToLeft {
@@ -127,6 +131,9 @@
     width: 30px;
     display: inline-block;
     color: var(--dark-color);
+    pointer-events: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 #player-time-parent:hover #player-time-seek-parent {
