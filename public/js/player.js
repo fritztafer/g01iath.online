@@ -94,8 +94,16 @@ function load(track) {
         const totalSecs = Math.floor(audio.duration % 60)
             .toString()
             .padStart(2, "0");
-        infoText.textContent = track.title;
         timeTotalText.textContent = `${totalMins}:${totalSecs}`;
+        infoText.textContent = track.title;
+
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: track.title,
+            artist: "GØ1IATH",
+            album: "",
+            artwork: [{src: track.img}]
+        });
+
         audio.removeEventListener("loadedmetadata", getMetaData);
     });
 
