@@ -1,7 +1,7 @@
 async function socials() {
-    let parent = Object.assign(document.createElement("div"), {className: "socials", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
+    const parent = Object.assign(document.createElement("div"), {className: "socials", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
         children = {
-            "BandCamp": {
+            "Bandcamp": {
                 "href": "//fritztafer.bandcamp.com/",
                 "img": "bc"
             }, "YouTube": {
@@ -19,8 +19,8 @@ async function socials() {
             }
         };
 
-    for (let child in children) {
-        let a = Object.assign(document.createElement("a"), {
+    for (const child in children) {
+        const a = Object.assign(document.createElement("a"), {
             className: "socials-item",
             target: "_blank",
             href: children[child].href,
