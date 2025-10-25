@@ -286,10 +286,10 @@ a.socials-item img {
 }
 
 .listen-item-image {
-    width: auto;
+    width: 48px;
     height: inherit;
     display: inline;
-    border-radius: 8px;
+    border-radius: 4px;
     margin-left: 8px;
 }
 
@@ -302,7 +302,7 @@ a.socials-item img {
     align-items: center;
     color: inherit;
     background-color: rgb(0, 0, 0, .67);
-    border-radius: 8px;
+    border-radius: 4px;
     margin-left: 8px;
 }
 
