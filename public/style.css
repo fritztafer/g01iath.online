@@ -15,9 +15,9 @@ html, body {
 
 body {
     font-family: "Times New Roman", Times, serif;
-    font-size: 16px;
+    font-size: 1em;
     line-height: 1.5;
-    text-shadow: 0 0 3px #000000;
+    text-shadow: 0 0 1em #000000;
     min-height: 100vh;
     display: grid;
     grid-template-rows: auto 1fr auto;
@@ -67,7 +67,6 @@ a {
 
 a:active {
     color: #ffffff;
-    text-shadow: 0 0 3px var(--dark-color);
 }
 
 img {
