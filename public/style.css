@@ -236,7 +236,7 @@ a.socials-item img {
     height: auto;
     display: block;
     transition: filter calc(var(--time) / 12) ease;
-    filter: drop-shadow(0 0 0.5rem #000000);
+    filter: drop-shadow(0 0 0.25rem #000000);
 }
 
 a.socials-item:hover img {
