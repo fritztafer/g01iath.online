@@ -29,9 +29,13 @@ function run(content="socials") {
         fadeGroup(document.querySelectorAll(".header-item, .header-hr, .footer-item"), "in");
     } else { // clean up
         current.remove();
-        if (document.querySelector("main").firstChild.className === "aesthetic") {
+        const main = document.querySelector("main");
+        if (main.firstChild.className === "aesthetic") {
             window.removeEventListener("resize", resizeHandler);
             window.removeEventListener("scroll", scrollHandler);
+        } else if (main.firstChild.className === "listen") {
+            titleObserver.disconnect();
+            playObserver.disconnect();
         }
     }
 
