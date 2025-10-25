@@ -1,5 +1,5 @@
-$TargetDir = "./public/gallery"
-$OutputFile = "$TargetDir/.file-list.json"
+$TargetDir = ".\public\gallery"
+$OutputFile = "$TargetDir\.file-list.json"
 
 $extensionsPattern = '\.(jpe?g|png|gif|webp|txt)$'
 
