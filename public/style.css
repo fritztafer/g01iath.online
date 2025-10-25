@@ -223,8 +223,8 @@ img {
 a.socials-item {
     margin: auto;
     width: 64px;
-    transform: scale(.87);
     transition: transform calc(var(--time) / 12) ease;
+    transform: scale(.87);
 }
 
 a.socials-item:hover {
@@ -235,6 +235,12 @@ a.socials-item img {
     width: 100%;
     height: auto;
     display: block;
+    transition: filter calc(var(--time) / 12) ease;
+    filter: drop-shadow(0 0 0.5rem #000000);
+}
+
+a.socials-item:hover img {
+    filter: drop-shadow(0 0 0.33rem var(--dark-color));
 }
 
 @media (max-height: 639px) and (min-width: 640px), (max-height: 359px) {
