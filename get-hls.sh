@@ -1,21 +1,20 @@
 #!/usr/bin/env bash
 
 while true; do
-    read -p "Absolute path of file to encode: " InFile
+    read -p "ABSOLUTE PATH OF FILE TO ENCODE: " InFile
     Name=$(basename "${InFile%.*}")
     TargetDir="./public/music/$Name"
 
     if [ -d "$TargetDir" ]; then
-        echo "WARNING: $TargetDir EXISTS"
-        read -p "Press Enter to continue"
+        echo "WARNING: DIRECTORY EXISTS - $TargetDir"
+        read -p "PRESS Enter TO CONTINUE"
     else
-        echo "CREATED: $TargetDir"
+        echo "CREATED DIRECTORY - $TargetDir"
         mkdir -p "$TargetDir"
     fi
 
     ffmpeg -loglevel error -i "$InFile" -c:a aac -b:a 320k -ar 48000 -hls_time 8 -hls_playlist_type vod "$TargetDir/stream.m3u8"
     ffprobe -loglevel error -print_format json -show_format "$TargetDir/stream.m3u8" > "$TargetDir/meta.json"
 
-    echo "hls data saved to $TargetDir"
-    read -p "Press Enter to encode another file"
+    echo "HLS DATA SAVED TO: $TargetDir"
 done
