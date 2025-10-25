@@ -13,8 +13,8 @@ while (1) {
         New-Item -ItemType Directory -Path $TargetDir | Out-Null
     }
 
-    & "$EncoderDir\ffmpeg.exe" -i "$InFile" -c:a aac -b:a 320k -ar 48000 -hls_time 8 -hls_playlist_type vod "$TargetDir\stream.m3u8"
-    & "$EncoderDir\ffprobe.exe" -print_format json -show_format "$TargetDir\stream.m3u8" > "$TargetDir\meta.json"
+    & "$EncoderDir\ffmpeg.exe" -loglevel error -i "$InFile" -c:a aac -b:a 320k -ar 48000 -hls_time 8 -hls_playlist_type vod "$TargetDir\stream.m3u8"
+    & "$EncoderDir\ffprobe.exe" -loglevel error -print_format json -show_format "$TargetDir\stream.m3u8" > "$TargetDir\meta.json"
 
     Write-Host "hls data saved to $TargetDir"
     Read-Host -Prompt "Press Enter to encode another file"
