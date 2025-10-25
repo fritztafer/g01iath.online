@@ -17,8 +17,8 @@ async function listen() {
 
     window.tracks = window.tracks ?? musicFiles.map(file => ({ // used by player.js
         title: file.replace("_", " "),
-        url: `//${window.location.hostname}/music/${file}.mp3`,
-        img: `//${window.location.hostname}/music/${file}.jpg`
+        stream: `//${window.location.hostname}/music/${file}/stream.m3u8`,
+        cover: `//${window.location.hostname}/music/${file}/cover.jpg`
     }));
 
     const tracks = window.tracks;
@@ -33,7 +33,7 @@ async function listen() {
             className: "listen-item inactive"
         }),
         img = Object.assign(document.createElement("img"), {
-            src: track.img,
+            src: track.cover,
             className: "listen-item-image",
             alt: ""
         }),
@@ -69,24 +69,22 @@ async function listen() {
 function activateItem(item) {
     const current = document.querySelector(".listen-current");
     const items = document.getElementsByClassName("listen-item");
-    const playSVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 24 12" fill="currentColor"/></svg>';
-    const pauseSVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 5 24 5 0M12 0 12 24 17 24 17 0" fill="currentColor"/></svg>';
+    const time = document.querySelector("player-time-total");
 
     for (let i = 0; i < items.length; i++) {
         const btn = items[i].children[1];
 
         if (item === items[i]) {
-            const time = document.getElementById("player-time-total").textContent;
-            btn.innerHTML = pauseSVG;
+            btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 5 24 5 0M12 0 12 24 17 24 17 0" fill="currentColor"/></svg>';
             items[i].classList.replace("inactive", "active");
             current.replaceChild(Object.assign(document.createElement("img"), {
                 className: "pos0",
-                src: tracks[i].img,
+                src: tracks[i].cover,
                 alt: ""
             }), current.firstChild);
-            items[i].children[3].textContent = time;
+            items[i].children[3].textContent = time ?? "0:00";
         } else {
-            btn.innerHTML = playSVG;
+            btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 24 12" fill="currentColor"/></svg>';
             items[i].classList.replace("active", "inactive");
         }
     }
