@@ -99,7 +99,7 @@ function load(track) {
         hls.attachMedia(audio);
         window.hls = hls;
         hls.on(Hls.Events.MANIFEST_PARSED, () => audio.play());
-    } else alert("playback not supported")
+    }
 
     playBtn.classList.add('pulse');
     playBtn.addEventListener('animationend', function removePulse() {
@@ -108,24 +108,20 @@ function load(track) {
     });
 
     audio.addEventListener("loadedmetadata", function getMetaData() {
-        const totalMins = Math.floor(audio.duration / 60);
-        const totalSecs = Math.floor(audio.duration % 60)
-            .toString()
-            .padStart(2, "0");
-        timeTotalText.textContent = `${totalMins}:${totalSecs}`;
+        const totalMinutes = Math.floor(audio.duration / 60),
+            totalSeconds = Math.floor(audio.duration % 60).toString().padStart(2, "0");
+        timeTotalText.textContent = `${totalMinutes}:${totalSeconds}`;
         infoText.textContent = track.title;
-
-        navigator.mediaSession.metadata = new MediaMetadata({
-            title: track.title,
-            artist: "GØ1IATH",
-            album: "",
-            artwork: [{src: track.cover}]
-        });
-
+        if ("mediaSession" in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: track.title,
+                artist: "GØ1IATH",
+                album: "",
+                artwork: [{src: track.cover}]
+            });
+        }
         audio.removeEventListener("loadedmetadata", getMetaData);
     });
-
-    audio.play();
 }
 
 function skip(direction) {
@@ -174,9 +170,9 @@ function predicate(e) { // left click only
 
 function timeUpdate() {
     if (audio.duration) {
-        const progressPercent = (audio.currentTime / audio.duration) * 100;
-        const currentMins = Math.floor(audio.currentTime / 60);
-        const currentSecs = Math.floor(audio.currentTime % 60).toString().padStart(2, "0");
+        const progressPercent = (audio.currentTime / audio.duration) * 100,
+            currentMins = Math.floor(audio.currentTime / 60),
+            currentSecs = Math.floor(audio.currentTime % 60).toString().padStart(2, "0");
         seekProgress.style.width = `${progressPercent}%`;
         timeCurrentText.textContent = `${currentMins}:${currentSecs}`;
     } else {
@@ -186,8 +182,8 @@ function timeUpdate() {
 }
 
 function seekEvent(event) {
-    const width = seekInput.offsetWidth;
-    const clickX = event.offsetX;
+    const width = seekInput.offsetWidth,
+        clickX = event.offsetX;
     audio.currentTime = (clickX / width) * audio.duration;
 }
 
@@ -215,7 +211,7 @@ audio.addEventListener("ended", () => {skip("next")});
 
 audio.addEventListener("timeupdate", timeUpdate);
 seekInput.addEventListener("click", (e) => {if (predicate(e)) seekEvent(e)});
-seekInput.addEventListener("touchstart", (e) => {if (predicate(e)) seekEvent(e)});
+seekInput.addEventListener("touchstart", (e) => {if (predicate(e)) seekEvent(e)}, {passive: true});
 
 volumeInput.addEventListener("input", () => {volume(volumeInput.value)});
 volumeInput.addEventListener("mouseup", () => {if (volumeInput.value > 0) volumeState = volumeInput.value});
