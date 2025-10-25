@@ -46,8 +46,6 @@ body::before {
 header {
     width: 100%;
     height: auto;
-    padding-top: 12px;
-    text-align: center;
 }
 
 main {
@@ -58,7 +56,6 @@ main {
 footer {
     width: 100%;
     height: auto;
-    text-align: center;
 }
 
 a {
@@ -76,12 +73,19 @@ img {
 }
 
 .title {
-    font-size: 48px;
+    font-size: 4em;
     letter-spacing: 36px;
     margin-right: -36px;
     padding-bottom: 2px;
+    padding-top: 12px;
     line-height: 1;
     text-align: center;
+}
+
+.header-item-parent {
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .header-item {
@@ -89,7 +93,6 @@ img {
     margin-inline: 16px;
     display: inline;
     position: relative;
-    white-space: nowrap;
 }
 
 .header-item::after {
@@ -125,7 +128,9 @@ img {
 }
 
 .footer-item {
-    font-size: 16px;
+    width: fit-content;
+    font-size: 1em;
+    margin: 0 auto;
 }
 
 .scroll-top {
@@ -287,7 +292,6 @@ a.socials-item:hover img {
 
 .listen-item:active {
     color: #ffffff;
-    text-shadow: 0 0 3px var(--dark-color);
 }
 
 .listen-item-image {
@@ -400,7 +404,7 @@ a.socials-item:hover img {
 }
 
 .about-contact {
-    font-size: 21px;
+    font-size: 1.4em;
     text-align: center;
     margin: auto;
     margin-bottom: 24px;
