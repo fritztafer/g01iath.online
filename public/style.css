@@ -285,11 +285,11 @@ a.socials-item img {
     text-shadow: 0 0 3px var(--dark-color);
 }
 
-.listen-item img {
+.listen-item-image {
     width: auto;
     height: inherit;
     display: inline;
-    border-radius: 4px;
+    border-radius: 8px;
     margin-left: 8px;
 }
 
@@ -302,7 +302,7 @@ a.socials-item img {
     align-items: center;
     color: inherit;
     background-color: rgb(0, 0, 0, .67);
-    border-radius: 4px;
+    border-radius: 8px;
     margin-left: 8px;
 }
 
@@ -337,7 +337,8 @@ a.socials-item img {
     align-items: center;
     overflow: hidden;
     white-space: nowrap;
-    padding-inline: 8px;
+    padding-left: 8px;
+    margin-right: 8px;
     pointer-events: none;
     -webkit-user-select: none;
     user-select: none;
