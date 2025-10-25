@@ -48,7 +48,7 @@ const audio = new Audio(),
     skipNextBtn = document.getElementById("player-skip-next"),
     muteBtn = document.getElementById("player-volume-mute"),
     playerReady = (async () => {
-        const getResource = (tag, attrs, parent = document.head) =>
+        const getResource = (tag, attrs, parent) =>
             new Promise((resolve) => {
                 const element = Object.assign(document.createElement(tag), attrs);
                 element.onload = () => resolve(element);
@@ -58,8 +58,8 @@ const audio = new Audio(),
             getResource("link", {
                 href: `//${window.location.hostname}/css/player.css`,
                 rel: "stylesheet"
-            }),
-            audio.canPlayType('application/vnd.apple.mpegurl') ? Promise.resolve()
+            }, document.head),
+            audio.canPlayType("application/vnd.apple.mpegurl") ? Promise.resolve()
             : getResource("script", {
                 src: "https://cdn.jsdelivr.net/npm/hls.js@1.6.13/dist/hls.min.js"
             }, document.body)
@@ -90,16 +90,16 @@ function load(track) {
         window.hls = null;
     }
 
-    if (Hls.isSupported()) {
+    if (audio.canPlayType("application/vnd.apple.mpegurl")) {
+        audio.src = track.stream;
+        audio.play();
+    } else if (Hls.isSupported()) {
         const hls = new Hls();
         hls.loadSource(track.stream);
         hls.attachMedia(audio);
         window.hls = hls;
         hls.on(Hls.Events.MANIFEST_PARSED, () => audio.play());
-    } else {
-        audio.src = track.stream;
-        audio.play();
-    }
+    } else alert("playback not supported")
 
     playBtn.classList.add('pulse');
     playBtn.addEventListener('animationend', function removePulse() {
