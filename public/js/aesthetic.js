@@ -24,34 +24,36 @@ async function aesthetic() {
     return parent;
 }
 
-function loadItems(parent) {
-    if (galleryLoading || galleryIndex > galleryFiles.length) return;
+async function loadItems(parent) {
+    if (galleryLoading || galleryIndex >= galleryFiles.length) return;
     galleryLoading = true;
     let columns = parent.childNodes;
-    galleryFiles.slice(galleryIndex, galleryIndex + galleryAmount).map(filename => {
-        if (filename.lastIndexOf(".txt") == filename.length - 4) {
-            !async function() {
-                let item = Object.assign(document.createElement("div"), {className: "aesthetic-item"}),
-                    quote = Object.assign(document.createElement("div"), {className: "aesthetic-item-quote"}),
-                    person = Object.assign(document.createElement("div"), {className: "aesthetic-item-person"}),
-                    text = await fetch(`//${window.location.hostname}/gallery/${filename}`)
-                        .then(response => response.text())
-                        .then((data) => {return data.split("\r\n")}) // txt file formatting!
-                        .catch(error => console.error(error));
-                quote.innerHTML = text[0];
-                person.innerHTML = text[1];
-                item.append(quote, person);
-                renderItem(item, columns);
-            }();
+    await Promise.all(galleryFiles.slice(galleryIndex, galleryIndex + galleryAmount).map(filename => {
+        if (filename.endsWith(".txt")) {
+            return fetch(`//${window.location.hostname}/gallery/${filename}`)
+                .then(response => response.text())
+                .then(data => {
+                    const [quoteText, personText] = data.split("\r\n");
+                    const item = Object.assign(document.createElement("div"), { className: "aesthetic-item" });
+                    const quote = Object.assign(document.createElement("div"), { className: "aesthetic-item-quote", innerHTML: quoteText });
+                    const person = Object.assign(document.createElement("div"), { className: "aesthetic-item-person", innerHTML: personText });
+                    item.append(quote, person);
+                    renderItem(item, columns);
+                });
         } else {
-            let item = Object.assign(document.createElement("img"), {
-                className: "aesthetic-item",
-                src: `//${window.location.hostname}/gallery/${filename}`,
-                alt: "",
-                onload: () => renderItem(item, columns)
+            return new Promise(resolve => {
+                const item = Object.assign(document.createElement("img"), {
+                    className: "aesthetic-item",
+                    src: `//${window.location.hostname}/gallery/${filename}`,
+                    alt: "",
+                    onload: () => {
+                        renderItem(item, columns);
+                        resolve();
+                    }
+                });
             });
         }
-    });
+    }));
     galleryIndex += galleryAmount;
     galleryLoading = false;
 }
