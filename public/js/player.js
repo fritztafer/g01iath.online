@@ -50,7 +50,27 @@ const audio = new Audio(),
     playBtn = document.getElementById("player-play"),
     skipPrevBtn = document.getElementById("player-skip-prev"),
     skipNextBtn = document.getElementById("player-skip-next"),
-    muteBtn = document.getElementById("player-volume-mute");
+    muteBtn = document.getElementById("player-volume-mute"),
+    playerReady = (async () => {
+        const getResource = (tag, attrs, parent = document.head) =>
+            new Promise((resolve) => {
+                const element = Object.assign(document.createElement(tag), attrs);
+                element.onload = () => resolve(element);
+                parent.appendChild(element);
+            });
+        await Promise.all([
+            getResource("link", {
+                href: `//${window.location.hostname}/css/player.css`,
+                rel: "stylesheet"
+            }),
+            audio.canPlayType('application/vnd.apple.mpegurl') ? Promise.resolve()
+            : getResource("script", {
+                src: "https://cdn.jsdelivr.net/npm/hls.js@1.6.13/dist/hls.min.js"
+            }, document.body)
+        ]);
+        playerParent.removeAttribute("style");
+        playerParent.classList.remove("hidden");
+    })();
 let volumeState = 1,
     trackIndex,
     keyDown = {};
@@ -58,20 +78,8 @@ let volumeState = 1,
 audio.volume = volumeState;
 volumeInput.value = volumeState;
 
-(async () => {
-    await new Promise((resolve) => {
-        const link = Object.assign(document.createElement("link"), {
-            href: `//${window.location.hostname}/css/player.css`,
-            rel: "stylesheet"
-        });
-        link.onload = () => resolve(link);
-        document.head.appendChild(link);
-    });
-    playerParent.removeAttribute("style");
-    playerParent.classList.remove("hidden");
-})();
-
-function select(track) {
+async function select(track) {
+    await playerReady;
     const selectionIndex = tracks.indexOf(track);
     if (selectionIndex === trackIndex) audio.paused ? audio.play() : audio.pause();
     else {
@@ -81,7 +89,21 @@ function select(track) {
 }
 
 function load(track) {
-    audio.src = track.url;
+    if (window.hls) {
+        window.hls.destroy();
+        window.hls = null;
+    }
+
+    if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(track.stream);
+        hls.attachMedia(audio);
+        window.hls = hls;
+        hls.on(Hls.Events.MANIFEST_PARSED, () => audio.play());
+    } else {
+        audio.src = track.stream;
+        audio.play();
+    }
 
     playBtn.classList.add('pulse');
     playBtn.addEventListener('animationend', function removePulse() {
@@ -101,7 +123,7 @@ function load(track) {
             title: track.title,
             artist: "GØ1IATH",
             album: "",
-            artwork: [{src: track.img}]
+            artwork: [{src: track.cover}]
         });
 
         audio.removeEventListener("loadedmetadata", getMetaData);
