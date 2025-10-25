@@ -1,5 +1,5 @@
-var titleObserver = titleObserver ?? null,
-    playObserver = playObserver ?? null,
+var titleObserver = null,
+    playObserver = null,
     musicFiles = musicFiles ?? [],
     musicReady = musicReady ?? fetch(`//${window.location.hostname}/music/.file-list.json`)
         .then(response => response.json())
@@ -73,6 +73,11 @@ async function listen() {
         playlist.appendChild(item);
     }
 
+    if (document.querySelector(".player")) {
+        observeTitleMutation();
+        observePlayMutation();
+    }
+
     return parent;
 }
 
@@ -117,7 +122,6 @@ function observeTitleMutation() {
 
 function observePlayMutation() {
     if (playObserver) return;
-    const playBtn = document.getElementById("player-play");
     const infoText = document.getElementById("player-info-text");
 
     playObserver = new MutationObserver(() => {
@@ -125,7 +129,7 @@ function observePlayMutation() {
             const items = document.getElementsByClassName("listen-item");
             for (const item of items) if (item.children[2].textContent === infoText.textContent) return item.children[1];
         })();
-        if (btn !== undefined) btn.innerHTML = playBtn.innerHTML;
+        if (btn !== undefined) btn.innerHTML = document.getElementById("player-play").innerHTML;
     });
 
     playObserver.observe(playBtn, {childList: true});
