@@ -92,9 +92,7 @@ function transitionHandler(parent) {
             if (parent.className !== main.firstElementChild.className) {
                 main.firstElementChild.remove();
             }
-            parent.style.visibility = "visible";
-            parent.style.maxHeight = "none";
-            parent.style.overflow = "visible";
+            parent.removeAttribute("style");
     }
 }
 
