@@ -36,8 +36,8 @@ function run(content="socials") {
             window.removeEventListener("resize", resizeHandler);
             window.removeEventListener("scroll", scrollHandler);
         } else if (main.firstChild.className === "listen") {
-            titleObserver.disconnect();
-            playObserver.disconnect();
+            if (titleObserver) titleObserver.disconnect();
+            if (playObserver) playObserver.disconnect();
         }
     }
 
