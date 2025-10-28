@@ -22,20 +22,19 @@ const time = 2501;
 let transitioning;
 
 function run(content="socials") {
-    if (transitioning) return; // prevent during transition, prevent currently loaded
-    if (content === document.querySelector("main").firstElementChild?.className) return;
+    if (transitioning) return;
+    const current = document.querySelector("main").firstElementChild;
+    if (current && current.className === content) return;
     transitioning = true;
 
-    const current = document.head.querySelector("script:nth-of-type(2)");
     if (!current) { // initialize
-        fadeGroup(document.querySelectorAll(".header-item, .header-hr, .footer-item"), "in");
+        fadeGroup(document.querySelectorAll(".header-item-parent, .header-hr, .footer-item"), "in");
     } else { // clean up
-        current.remove();
-        const main = document.querySelector("main");
-        if (main.firstChild.className === "aesthetic") {
+        document.head.querySelector("script:nth-of-type(2)").remove();
+        if (current.className === "aesthetic") {
             window.removeEventListener("resize", resizeHandler);
             window.removeEventListener("scroll", scrollHandler);
-        } else if (main.firstChild.className === "listen") {
+        } else if (current.className === "listen") {
             if (titleObserver) titleObserver.disconnect();
             if (playObserver) playObserver.disconnect();
         }
@@ -47,11 +46,11 @@ function run(content="socials") {
     }));
 }
 
-function switchScene(content, parent) { // start transition
-    document.querySelector("main").append(parent);
+function switchScene(content, parent) { // start
+    document.querySelector("main").appendChild(parent);
     fadeGroup(document.querySelectorAll("main, #active"), "out");
 
-    setTimeout(() => { // mid transition
+    setTimeout(() => { // middle
         Object.values(document.querySelectorAll(".header-item")).forEach(item => {
             if (item.textContent.toLowerCase() === content) item.id = "active";
             else item.removeAttribute("id");
@@ -60,7 +59,7 @@ function switchScene(content, parent) { // start transition
         fadeGroup(document.querySelectorAll("main, #active"), "in");
     }, time / 2);
 
-    setTimeout(() => { // end transition
+    setTimeout(() => { // end
         transitioning = false;
     }, time);
 }
@@ -91,13 +90,11 @@ function fadeGroup(elements, type) {
 }
 
 function transitionHandler(parent) {
-    const main = document.querySelector("main");
+    const current = document.querySelector("main").firstElementChild;
 
     switch (parent.className) {
         default:
-            if (parent.className !== main.firstElementChild.className) {
-                main.firstElementChild.remove();
-            }
+            if (parent.className !== current.className) current.remove();
             parent.removeAttribute("style");
     }
 }
