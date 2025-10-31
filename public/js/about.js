@@ -10,7 +10,7 @@ async function about() {
         }),
         aboutBio = Object.assign(document.createElement("div"), {
             className: "about-bio",
-            innerHTML: `<div style="font-size: 36px; letter-spacing: 24px; margin-right: -24px; line-height: 1; margin-bottom: 24px;">GØ1IATH</div>`
+            innerHTML: `<div style="font-size: 36px; letter-spacing: 24px; line-height: 1; margin-bottom: 24px;">GØ1IAT<span style="letter-spacing: 0;">H</span></div>`
         }),
         children = [aboutContact, aboutImage, aboutBio];
 
