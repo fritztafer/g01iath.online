@@ -2,7 +2,15 @@ document.body = Object.assign(document.createElement("body"), {className: "dark-
 document.body.append(
     Object.assign(document.createElement("header"), {
         innerHTML: [
-            '<div class="title">GØ1IATH</div>',
+            '<div class="title">',
+                '<span>G</span>',
+                '<span>Ø</span>',
+                '<span>1</span>',
+                '<span>I</span>',
+                '<span>A</span>',
+                '<span>T</span>',
+                '<span style="letter-spacing: 0;">H</span>',
+            '</div>',
             '<div class="header-item-parent">',
                 '<a class="header-item" href="javascript:" onclick="run(\'socials\')">SOCIALS</a>',
                 '<a class="header-item" href="javascript:" onclick="run(\'listen\')">LISTEN</a>',

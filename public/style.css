@@ -73,13 +73,13 @@ img {
 }
 
 .title {
+    width: fit-content;
+    margin: 0 auto;
     font-size: 3em;
     letter-spacing: 36px;
-    margin-right: -36px;
     padding-bottom: 2px;
     padding-top: 12px;
     line-height: 1;
-    text-align: center;
 }
 
 .header-item-parent {
@@ -438,7 +438,6 @@ a.socials-item:hover img {
     .title {
         font-size: 36px;
         letter-spacing: 24px;
-        margin-right: -24px;
     }
 
     .header-item {
