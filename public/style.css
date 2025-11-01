@@ -73,10 +73,10 @@ img {
 }
 
 .title {
-    width: fit-content;
-    margin: 0 auto;
+    text-align: center;
     font-size: 3em;
     letter-spacing: 36px;
+    margin-right: -36px;
     padding-bottom: 2px;
     padding-top: 12px;
     line-height: 1;
@@ -85,13 +85,13 @@ img {
 .header-item-parent {
     width: fit-content;
     margin: 0 auto;
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 32px;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .header-item {
     font-size: 18px;
+    margin-inline: 16px;
     display: inline;
     position: relative;
 }
@@ -100,7 +100,7 @@ img {
     content: "";
     position: absolute;
     left: 50%;
-    bottom: 1px;
+    bottom: -2px;
     width: 0;
     height: 0;
     border-top: 1px var(--color) solid;
@@ -218,7 +218,7 @@ img {
 }
 
 .socials {
-    height: 94%;
+    height: 96%;
     width: fit-content;
     margin: 0 auto;
     display: grid;
@@ -440,14 +440,12 @@ a.socials-item:hover img {
         padding-top: 8px;
         font-size: 36px;
         letter-spacing: 24px;
-    }
-
-    .header-item-parent{
-        gap: 22px;
+        margin-right: -24px;
     }
 
     .header-item {
         font-size: 13px;
+        margin-inline: 11px;
     }
 
     .header-hr {
