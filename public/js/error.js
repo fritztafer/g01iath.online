@@ -47,7 +47,7 @@ async function error() {
 
     return Object.assign(document.createElement("div"), {
         className: "error",
-        style: "text-align: center; font-size: 18px; visibility: hidden; max-height: 0; overflow: hidden;",
-        innerHTML: `${message}<br><br><a href="/">HOME</a><br><br><a href="mailto:info@g01iath.online">info@g01iath.online</a>`
+        style: "visibility: hidden; max-height: 0; overflow: hidden;",
+        innerHTML: `<div style="text-align: center; font-size: 18px;">${message}<br><br><a href="/">HOME</a><br><br><a href="mailto:info@g01iath.online">info@g01iath.online</a></div>`
     });
 }
