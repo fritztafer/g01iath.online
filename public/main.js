@@ -14,7 +14,7 @@ document.body.append(
     }),
     document.createElement("main"),
     Object.assign(document.createElement("footer"), {
-        innerHTML: '<div class="footer-item">//G01IATH.ONLINE/2025/</div>'
+        innerHTML: '<div class="footer-item">//G01IATH.ONLINE/2026/</div>'
     })
 );
 
