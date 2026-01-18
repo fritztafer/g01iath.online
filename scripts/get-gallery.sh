@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TARGET_DIR="./public/gallery"
+TARGET_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../public/gallery"
 OUTPUT_FILE="$TARGET_DIR/.file-list.json"
 
 mapfile -t files < <(ls "$TARGET_DIR" | grep -Ei "\.(jpe?g|png|gif|webp|txt)$")

@@ -3,7 +3,7 @@ $EncoderDir = Read-Host -Prompt "ABSOLUTE PATH OF ffmpeg\bin"
 while (1) {
     $InFile = Read-Host -Prompt "ABSOLUTE PATH OF FILE TO ENCODE"
     $Name = Split-Path -Path $InFile -LeafBase
-    $TargetDir = Join-Path ".\public\music" $Name
+    $TargetDir = Join-Path $PSScriptRoot "..\public\music" $Name
 
     if (Test-Path $TargetDir) {
         Write-Warning "DIRECTORY EXISTS - $TargetDir"

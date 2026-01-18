@@ -3,7 +3,7 @@
 while true; do
     read -p "ABSOLUTE PATH OF FILE TO ENCODE: " InFile
     Name=$(basename "${InFile%.*}")
-    TargetDir="./public/music/$Name"
+    TargetDir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../public/music/$Name"
 
     if [ -d "$TargetDir" ]; then
         echo "WARNING: DIRECTORY EXISTS - $TargetDir"
