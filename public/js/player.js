@@ -35,7 +35,7 @@ document.body.appendChild(Object.assign(document.createElement("div"), {
 }));
 
 const audio = new Audio(),
-    tracks = window.tracks, // tracks declared by listen.js
+    tracks = window.tracks,
     playerParent = document.querySelector(".player"),
     volumeInput = document.getElementById("player-volume-range"),
     seekProgress = document.getElementById("player-time-seek-progress"),
@@ -49,7 +49,7 @@ const audio = new Audio(),
     muteBtn = document.getElementById("player-volume-mute"),
     playerReady = (async () => {
         const getResource = (tag, attrs, parent) =>
-            new Promise((resolve) => {
+            new Promise(resolve => {
                 const element = Object.assign(document.createElement(tag), attrs);
                 element.onload = () => resolve(element);
                 parent.appendChild(element);
@@ -69,7 +69,8 @@ const audio = new Audio(),
     })();
 let volumeState = 1,
     trackIndex,
-    keyDown = {};
+    keyDown = {},
+    wakeLock = null;
 
 audio.volume = volumeState;
 volumeInput.value = volumeState;
@@ -140,18 +141,17 @@ function skip(direction) {
 }
 
 function mute() {
-    if (volumeInput.value < .05) {
+    if (volumeInput.value == 0) {
+        if (volumeState === 0) volumeState = .05;
         volume(volumeState);
         volumeInput.value = volumeState;
-    } else if (volumeInput.value >= .05) {
-        volumeState = volumeInput.value;
+    } else if (volumeInput.value > 0) {
         volume(0);
         volumeInput.value = 0;
     }
 }
 
 function volume(level) {
-    audio.volume = level;
     if (level < .05) {
         muteBtn.innerHTML = window.svg.speak0;
     } else if (level >= .05 && level < .40) {
@@ -161,11 +161,7 @@ function volume(level) {
     } else if (level >= .70) {
         muteBtn.innerHTML = window.svg.speak3;
     }
-}
-
-function predicate(e) { // left click only
-    if (e.button === 0) return true;
-    return false;
+    audio.volume = level;
 }
 
 function timeUpdate() {
@@ -187,25 +183,77 @@ function seekEvent(event) {
     audio.currentTime = (clickX / width) * audio.duration;
 }
 
+function predicate(e) { // left click only
+    if (e.button === 0) return true;
+    return false;
+}
+
+async function requestWakeLock() {
+    if (wakeLock) return;
+    wakeLock = await navigator.wakeLock.request("screen");
+    wakeLock.addEventListener("release", () => wakeLock = null);
+}
+
+function releaseWakeLock() {
+    if (wakeLock) {
+        wakeLock.release();
+        wakeLock = null;
+    }
+}
+
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === 'visible' && !wakeLock && !audio.paused) requestWakeLock();
+    else if (document.visibilityState === 'hidden' && wakeLock) releaseWakeLock();
+});
+
 document.addEventListener("keydown", (e) => {
     keyDown[e.key] = true;
     if (keyDown[" "]) {
+        e.preventDefault();
         audio.paused ? audio.play() : audio.pause();
-        if (e.target !== playerParent) e.preventDefault();
     }
-    if (keyDown["ArrowLeft"]) audio.currentTime -= 5;
-    if (keyDown["ArrowRight"]) audio.currentTime += 5;
+    if (keyDown["ArrowLeft"]) {
+        e.preventDefault();
+        audio.currentTime -= 5;
+    }
+    if (keyDown["ArrowRight"]) {
+        e.preventDefault();
+        audio.currentTime += 5;
+    }
+    if (keyDown["ArrowDown"]) {
+        e.preventDefault();
+        if (volumeInput.value > 0) {
+            volumeInput.value = (volumeState - .05).toFixed(2);
+            volumeState = +volumeInput.value;
+            volume(volumeInput.value);
+        }
+    }
+    if (keyDown["ArrowUp"]) {
+        e.preventDefault();
+        if (volumeInput.value < 1) {
+            volumeInput.value = (volumeState + .05).toFixed(2);
+            volumeState = +volumeInput.value;
+            volume(volumeInput.value);
+        }
+    }
+    if (keyDown["m"]) mute();
     if (keyDown["Control"] && keyDown["ArrowLeft"]) skip("prev");
     if (keyDown["Control"] && keyDown["ArrowRight"]) skip("next");
 });
 document.addEventListener("keyup", (e) => {delete keyDown[e.key];});
 
 playBtn.addEventListener("mouseup", (e) => {if (predicate(e)) audio.paused ? audio.play() : audio.pause()});
-audio.addEventListener("play", () => {playBtn.innerHTML = window.svg.pause});
-audio.addEventListener("pause", () => {playBtn.innerHTML = window.svg.play});
+audio.addEventListener("play", () => {
+    playBtn.innerHTML = window.svg.pause;
+    requestWakeLock();
+});
+audio.addEventListener("pause", () => {
+    playBtn.innerHTML = window.svg.play;
+    releaseWakeLock();
+});
 
 skipPrevBtn.addEventListener("mouseup", (e) => {if (predicate(e)) audio.currentTime = 0});
-skipPrevBtn.addEventListener("dblclick", (e) => {if (predicate(e)) {skip("prev")}});
+skipPrevBtn.addEventListener("dblclick", (e) => {if (predicate(e)) skip("prev")});
 skipNextBtn.addEventListener("mouseup", (e) => {if (predicate(e)) skip("next")});
 audio.addEventListener("ended", () => {skip("next")});
 
@@ -214,5 +262,5 @@ seekInput.addEventListener("click", (e) => {if (predicate(e)) seekEvent(e)});
 seekInput.addEventListener("touchstart", (e) => {if (predicate(e)) seekEvent(e)}, {passive: true});
 
 volumeInput.addEventListener("input", () => {volume(volumeInput.value)});
-volumeInput.addEventListener("mouseup", () => {if (volumeInput.value > 0) volumeState = volumeInput.value});
+volumeInput.addEventListener("mouseup", () => {if (volumeInput.value > 0) volumeState = +volumeInput.value});
 muteBtn.addEventListener("mouseup", (e) => {if (predicate(e)) mute()});
