@@ -152,15 +152,10 @@ function mute() {
 }
 
 function volume(level) {
-    if (level < .05) {
-        muteBtn.innerHTML = window.svg.speak0;
-    } else if (level >= .05 && level < .40) {
-        muteBtn.innerHTML = window.svg.speak1;
-    } else if (level >= .40 && level < .70) {
-        muteBtn.innerHTML = window.svg.speak2; 
-    } else if (level >= .70) {
-        muteBtn.innerHTML = window.svg.speak3;
-    }
+    if (level < .05) muteBtn.innerHTML = window.svg.speak0;
+    else if (level >= .05 && level < .40) muteBtn.innerHTML = window.svg.speak1;
+    else if (level >= .40 && level < .70) muteBtn.innerHTML = window.svg.speak2; 
+    else if (level >= .70) muteBtn.innerHTML = window.svg.speak3;
     audio.volume = level;
 }
 
@@ -236,9 +231,18 @@ document.addEventListener("keydown", (e) => {
             volume(volumeInput.value);
         }
     }
-    if (keyDown["m"]) mute();
-    if (keyDown["Control"] && keyDown["ArrowLeft"]) skip("prev");
-    if (keyDown["Control"] && keyDown["ArrowRight"]) skip("next");
+    if (keyDown["m"] || (keyDown["Control"] && keyDown["m"])) {
+        e.preventDefault();
+        mute();
+    }
+    if (keyDown["Control"] && keyDown["ArrowLeft"]) {
+        e.preventDefault();
+        skip("prev");
+    }
+    if (keyDown["Control"] && keyDown["ArrowRight"]) {
+        e.preventDefault();
+        skip("next");
+    }
 });
 document.addEventListener("keyup", (e) => {delete keyDown[e.key];});
 
