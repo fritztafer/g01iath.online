@@ -69,7 +69,6 @@ const audio = new Audio(),
     })();
 let volumeState = 1,
     trackIndex,
-    keyDown = {},
     wakeLock = null;
 
 audio.volume = volumeState;
@@ -159,6 +158,12 @@ function volume(level) {
     audio.volume = level;
 }
 
+function nudgeVolume(delta) {
+    volumeInput.value = Math.min(1, Math.max(0, +volumeInput.value + delta)).toFixed(2);
+    volumeState = +volumeInput.value;
+    volume(volumeInput.value);
+}
+
 function timeUpdate() {
     if (audio.duration) {
         const progressPercent = (audio.currentTime / audio.duration) * 100,
@@ -202,49 +207,36 @@ document.addEventListener("visibilitychange", () => {
 });
 
 document.addEventListener("keydown", (e) => {
-    keyDown[e.key] = true;
-    if (keyDown[" "]) {
-        e.preventDefault();
-        audio.paused ? audio.play() : audio.pause();
-    }
-    if (keyDown["ArrowLeft"]) {
-        e.preventDefault();
-        audio.currentTime -= 5;
-    }
-    if (keyDown["ArrowRight"]) {
-        e.preventDefault();
-        audio.currentTime += 5;
-    }
-    if (keyDown["ArrowDown"]) {
-        e.preventDefault();
-        if (volumeInput.value > 0) {
-            volumeInput.value = (volumeState - .05).toFixed(2);
-            volumeState = +volumeInput.value;
-            volume(volumeInput.value);
-        }
-    }
-    if (keyDown["ArrowUp"]) {
-        e.preventDefault();
-        if (volumeInput.value < 1) {
-            volumeInput.value = (volumeState + .05).toFixed(2);
-            volumeState = +volumeInput.value;
-            volume(volumeInput.value);
-        }
-    }
-    if (keyDown["m"] && !keyDown["Control"]) {
-        e.preventDefault();
-        mute();
-    }
-    if (keyDown["Control"] && keyDown["ArrowLeft"]) {
-        e.preventDefault();
-        skip("prev");
-    }
-    if (keyDown["Control"] && keyDown["ArrowRight"]) {
-        e.preventDefault();
-        skip("next");
+    switch (e.key) {
+        case " ":
+            e.preventDefault();
+            audio.paused ? audio.play() : audio.pause();
+            break;
+        case "ArrowLeft":
+            e.preventDefault();
+            e.ctrlKey ? skip("prev") : (audio.currentTime -= 5);
+            break;
+        case "ArrowRight":
+            e.preventDefault();
+            e.ctrlKey ? skip("next") : (audio.currentTime += 5);
+            break;
+        case "ArrowDown":
+            e.preventDefault();
+            nudgeVolume(-.05);
+            break;
+        case "ArrowUp":
+            e.preventDefault();
+            nudgeVolume(.05);
+            break;
+        case "m":
+        case "M":
+            if (!e.ctrlKey) {
+                e.preventDefault();
+                mute();
+            }
+            break;
     }
 });
-document.addEventListener("keyup", (e) => {delete keyDown[e.key];});
 
 playBtn.addEventListener("mouseup", (e) => {if (predicate(e)) audio.paused ? audio.play() : audio.pause()});
 audio.addEventListener("play", () => {
