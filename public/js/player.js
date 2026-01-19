@@ -231,7 +231,7 @@ document.addEventListener("keydown", (e) => {
             volume(volumeInput.value);
         }
     }
-    if (keyDown["m"] || (keyDown["Control"] && keyDown["m"])) {
+    if (keyDown["m"] && !keyDown["Control"]) {
         e.preventDefault();
         mute();
     }
