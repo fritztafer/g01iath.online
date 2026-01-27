@@ -251,6 +251,10 @@ audio.addEventListener("pause", () => {
 skipPrevBtn.addEventListener("mouseup", (e) => {if (predicate(e)) audio.currentTime = 0});
 skipPrevBtn.addEventListener("dblclick", (e) => {if (predicate(e)) skip("prev")});
 skipNextBtn.addEventListener("mouseup", (e) => {if (predicate(e)) skip("next")});
+if ("mediaSession" in navigator) {
+    navigator.mediaSession.setActionHandler('previoustrack', () => skip("prev"));
+    navigator.mediaSession.setActionHandler('nexttrack', () => skip("next"));
+}
 audio.addEventListener("ended", () => {skip("next")});
 
 audio.addEventListener("timeupdate", timeUpdate);
