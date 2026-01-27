@@ -241,7 +241,7 @@ document.addEventListener("keydown", (e) => {
 playBtn.addEventListener("mouseup", (e) => {if (predicate(e)) audio.paused ? audio.play() : audio.pause()});
 audio.addEventListener("play", () => {
     playBtn.innerHTML = window.svg.pause;
-    requestWakeLock();
+    if (document.visibilityState === 'visible') requestWakeLock();
 });
 audio.addEventListener("pause", () => {
     playBtn.innerHTML = window.svg.play;
