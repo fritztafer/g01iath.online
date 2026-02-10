@@ -145,9 +145,7 @@ img {
     border: none;
     position: fixed;
     cursor: pointer;
-    transition:
-        opacity calc(var(--time) / 4) ease,
-        visibility calc(var(--time) / 4) ease;
+    transition: opacity calc(var(--time) / 4) ease;
 }
 
 .scroll-top svg {
