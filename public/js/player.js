@@ -1,6 +1,5 @@
 document.body.appendChild(Object.assign(document.createElement("div"), {
     className: "player hidden",
-    style: "max-height: 0; overflow: hidden;",
     innerHTML: [
         '<div id="player-info-parent">',
             '<span id="player-info-text" class="player-item"></span>',
@@ -64,7 +63,6 @@ const audio = new Audio(),
                 src: "https://cdn.jsdelivr.net/npm/hls.js@1.6.13/dist/hls.min.js"
             }, document.body)
         ]);
-        playerParent.removeAttribute("style");
         playerParent.classList.remove("hidden");
     })();
 let volumeState = 1,

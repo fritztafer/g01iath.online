@@ -9,7 +9,7 @@ var galleryIndex = 0, // track which files loaded
         .catch(error => console.error(error));
 
 async function aesthetic() {
-    let parent = Object.assign(document.createElement("div"), {className: "aesthetic", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
+    let parent = Object.assign(document.createElement("div"), {className: "aesthetic hidden"}),
         colAmt = (() => {
             if (window.innerWidth >= 1280) return 4;
             if (window.innerWidth >= 960) return 3;

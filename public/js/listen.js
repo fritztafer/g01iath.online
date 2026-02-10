@@ -17,7 +17,7 @@ window.svg = window.svg ?? {
 };
 
 async function listen() {
-    const parent = Object.assign(document.createElement("div"), {className: "listen", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
+    const parent = Object.assign(document.createElement("div"), {className: "listen hidden"}),
         current = Object.assign(document.createElement("div"), {className: "listen-current", innerHTML: '<div class="pos0" style="font-size: 10em; pointer-events: none; -webkit-user-select: none; user-select: none;">♫</div>'}),
         playlist = Object.assign(document.createElement("div"), {className: "listen-playlist"}),
         infoText = document.getElementById("player-info-text");

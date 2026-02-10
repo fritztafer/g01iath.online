@@ -1,5 +1,5 @@
 async function socials() {
-    const parent = Object.assign(document.createElement("div"), {className: "socials", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
+    const parent = Object.assign(document.createElement("div"), {className: "socials hidden"}),
         children = {
             "Bandcamp": {
                 "href": "//fritztafer.bandcamp.com/",

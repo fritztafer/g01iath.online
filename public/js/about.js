@@ -1,5 +1,5 @@
 async function about() {
-    let parent = Object.assign(document.createElement("div"), {className: "about", style: "visibility: hidden; max-height: 0; overflow: hidden;"}),
+    let parent = Object.assign(document.createElement("div"), {className: "about hidden"}),
         aboutContact = Object.assign(document.createElement("div"), {
             className: "about-contact",
             innerHTML: `Contact: <a href="mailto:fritz@g01iath.online">fritz@g01iath.online</a>`
