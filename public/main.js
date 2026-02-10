@@ -115,7 +115,7 @@ window.onscroll = () => {
     if (!scrollTop && document.documentElement.scrollTop >= 100) {
         const button = Object.assign(document.createElement("button"), {
             className: "scroll-top",
-            style: "opacity: 0; visibility: hidden;",
+            style: "opacity: 0;",
             onclick: () => window.scrollTo({top: 0, behavior: "smooth"}),
             innerHTML: [
                 '<svg xmlns="http://www.w3.org/2000/svg" viewBox="6 0 12 24">',
@@ -126,7 +126,7 @@ window.onscroll = () => {
         document.body.appendChild(button);
         setTimeout(() => button.removeAttribute("style"), 0);
     } else if (scrollTop && document.documentElement.scrollTop < 100) {
-        scrollTop.style = "opacity: 0; visibility: hidden;";
+        scrollTop.style = "opacity: 0; pointer-events: none;";
         setTimeout(() => scrollTop.remove(), time / 4);
     }
 }
