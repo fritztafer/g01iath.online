@@ -19,7 +19,6 @@ document.body.append(
 );
 
 const time = 2501;
-let initialize = true;
 let transitioning;
 
 function run(content="socials") {
@@ -45,11 +44,10 @@ function run(content="socials") {
             const parent = await loadContent(content);
             document.querySelector("main").appendChild(parent);
 
-            if (initialize) {
+            if (current === null) {
                 transitionHandler(current, parent);
                 fadeGroup(document.querySelectorAll(".header-item-parent, .header-hr, .footer-item, main, #active"), "in");
                 setTimeout(() => {
-                    initialize = false;
                     transitioning = false;
                 }, time / 2);
             } else {
