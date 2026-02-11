@@ -46,7 +46,7 @@ function run(content="socials") {
             document.querySelector("main").appendChild(parent);
 
             if (initialize) {
-                transitionHandler(parent);
+                transitionHandler(current, parent);
                 fadeGroup(document.querySelectorAll(".header-item-parent, .header-hr, .footer-item, main, #active"), "in");
                 setTimeout(() => {
                     initialize = false;
@@ -55,7 +55,7 @@ function run(content="socials") {
             } else {
                 fadeGroup(document.querySelectorAll("main, #active"), "out");
                 setTimeout(() => {
-                    transitionHandler(parent);
+                    transitionHandler(current, parent);
                     fadeGroup(document.querySelectorAll("main, #active"), "in");
                 }, time / 2);
                 setTimeout(() => {
@@ -90,9 +90,8 @@ function fadeGroup(elements, type) {
     });
 }
 
-function transitionHandler(parent) {
-    const current = document.querySelector("main").firstElementChild;
-    if (parent.className !== current.className) current.remove();
+function transitionHandler(current, parent) {
+    if (current && parent.className !== current.className) current.remove();
     parent.classList.remove("hidden");
 
     Object.values(document.querySelectorAll(".header-item")).forEach(item => {
