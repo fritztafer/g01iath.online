@@ -89,17 +89,14 @@ function activateItem(item) {
         const btn = items[i].children[1];
 
         if (item === items[i]) {
-            btn.innerHTML = window.svg.pause;
+            const cover = Object.assign(document.createElement("img"), {className: "pos0", src: tracks[i].cover, alt: ""});
+            if (cover.src !== current.firstChild.src) current.replaceChild(cover, current.firstChild);
             items[i].classList.replace("inactive", "active");
-            current.replaceChild(Object.assign(document.createElement("img"), {
-                className: "pos0",
-                src: tracks[i].cover,
-                alt: ""
-            }), current.firstChild);
             items[i].children[3].textContent = time ?? "0:00";
+            btn.innerHTML = window.svg.pause;
         } else {
-            btn.innerHTML = window.svg.play;
             items[i].classList.replace("active", "inactive");
+            btn.innerHTML = window.svg.play;
         }
     }
 }
