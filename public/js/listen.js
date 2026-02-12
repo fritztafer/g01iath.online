@@ -69,7 +69,6 @@ async function listen() {
         }
 
         item.append(...children);
-
         playlist.appendChild(item);
     }
 
@@ -82,9 +81,9 @@ async function listen() {
 }
 
 function activateItem(item) {
-    const current = document.querySelector(".listen-current");
-    const items = document.getElementsByClassName("listen-item");
-    const time = document.querySelector("#player-time-total")?.textContent ?? null;
+    const current = document.querySelector(".listen-current"),
+        items = document.getElementsByClassName("listen-item"),
+        time = document.querySelector("#player-time-total")?.textContent ?? null;
 
     for (let i = 0; i < items.length; i++) {
         const btn = items[i].children[1];
