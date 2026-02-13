@@ -27,12 +27,16 @@
 }
 
 .player-item {
-    transition: opacity calc(var(--time) / 4) ease;
     opacity: 0;
+    visibility: hidden;
+    transition:
+        opacity calc(var(--time) / 4) ease,
+        visibility calc(var(--time) / 4);
 }
 
 .player:hover .player-item {
     opacity: 1;
+    visibility: visible;
 }
 
 #player-info-parent {
