@@ -60,7 +60,7 @@ const audio = new Audio(),
             }, document.head),
             audio.canPlayType("application/vnd.apple.mpegurl") ? Promise.resolve()
             : getResource("script", {
-                src: "https://cdn.jsdelivr.net/npm/hls.js@1.6.13/dist/hls.min.js"
+                src: `//${window.location.hostname}/js/hls.min.js`
             }, document.body)
         ]);
         playerParent.classList.remove("hidden");
