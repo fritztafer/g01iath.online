@@ -80,6 +80,31 @@ async function listen() {
     return parent;
 }
 
+function player(track) {
+    if (document.querySelector(".player")) return select(track);
+
+    document.body.append(Object.assign(document.createElement("script"), {
+        src: `//${window.location.hostname}/js/player.js`,
+        onload: () => select(track)
+    }));
+}
+
+function waitForPlayer() {
+    if (!document.querySelector(".player")) {
+        const target = document.body;
+        const tempObserver = new MutationObserver((_, observer) => {
+            const infoText = document.getElementById("player-info-text");
+            if (infoText) {
+                observeTitleMutation();
+                observePlayMutation();
+                observer.disconnect();
+            }
+        });
+
+        tempObserver.observe(target, {childList: true});
+    }
+}
+
 function activateItem(item) {
     const current = document.querySelector(".listen-current"),
         items = document.getElementsByClassName("listen-item"),
@@ -129,20 +154,4 @@ function observePlayMutation() {
     });
 
     playObserver.observe(playBtn, {childList: true});
-}
-
-function waitForPlayer() {
-    if (!document.querySelector(".player")) {
-        const target = document.body;
-        const tempObserver = new MutationObserver((_, observer) => {
-            const infoText = document.getElementById("player-info-text");
-            if (infoText) {
-                observeTitleMutation();
-                observePlayMutation();
-                observer.disconnect();
-            }
-        });
-
-        tempObserver.observe(target, {childList: true});
-    }
 }

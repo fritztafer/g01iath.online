@@ -99,15 +99,6 @@ function transitionHandler(current, parent) {
     });
 }
 
-function player(track) {
-    if (document.querySelector(".player")) return select(track);
-
-    document.body.append(Object.assign(document.createElement("script"), {
-        src: `//${window.location.hostname}/js/player.js`,
-        onload: () => select(track)
-    }));
-}
-
 window.onscroll = () => {
     const scrollTop = document.querySelector(".scroll-top");
     if (!scrollTop && document.documentElement.scrollTop >= 100) {
