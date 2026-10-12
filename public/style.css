@@ -226,6 +226,7 @@ img {
 a.socials-item {
     margin: auto;
     width: 64px;
+    aspect-ratio: 1 / 1;
     transition: transform calc(var(--time) / 12) ease;
     transform: scale(.87);
 }
