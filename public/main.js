@@ -43,6 +43,7 @@ function run(content="socials") {
             } else {
                 fadeGroup(document.querySelectorAll("main, #active"), "out");
                 setTimeout(() => {
+                    unloadCurrent(current);
                     transitionHandler(current, parent);
                     fadeGroup(document.querySelectorAll("main, #active"), "in");
                 }, time / 2);
@@ -54,29 +55,29 @@ function run(content="socials") {
     }));
 }
 
-function loadContent(content, current) {
-    if (current) {
-        document.head.querySelector(`script[src="//${window.location.hostname}/js/${current.className}.js"]`).remove();
-        switch (current.className) {
-            case "socials": break;
-            case "listen":
-                if (titleObserver) titleObserver.disconnect();
-                if (playObserver) playObserver.disconnect();
-                break;
-            case "aesthetic":
-                window.removeEventListener("resize", resizeHandler);
-                window.removeEventListener("scroll", scrollHandler);
-                break;
-            case "about": break;
-        }
-    }
-
+function loadContent(content) {
     switch (content) {
         case "socials": return socials();
         case "listen": return listen();
         case "aesthetic": return aesthetic();
         case "about": return about();
         default: return error();
+    }
+}
+
+function unloadCurrent(current) {
+    document.head.querySelector(`script[src="//${window.location.hostname}/js/${current.className}.js"]`).remove();
+    switch (current.className) {
+        case "socials": break;
+        case "listen":
+            if (titleObserver) titleObserver.disconnect();
+            if (playObserver) playObserver.disconnect();
+            break;
+        case "aesthetic":
+            window.removeEventListener("resize", resizeHandler);
+            window.removeEventListener("scroll", scrollHandler);
+            break;
+        case "about": break;
     }
 }
 
