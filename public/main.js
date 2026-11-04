@@ -27,21 +27,10 @@ function run(content="socials") {
     if (current && current.className === content) return;
     transitioning = true;
 
-    if (current) {
-        document.head.querySelector("script:nth-of-type(2)").remove();
-        if (current.className === "aesthetic") {
-            window.removeEventListener("resize", resizeHandler);
-            window.removeEventListener("scroll", scrollHandler);
-        } else if (current.className === "listen") {
-            if (titleObserver) titleObserver.disconnect();
-            if (playObserver) playObserver.disconnect();
-        }
-    }
-
     document.head.appendChild(Object.assign(document.createElement("script"), {
         src: `//${window.location.hostname}/js/${content}.js`,
         onload: async () => {
-            const parent = await loadContent(content);
+            const parent = await loadContent(content, current);
             document.querySelector("main").appendChild(parent);
 
             if (current === null) {
@@ -65,7 +54,23 @@ function run(content="socials") {
     }));
 }
 
-function loadContent(content) {
+function loadContent(content, current) {
+    if (current) {
+        document.head.querySelector("script:nth-of-type(2)").remove();
+        switch (current.className) {
+            case "socials": break;
+            case "listen":
+                if (titleObserver) titleObserver.disconnect();
+                if (playObserver) playObserver.disconnect();
+                break;
+            case "aesthetic":
+                window.removeEventListener("resize", resizeHandler);
+                window.removeEventListener("scroll", scrollHandler);
+                break;
+            case "about": break;
+        }
+    }
+
     switch (content) {
         case "socials": return socials();
         case "listen": return listen();
