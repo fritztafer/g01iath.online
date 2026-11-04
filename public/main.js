@@ -56,7 +56,7 @@ function run(content="socials") {
 
 function loadContent(content, current) {
     if (current) {
-        document.head.querySelector("script:nth-of-type(2)").remove();
+        document.head.querySelector(`script[src="//${window.location.hostname}/js/${current.className}.js"]`).remove();
         switch (current.className) {
             case "socials": break;
             case "listen":

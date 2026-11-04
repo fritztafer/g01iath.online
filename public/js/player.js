@@ -61,7 +61,7 @@ const audio = new Audio(),
             audio.canPlayType("application/vnd.apple.mpegurl") ? Promise.resolve()
             : getResource("script", {
                 src: `//${window.location.hostname}/js/hls.min.js`
-            }, document.body)
+            }, document.head)
         ]);
         playerParent.classList.remove("hidden");
     })();

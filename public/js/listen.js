@@ -83,7 +83,7 @@ async function listen() {
 function player(track) {
     if (document.querySelector(".player")) return select(track);
 
-    document.body.append(Object.assign(document.createElement("script"), {
+    document.head.append(Object.assign(document.createElement("script"), {
         src: `//${window.location.hostname}/js/player.js`,
         onload: () => select(track)
     }));
