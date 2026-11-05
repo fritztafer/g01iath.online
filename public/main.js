@@ -41,7 +41,7 @@ function run(content="socials") {
                 }, time / 2);
             } else {
                 fadeGroup(document.querySelectorAll("#active, main"), "out");
-                document.querySelector("#active").removeAttribute("id");
+                document.querySelector("#active")?.removeAttribute("id");
                 setTimeout(() => {
                     transitionHandler(parent, current);
                     fadeGroup(document.querySelectorAll("#active, main"), "in");
