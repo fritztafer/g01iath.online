@@ -30,12 +30,12 @@ function run(content="socials") {
     document.head.appendChild(Object.assign(document.createElement("script"), {
         src: `//${window.location.hostname}/js/${content}.js`,
         onload: async () => {
-            const parent = await loadContent(content, current);
+            const parent = await loadContent(content);
             document.querySelector("main").appendChild(parent);
 
             if (current === null) {
                 document.querySelectorAll(".header-item-parent, .header-hr, .footer-item").forEach(el => el.classList.remove("hidden"));
-                transitionHandler(current, parent);
+                transitionHandler(parent);
                 fadeGroup(document.querySelectorAll(".header-item-parent, .header-hr, .footer-item, main, #active"), "in");
                 setTimeout(() => {
                     transitioning = false;
@@ -43,8 +43,7 @@ function run(content="socials") {
             } else {
                 fadeGroup(document.querySelectorAll("main, #active"), "out");
                 setTimeout(() => {
-                    unloadCurrent(current);
-                    transitionHandler(current, parent);
+                    transitionHandler(parent, current);
                     fadeGroup(document.querySelectorAll("main, #active"), "in");
                 }, time / 2);
                 setTimeout(() => {
@@ -66,7 +65,6 @@ function loadContent(content) {
 }
 
 function unloadCurrent(current) {
-    document.head.querySelector(`script[src="//${window.location.hostname}/js/${current.className}.js"]`).remove();
     switch (current.className) {
         case "socials": break;
         case "listen":
@@ -79,6 +77,8 @@ function unloadCurrent(current) {
             break;
         case "about": break;
     }
+    document.head.querySelector(`script[src="//${window.location.hostname}/js/${current.className}.js"]`).remove();
+    current.remove();
 }
 
 function fadeGroup(elements, type) {
@@ -95,10 +95,9 @@ function fadeGroup(elements, type) {
     });
 }
 
-function transitionHandler(current, parent) {
-    if (current && parent.className !== current.className) current.remove();
+function transitionHandler(parent, current=null) {
+    if (current) unloadCurrent(current);
     parent.classList.remove("hidden");
-
     Object.values(document.querySelectorAll(".header-item")).forEach(item => {
         if (item.textContent.toLowerCase() === parent.className) item.id = "active";
         else item.removeAttribute("id");
