@@ -333,12 +333,11 @@ a.socials-item:hover img {
     height: auto;
     margin-bottom: 4px;
     display: block;
-    opacity: 0;
-    transition: opacity calc(var(--time) / 2) ease-in-out;
+    transition: opacity calc(var(--time) / 2) ease;
 }
 
-.aesthetic-item.loaded {
-    opacity: 1;
+.aesthetic-item.loading {
+    opacity: 0;
 }
 
 .aesthetic-item-quote {

@@ -34,16 +34,16 @@ async function loadItems(parent) {
                 .then(response => response.text())
                 .then(data => {
                     const [quoteText, personText] = data.split("\r\n");
-                    const item = Object.assign(document.createElement("div"), { className: "aesthetic-item" });
-                    const quote = Object.assign(document.createElement("div"), { className: "aesthetic-item-quote", innerHTML: quoteText });
-                    const person = Object.assign(document.createElement("div"), { className: "aesthetic-item-person", innerHTML: personText });
+                    const item = Object.assign(document.createElement("div"), {className: "aesthetic-item loading"});
+                    const quote = Object.assign(document.createElement("div"), {className: "aesthetic-item-quote", innerHTML: quoteText});
+                    const person = Object.assign(document.createElement("div"), {className: "aesthetic-item-person", innerHTML: personText});
                     item.append(quote, person);
                     renderItem(item, columns);
                 });
         } else {
             return new Promise(resolve => {
                 const item = Object.assign(document.createElement("img"), {
-                    className: "aesthetic-item",
+                    className: "aesthetic-item loading",
                     src: `//${window.location.hostname}/gallery/${filename}`,
                     alt: "",
                     onload: () => {
@@ -62,7 +62,7 @@ function renderItem(file, columns) {
     let lengths = Array.from(columns).map(col => col.offsetHeight),
         column = lengths.indexOf(Math.min(...lengths));
     columns[column].appendChild(file);
-    setTimeout(() => file.classList.add("loaded"), 100); // timeout for animation
+    setTimeout(() => file.classList.remove("loading"), 100); // timeout for animation
 }
 
 function adoptItems(colAmt) {
