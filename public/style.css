@@ -43,6 +43,11 @@ body::before {
     animation: fadeIn calc(var(--time) / 2) forwards;
 }
 
+@keyframes fadeIn {
+    0%   {opacity: 0;}
+    100% {opacity: 1;}
+}
+
 header {
     width: 100%;
     height: auto;
@@ -105,6 +110,7 @@ img {
     height: 0;
     border-top: 1px var(--color) solid;
     transition:
+        border-top calc(var(--time) / 2) ease,
         width calc(var(--time) / 3) ease,
         left calc(var(--time) / 3) ease;
 }
@@ -116,6 +122,14 @@ img {
 
 .header-item:active::after {
     border-top: 1px #ffffff solid;
+}
+
+#active {
+    color: var(--active-color);
+}
+
+#active::after {
+    border-top: 1px var(--active-color) solid;
 }
 
 .header-hr {
@@ -159,60 +173,6 @@ img {
 
 .scroll-top:active {
     color: #ffffff;
-}
-
-.fade-in {
-    animation: fadeIn calc(var(--time) / 2) forwards;
-}
-
-.fade-out {
-    animation: fadeOut calc(var(--time) / 2) forwards;
-}
-
-@keyframes fadeIn {
-    0%   {opacity: 0;}
-    100% {opacity: 1;}
-}
-
-@keyframes fadeOut {
-    0%   {opacity: 1;}
-    100% {opacity: 0;}
-}
-
-.active-in {
-    animation: activeIn calc(var(--time) / 2) forwards;
-}
-
-.active-out {
-    animation: activeOut calc(var(--time) / 2);
-}
-
-@keyframes activeIn {
-    0%   {color: var(--color);}
-    100% {color: var(--active-color);}
-}
-
-@keyframes activeOut {
-    0%   {color: var(--active-color);}
-    100% {color: var(--color);}
-}
-
-.active-in::after {
-    animation: activeInAfter calc(var(--time) / 2) forwards;
-}
-
-.active-out::after {
-    animation: activeOutAfter calc(var(--time) / 2);
-}
-
-@keyframes activeInAfter {
-    0%   {border-top: 1px var(--color) solid;}
-    100% {border-top: 1px var(--active-color) solid;}
-}
-
-@keyframes activeOutAfter {
-    0%   {border-top: 1px var(--active-color) solid;}
-    100% {border-top: 1px var(--color) solid;}
 }
 
 .socials {
@@ -421,7 +381,7 @@ a.socials-item:hover img {
 }
 
 .active {
-     color: var(--active-color) !important; 
+    color: var(--active-color) !important;
 }
 
 .hidden {

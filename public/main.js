@@ -3,18 +3,18 @@ document.body.append(
     Object.assign(document.createElement("header"), {
         innerHTML: [
             '<div class="title">GØ1IATH</div>',
-            '<div class="header-item-parent hidden">',
+            '<div class="header-item-parent" style="opacity: 0;">',
                 '<a class="header-item" href="javascript:" onclick="run(\'socials\')">SOCIALS</a>',
                 '<a class="header-item" href="javascript:" onclick="run(\'listen\')">LISTEN</a>',
                 '<a class="header-item" href="javascript:" onclick="run(\'aesthetic\')">AESTHETIC</a>',
                 '<a class="header-item" href="javascript:" onclick="run(\'about\')">ABOUT</a>',
             '</div>',
-            '<hr class="header-hr hidden">'
+            '<hr class="header-hr" style="opacity: 0;">'
         ].join('')
     }),
-    document.createElement("main"),
+    Object.assign(document.createElement("main"), {style: "opacity: 0;"}),
     Object.assign(document.createElement("footer"), {
-        innerHTML: '<div class="footer-item hidden">//G01IATH.ONLINE/2026/</div>'
+        innerHTML: '<div class="footer-item" style="opacity: 0;">//G01IATH.ONLINE/2026/</div>'
     })
 );
 
@@ -34,17 +34,17 @@ function run(content="socials") {
             document.querySelector("main").appendChild(parent);
 
             if (current === null) {
-                document.querySelectorAll(".header-item-parent, .header-hr, .footer-item").forEach(el => el.classList.remove("hidden"));
                 transitionHandler(parent);
-                fadeGroup(document.querySelectorAll(".header-item-parent, .header-hr, .footer-item, main, #active"), "in");
+                fadeGroup(document.querySelectorAll(".header-item-parent, .header-hr, .footer-item, #active, main"), "in");
                 setTimeout(() => {
                     transitioning = false;
                 }, time / 2);
             } else {
-                fadeGroup(document.querySelectorAll("main, #active"), "out");
+                fadeGroup(document.querySelectorAll("#active, main"), "out");
+                document.querySelector("#active").removeAttribute("id");
                 setTimeout(() => {
                     transitionHandler(parent, current);
-                    fadeGroup(document.querySelectorAll("main, #active"), "in");
+                    fadeGroup(document.querySelectorAll("#active, main"), "in");
                 }, time / 2);
                 setTimeout(() => {
                     transitioning = false;
@@ -83,24 +83,33 @@ function unloadCurrent(current) {
 
 function fadeGroup(elements, type) {
     elements.forEach(el => {
-        const outClass = el.id === "active" ? "active-out" : "fade-out",
-            inClass = el.id === "active" ? "active-in" : "fade-in";
-        if (type === "out") {
-            el.classList.remove(inClass);
-            el.classList.add(outClass);
-        } else if (type === "in") {
-            el.classList.remove(outClass);
-            el.classList.add(inClass);
+        switch (type) {
+            case "out":
+                el.setAttribute("style", el.id === "active" ?
+                    "color: var(--color); transition: color calc(var(--time) / 2) ease;" :
+                    "opacity: 0; transition: opacity calc(var(--time) / 2) ease;"
+                );
+                break;
+            case "in":
+                el.setAttribute("style", el.id === "active" ?
+                    "transition: color calc(var(--time) / 2) ease;" :
+                    "transition: opacity calc(var(--time) / 2) ease;"
+                );
+                break;
         }
+        setTimeout(() => {
+            el.removeAttribute("style");
+        }, time / 2);
     });
 }
 
 function transitionHandler(parent, current=null) {
     if (current) unloadCurrent(current);
     parent.classList.remove("hidden");
-    Object.values(document.querySelectorAll(".header-item")).forEach(item => {
-        if (item.textContent.toLowerCase() === parent.className) item.id = "active";
-        else item.removeAttribute("id");
+    document.querySelectorAll(".header-item").forEach(item => {
+        if (item.textContent.toLowerCase() === parent.className) {
+            item.setAttribute("id", "active");
+        }
     });
 }
 
