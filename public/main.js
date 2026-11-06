@@ -106,10 +106,9 @@ function fadeGroup(elements, type) {
 function transitionHandler(parent, current=null) {
     if (current) unloadCurrent(current);
     parent.classList.remove("hidden");
+
     document.querySelectorAll(".header-item").forEach(item => {
-        if (item.textContent.toLowerCase() === parent.className) {
-            item.setAttribute("id", "active");
-        }
+        if (item.textContent.toLowerCase() === parent.className) item.setAttribute("id", "active");
     });
 }
 
@@ -133,3 +132,10 @@ window.onscroll = () => {
         setTimeout(() => scrollTop.remove(), time / 4);
     }
 }
+
+window.addEventListener("load", () => {
+    const bg = document.createElement("link");
+    bg.href = `//${window.location.hostname}/css/bg.css`;
+    bg.rel = "stylesheet";
+    document.head.appendChild(bg);
+}, {once: true});

@@ -28,26 +28,6 @@ body.dark-mode {
     background-color: #000000;
 }
 
-body::before {
-    content: "";
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    background:
-        linear-gradient(to bottom, #000000a6 0px, #000000 90vh),
-        url("img/bg.jpg");
-    background-size: cover;
-    background-position: top;
-    background-repeat: no-repeat;
-    z-index: -1;
-    animation: fadeIn calc(var(--time) / 2) forwards;
-}
-
-@keyframes fadeIn {
-    0%   {opacity: 0;}
-    100% {opacity: 1;}
-}
-
 header {
     width: 100%;
     height: auto;
