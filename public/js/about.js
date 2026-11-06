@@ -6,11 +6,11 @@ async function about() {
         }),
         aboutImage = Object.assign(document.createElement("div"), {
             className: "about-image",
-            innerHTML: `<img src="//${window.location.hostname}/img/2011.jpg" alt="16 year old fritz" style="height: auto; width: 300px; filter: invert(1);">`
+            innerHTML: `<img src="//${window.location.hostname}/img/2011.jpg" alt="16 year old fritz">`
         }),
         aboutBio = Object.assign(document.createElement("div"), {
             className: "about-bio",
-            innerHTML: `<div style="font-size: 36px; line-height: 1; letter-spacing: 24px; margin-right: -24px; margin-bottom: 24px;">GØ1IATH</div>`
+            innerHTML: "<div>GØ1IATH</div>"
         }),
         children = [aboutContact, aboutImage, aboutBio];
 

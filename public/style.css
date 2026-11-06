@@ -349,9 +349,23 @@ a.socials-item:hover img {
     margin: auto;
 }
 
+.about-image img {
+    height: auto;
+    width: 300px;
+    filter: invert(1);
+}
+
 .about-bio {
     text-align: center;
     margin: auto;
+}
+
+.about-bio div {
+    font-size: 36px;
+    line-height: 1;
+    letter-spacing: 24px;
+    margin-right: -24px;
+    margin-bottom: 24px;
 }
 
 .active {
