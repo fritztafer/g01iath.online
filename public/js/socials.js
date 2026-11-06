@@ -23,10 +23,16 @@ async function socials() {
         const a = Object.assign(document.createElement("a"), {
             className: "socials-item",
             target: "_blank",
-            href: children[child].href,
-            innerHTML: `<img src="//${window.location.hostname}/img/${children[child].img}.png" alt="${child}">`
+            href: children[child].href
         });
-        parent.append(a);
+        const img = Object.assign(document.createElement("img"), {
+            className: "loading",
+            src: `//${window.location.hostname}/img/${children[child].img}.png`,
+            alt: child,
+            onload: () => setTimeout(() => img.removeAttribute("class"), 100) // timeout for animation
+        });
+        a.appendChild(img);
+        parent.appendChild(a);
     }
 
     return parent;

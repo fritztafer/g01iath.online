@@ -187,8 +187,8 @@ a.socials-item {
     margin: auto;
     width: 64px;
     aspect-ratio: 1 / 1;
-    transition: transform calc(var(--time) / 12) ease;
     transform: scale(.87);
+    transition: transform calc(var(--time) / 12) ease;
 }
 
 a.socials-item:hover {
@@ -199,8 +199,10 @@ a.socials-item img {
     width: 100%;
     height: auto;
     display: block;
-    transition: filter calc(var(--time) / 12) ease;
     filter: drop-shadow(0 0 0.25rem #000000);
+    transition:
+        filter calc(var(--time) / 12) ease,
+        opacity calc(var(--time) / 2) ease;
 }
 
 a.socials-item:hover img {
@@ -336,10 +338,6 @@ a.socials-item:hover img {
     transition: opacity calc(var(--time) / 2) ease;
 }
 
-.aesthetic-item.loading {
-    opacity: 0;
-}
-
 .aesthetic-item-quote {
     text-align: center;
     margin: 16px;
@@ -381,6 +379,10 @@ a.socials-item:hover img {
 
 .active {
     color: var(--active-color) !important;
+}
+
+.loading {
+    opacity: 0;
 }
 
 .hidden {
