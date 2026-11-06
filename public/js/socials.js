@@ -24,8 +24,8 @@ async function socials() {
             className: "socials-item",
             target: "_blank",
             href: children[child].href
-        });
-        const img = Object.assign(document.createElement("img"), {
+        }),
+        img = Object.assign(document.createElement("img"), {
             className: "loading",
             src: `//${window.location.hostname}/img/${children[child].img}.png`,
             alt: child,
