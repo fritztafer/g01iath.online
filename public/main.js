@@ -3,18 +3,18 @@ document.body.append(
     Object.assign(document.createElement("header"), {
         innerHTML: [
             '<div class="title">GØ1IATH</div>',
-            '<div class="header-item-parent" style="opacity: 0;">',
+            '<div class="header-item-parent">',
                 '<a class="header-item" href="javascript:" onclick="run(\'socials\')">SOCIALS</a>',
                 '<a class="header-item" href="javascript:" onclick="run(\'listen\')">LISTEN</a>',
                 '<a class="header-item" href="javascript:" onclick="run(\'aesthetic\')">AESTHETIC</a>',
                 '<a class="header-item" href="javascript:" onclick="run(\'about\')">ABOUT</a>',
             '</div>',
-            '<hr class="header-hr" style="opacity: 0;">'
+            '<hr class="header-hr">'
         ].join('')
     }),
-    Object.assign(document.createElement("main"), {style: "opacity: 0;"}),
+    document.createElement("main"),
     Object.assign(document.createElement("footer"), {
-        innerHTML: '<div class="footer-item" style="opacity: 0;">//G01IATH.ONLINE/2026/</div>'
+        innerHTML: '<div class="footer-item"">//G01IATH.ONLINE/2026/</div>'
     })
 );
 
@@ -36,9 +36,7 @@ function run(content="socials") {
             if (current === null) {
                 transitionHandler(parent);
                 fadeGroup(document.querySelectorAll(".header-item-parent, .header-hr, .footer-item, #active, main"), "in");
-                setTimeout(() => {
-                    transitioning = false;
-                }, time / 2);
+                setTimeout(() => transitioning = false, time / 2);
             } else {
                 fadeGroup(document.querySelectorAll("#active, main"), "out");
                 document.querySelector("#active")?.removeAttribute("id");
@@ -46,9 +44,7 @@ function run(content="socials") {
                     transitionHandler(parent, current);
                     fadeGroup(document.querySelectorAll("#active, main"), "in");
                 }, time / 2);
-                setTimeout(() => {
-                    transitioning = false;
-                }, time);
+                setTimeout(() => transitioning = false, time);
             }
         }
     }));
@@ -87,13 +83,13 @@ function fadeGroup(elements, type) {
             case "out":
                 el.setAttribute("style", el.id === "active" ?
                     "color: var(--color); transition: color calc(var(--time) / 2) ease;" :
-                    "opacity: 0; transition: opacity calc(var(--time) / 2) ease;"
+                    "animation: fadeOut calc(var(--time) / 2) forwards;"
                 );
                 break;
             case "in":
                 el.setAttribute("style", el.id === "active" ?
                     "transition: color calc(var(--time) / 2) ease;" :
-                    "transition: opacity calc(var(--time) / 2) ease;"
+                    "animation: fadeIn calc(var(--time) / 2) forwards;"
                 );
                 break;
         }
