@@ -41,8 +41,8 @@ function run(content="socials") {
                     const footer = document.querySelector(".footer-item");
                     footer.removeAttribute("style");
                     fadeGroup([footer], "in");
-                    transitioning = false;
-                }, time / 2);
+                }, 840);
+                setTimeout(() => transitioning = false, time / 2);
             } else {
                 fadeGroup(document.querySelectorAll("#active, main"), "out");
                 document.querySelector("#active")?.removeAttribute("id");
