@@ -31,7 +31,7 @@ async function socials() {
             className: "loading",
             src: `//${window.location.hostname}/img/${children[child].img}.png`,
             alt: child,
-            onload: () => setTimeout(() => img.removeAttribute("class"), delay) // timeout for animation
+            onload: () => setTimeout(() => img.removeAttribute("class"), delay)
         });
         cascade += 100;
         a.appendChild(img);
