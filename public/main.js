@@ -14,7 +14,7 @@ document.body.append(
     }),
     document.createElement("main"),
     Object.assign(document.createElement("footer"), {
-        innerHTML: '<div class="footer-item hidden">//G01IATH.ONLINE/2026/</div>'
+        innerHTML: '<div class="footer-item hidden" style="opacity: 0;">//G01IATH.ONLINE/2026/</div>'
     })
 );
 
@@ -34,10 +34,15 @@ function run(content="socials") {
             document.querySelector("main").appendChild(parent);
 
             if (current === null) {
-                transitionHandler(parent);
-                fadeGroup(document.querySelectorAll(".header-item-parent, .header-hr, .footer-item, #active, main"), "in");
                 document.querySelectorAll(".header-item-parent, .header-hr, .footer-item").forEach(el => el.classList.remove("hidden"));
-                setTimeout(() => transitioning = false, time / 2);
+                transitionHandler(parent);
+                fadeGroup(document.querySelectorAll(".header-item-parent, .header-hr, #active, main"), "in");
+                setTimeout(() => {
+                    const footer = document.querySelector(".footer-item");
+                    footer.removeAttribute("style");
+                    fadeGroup([footer], "in");
+                    transitioning = false;
+                }, time / 2);
             } else {
                 fadeGroup(document.querySelectorAll("#active, main"), "out");
                 document.querySelector("#active")?.removeAttribute("id");
