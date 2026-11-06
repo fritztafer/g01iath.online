@@ -3,18 +3,18 @@ document.body.append(
     Object.assign(document.createElement("header"), {
         innerHTML: [
             '<div class="title">GØ1IATH</div>',
-            '<div class="header-item-parent">',
+            '<div class="header-item-parent hidden">',
                 '<a class="header-item" href="javascript:" onclick="run(\'socials\')">SOCIALS</a>',
                 '<a class="header-item" href="javascript:" onclick="run(\'listen\')">LISTEN</a>',
                 '<a class="header-item" href="javascript:" onclick="run(\'aesthetic\')">AESTHETIC</a>',
                 '<a class="header-item" href="javascript:" onclick="run(\'about\')">ABOUT</a>',
             '</div>',
-            '<hr class="header-hr">'
+            '<hr class="header-hr hidden">'
         ].join('')
     }),
     document.createElement("main"),
     Object.assign(document.createElement("footer"), {
-        innerHTML: '<div class="footer-item"">//G01IATH.ONLINE/2026/</div>'
+        innerHTML: '<div class="footer-item hidden">//G01IATH.ONLINE/2026/</div>'
     })
 );
 
@@ -36,6 +36,7 @@ function run(content="socials") {
             if (current === null) {
                 transitionHandler(parent);
                 fadeGroup(document.querySelectorAll(".header-item-parent, .header-hr, .footer-item, #active, main"), "in");
+                document.querySelectorAll(".header-item-parent, .header-hr, .footer-item").forEach(el => el.classList.remove("hidden"));
                 setTimeout(() => transitioning = false, time / 2);
             } else {
                 fadeGroup(document.querySelectorAll("#active, main"), "out");
