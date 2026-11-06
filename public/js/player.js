@@ -102,8 +102,7 @@ function load(track) {
     playBtn.classList.add('pulse');
     playBtn.addEventListener('animationend', function removePulse() {
         playBtn.classList.remove('pulse');
-        playBtn.removeEventListener('animationend', removePulse);
-    });
+    }, {once: true});
 
     audio.addEventListener("loadedmetadata", function getMetaData() {
         const totalMinutes = Math.floor(audio.duration / 60),
@@ -118,8 +117,7 @@ function load(track) {
                 artwork: [{src: track.cover}]
             });
         }
-        audio.removeEventListener("loadedmetadata", getMetaData);
-    });
+    }, {once: true});
 }
 
 function skip(direction) {
