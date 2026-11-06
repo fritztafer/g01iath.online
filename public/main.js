@@ -131,8 +131,8 @@ window.onscroll = () => {
 }
 
 window.addEventListener("load", () => {
-    const bg = document.createElement("link");
-    bg.href = `//${window.location.hostname}/css/bg.css`;
-    bg.rel = "stylesheet";
-    document.head.appendChild(bg);
+    document.head.appendChild(Object.assign(document.createElement("link"), {
+        href: `//${window.location.hostname}/css/bg.css`,
+        rel: "stylesheet"
+    }));
 }, {once: true});
