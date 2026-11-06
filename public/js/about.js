@@ -6,7 +6,7 @@ async function about() {
         }),
         aboutImage = Object.assign(document.createElement("div"), {
             className: "about-image",
-            innerHTML: `<img src="//${window.location.hostname}/img/2011.jpg" alt="16 year old fritz" style="height: auto; width: 300px;">`
+            innerHTML: `<img src="//${window.location.hostname}/img/2011.jpg" alt="16 year old fritz" style="height: auto; width: 300px; filter: invert(1);">`
         }),
         aboutBio = Object.assign(document.createElement("div"), {
             className: "about-bio",
