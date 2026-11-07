@@ -101,11 +101,7 @@ img {
     border-top: 1px #ffffff solid;
 }
 
-#active {
-    color: var(--active-color);
-}
-
-#active::after {
+.header-item.active::after {
     border-top: 1px var(--active-color) solid;
 }
 
@@ -122,8 +118,9 @@ img {
 
 .footer-item {
     width: fit-content;
-    font-size: 1em;
     margin: 0 auto;
+    font-size: 1em;
+    color: var(--dark-color);
 }
 
 .scroll-top {
