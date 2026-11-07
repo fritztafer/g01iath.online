@@ -2,6 +2,8 @@
     --color: #bebebe;
     --dark-color: #42484b;
     --active-color: #be5c5c;
+    --font-serif: "Times New Roman", Times, serif;
+    --font-sans-serif: "Helvetica Neue", Helvetica, sans-serif;
     --time: 2501ms;
 }
 
@@ -16,7 +18,7 @@ html, body {
 body {
     background-color: #000000;
     color: var(--color);
-    font-family: "Times New Roman", Times, serif;
+    font-family: var(--font-sans-serif);
     font-size: 1em;
     line-height: 1.5;
     text-shadow: 0 0 1em #000000;
@@ -55,8 +57,9 @@ img {
 }
 
 .title {
-    text-align: center;
+    font-family: var(--font-serif);
     font-size: 3em;
+    text-align: center;
     letter-spacing: 36px;
     margin-right: -36px;
     padding-bottom: 2px;
@@ -125,7 +128,7 @@ img {
 
 .scroll-top {
     width: 24px;
-    height: 48px;
+    aspect-ratio: 1 / 2;
     background-color: transparent;
     color: var(--dark-color);
     bottom: 16px;
@@ -327,9 +330,12 @@ img {
 }
 
 .aesthetic-item-person {
+    font-family: var(--font-serif);
     font-weight: bold;
     text-align: center;
-    margin: 16px;
+    width: fit-content;
+    max-width: 100%;
+    margin: 16px auto;
     padding-bottom: 48px;
     border-bottom: 1px var(--dark-color) solid;
 }
@@ -359,6 +365,7 @@ img {
 }
 
 .about-bio {
+    font-family: var(--font-serif);
     text-align: center;
     margin: auto;
 }
@@ -416,7 +423,6 @@ img {
 
     .scroll-top {
         width: 20px;
-        height: 40px;
         bottom: 4px;
         right: 4px;
     }
