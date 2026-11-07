@@ -40,7 +40,7 @@ function run(content="socials") {
                     const footer = document.querySelector(".footer-item");
                     footer.removeAttribute("style");
                     fadeGroup([footer], "in");
-                }, 840);
+                }, 940);
                 setTimeout(() => transitioning = false, time / 2);
             } else {
                 fadeGroup(document.querySelectorAll("#active, main"), "out");
