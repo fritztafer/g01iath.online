@@ -10,5 +10,5 @@ body::before {
     background-position: top;
     background-repeat: no-repeat;
     z-index: -1;
-    animation: fadeIn calc(var(--time) / 2) forwards;
+    animation: fadeIn var(--time) forwards;
 }
