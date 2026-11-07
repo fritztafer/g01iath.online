@@ -83,12 +83,12 @@ function fadeGroup(elements, type) {
         const activeFade = el.className === "header-item active";
         el.setAttribute("style", (() => {
             if (type === "out")
-                return activeFade?
-                    "color: var(--color); transition: color calc(var(--time) / 2) ease;":
+                return activeFade ?
+                    "color: var(--color); transition: color calc(var(--time) / 2) ease;" :
                     "animation: fadeOut calc(var(--time) / 2) forwards;";
             if (type === "in")
-                return activeFade?
-                    "transition: color calc(var(--time) / 2) ease;":
+                return activeFade ?
+                    "transition: color calc(var(--time) / 2) ease;" :
                     "animation: fadeIn calc(var(--time) / 2) forwards;";
         })());
         setTimeout(() => {
