@@ -35,7 +35,7 @@ function run(content="socials") {
             if (current === null) {
                 document.querySelectorAll(".header-item-parent, .header-hr, .footer-item").forEach(el => el.classList.remove("hidden"));
                 transitionHandler(parent);
-                fadeGroup(document.querySelectorAll(".header-item-parent, .header-hr, #active, main"), "in");
+                fadeGroup(document.querySelectorAll(".header-item-parent, .header-hr, .header-item.active, main"), "in");
                 setTimeout(() => {
                     const footer = document.querySelector(".footer-item");
                     footer.removeAttribute("style");
@@ -43,11 +43,11 @@ function run(content="socials") {
                 }, 940);
                 setTimeout(() => transitioning = false, time / 2);
             } else {
-                fadeGroup(document.querySelectorAll("#active, main"), "out");
-                document.querySelector("#active")?.removeAttribute("id");
+                fadeGroup(document.querySelectorAll(".header-item.active, main"), "out");
+                document.querySelector(".header-item.active").classList.remove("active");
                 setTimeout(() => {
                     transitionHandler(parent, current);
-                    fadeGroup(document.querySelectorAll("#active, main"), "in");
+                    fadeGroup(document.querySelectorAll(".header-item.active, main"), "in");
                 }, time / 2);
                 setTimeout(() => transitioning = false, time);
             }
@@ -86,13 +86,13 @@ function fadeGroup(elements, type) {
     elements.forEach(el => {
         switch (type) {
             case "out":
-                el.setAttribute("style", el.id === "active" ?
+                el.setAttribute("style", el.className === "header-item active" ?
                     "color: var(--color); transition: color calc(var(--time) / 2) ease;" :
                     "animation: fadeOut calc(var(--time) / 2) forwards;"
                 );
                 break;
             case "in":
-                el.setAttribute("style", el.id === "active" ?
+                el.setAttribute("style", el.className === "header-item active" ?
                     "transition: color calc(var(--time) / 2) ease;" :
                     "animation: fadeIn calc(var(--time) / 2) forwards;"
                 );
@@ -109,7 +109,7 @@ function transitionHandler(parent, current=null) {
     parent.classList.remove("hidden");
 
     document.querySelectorAll(".header-item").forEach(item => {
-        if (item.textContent.toLowerCase() === parent.className) item.setAttribute("id", "active");
+        if (item.textContent.toLowerCase() === parent.className) item.classList.add("active");
     });
 }
 
