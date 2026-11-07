@@ -36,11 +36,7 @@ function run(content="socials") {
                 document.querySelectorAll(".header-item-parent, .header-hr, .footer-item").forEach(el => el.classList.remove("hidden"));
                 transitionHandler(parent);
                 fadeGroup(document.querySelectorAll(".header-item-parent, .header-hr, .header-item.active, main"), "in");
-                setTimeout(() => {
-                    const footer = document.querySelector(".footer-item");
-                    footer.removeAttribute("style");
-                    fadeGroup([footer], "in");
-                }, 940);
+                setTimeout(() => fadeGroup([document.querySelector(".footer-item")], "in"), 940);
                 setTimeout(() => transitioning = false, time / 2);
             } else {
                 fadeGroup(document.querySelectorAll(".header-item.active, main"), "out");
@@ -84,20 +80,17 @@ function unloadCurrent(current) {
 
 function fadeGroup(elements, type) {
     elements.forEach(el => {
-        switch (type) {
-            case "out":
-                el.setAttribute("style", el.className === "header-item active" ?
-                    "color: var(--color); transition: color calc(var(--time) / 2) ease;" :
-                    "animation: fadeOut calc(var(--time) / 2) forwards;"
-                );
-                break;
-            case "in":
-                el.setAttribute("style", el.className === "header-item active" ?
-                    "transition: color calc(var(--time) / 2) ease;" :
-                    "animation: fadeIn calc(var(--time) / 2) forwards;"
-                );
-                break;
-        }
+        const activeFade = el.className === "header-item active";
+        el.setAttribute("style", (() => {
+            if (type === "out")
+                return activeFade?
+                    "color: var(--color); transition: color calc(var(--time) / 2) ease;":
+                    "animation: fadeOut calc(var(--time) / 2) forwards;";
+            if (type === "in")
+                return activeFade?
+                    "transition: color calc(var(--time) / 2) ease;":
+                    "animation: fadeIn calc(var(--time) / 2) forwards;";
+        })());
         setTimeout(() => {
             el.removeAttribute("style");
         }, time / 2);
