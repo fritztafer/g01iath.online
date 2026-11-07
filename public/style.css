@@ -161,29 +161,34 @@ img {
     grid-template-rows: auto;
 }
 
-a.socials-item {
+.socials-item {
     margin: auto;
     width: 64px;
     aspect-ratio: 1 / 1;
     transform: scale(.87);
-    transition: transform calc(var(--time) / 12) ease;
+    color: var(--color);
+    transition:
+        transform calc(var(--time) / 12) ease,
+        opacity calc(var(--time) / 2) ease;
 }
 
-a.socials-item:hover {
+.socials-item:hover {
     transform: scale(1);
 }
 
-a.socials-item img {
+.socials-item:active {
+    color: #ffffff;
+}
+
+.socials-item svg {
     width: 100%;
     height: auto;
     display: block;
     filter: drop-shadow(0 0 0.25rem #000000);
-    transition:
-        filter calc(var(--time) / 12) ease,
-        opacity calc(var(--time) / 2) ease;
+    transition: filter calc(var(--time) / 12) ease;
 }
 
-a.socials-item:hover img {
+.socials-item svg:hover {
     filter: drop-shadow(0 0 0.33rem var(--dark-color));
 }
 
@@ -419,7 +424,7 @@ a.socials-item:hover img {
         right: 4px;
     }
 
-    a.socials-item {
+    .socials-item {
         width: 48px;
     }
 }
