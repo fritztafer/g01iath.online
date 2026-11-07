@@ -181,8 +181,8 @@ img {
 }
 
 .socials-item svg {
-    width: 100%;
-    height: auto;
+    width: inherit;
+    height: inherit;
     display: block;
     filter: drop-shadow(0 0 0.25rem #000000);
     transition: filter calc(var(--time) / 12) ease;
