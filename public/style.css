@@ -322,6 +322,7 @@ img {
 }
 
 .aesthetic-item-quote {
+    font-family: var(--font-serif);
     text-align: center;
     margin: 16px;
     margin-bottom: 32px;
