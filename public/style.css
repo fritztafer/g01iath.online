@@ -18,7 +18,7 @@ html, body {
 body {
     background-color: #000000;
     color: var(--color);
-    font-family: var(--font-sans-serif);
+    font-family: var(--font-serif);
     font-size: 1em;
     line-height: 1.5;
     text-shadow: 0 0 1em #000000;
@@ -57,7 +57,6 @@ img {
 }
 
 .title {
-    font-family: var(--font-serif);
     font-size: 3em;
     text-align: center;
     letter-spacing: 36px;
@@ -322,7 +321,6 @@ img {
 }
 
 .aesthetic-item-quote {
-    font-family: var(--font-serif);
     text-align: center;
     margin: 16px;
     margin-bottom: 32px;
@@ -331,7 +329,6 @@ img {
 }
 
 .aesthetic-item-person {
-    font-family: var(--font-serif);
     font-weight: bold;
     text-align: center;
     width: fit-content;
@@ -366,7 +363,6 @@ img {
 }
 
 .about-bio {
-    font-family: var(--font-serif);
     text-align: center;
     margin: auto;
 }
