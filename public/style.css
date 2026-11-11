@@ -191,7 +191,7 @@ img {
     filter: drop-shadow(0 0 0.33rem var(--dark-color));
 }
 
-@media (max-height: 639px) and (min-width: 640px), (max-height: 394px) {
+@media (max-height: 639px) and (min-width: 640px), (max-height: 399px) {
     .socials {
         display: flex;
         justify-content: center;
@@ -359,7 +359,6 @@ img {
 .about-image img {
     height: auto;
     width: 300px;
-    filter: invert(1);
 }
 
 .about-bio {
