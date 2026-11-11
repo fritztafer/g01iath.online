@@ -83,12 +83,10 @@ function fadeGroup(elements, type) {
         const activeFade = el.className === "header-item active";
         el.setAttribute("style", (() => {
             if (type === "out")
-                return activeFade ?
-                    "color: var(--color); transition: color calc(var(--time) / 2) ease;" :
+                return activeFade ? "color: var(--color); transition: color calc(var(--time) / 2) ease;" :
                     "animation: fadeOut calc(var(--time) / 2) forwards;";
             if (type === "in")
-                return activeFade ?
-                    "transition: color calc(var(--time) / 2) ease;" :
+                return activeFade ? "transition: color calc(var(--time) / 2) ease;" :
                     "animation: fadeIn calc(var(--time) / 2) forwards;";
         })());
         setTimeout(() => {
@@ -110,19 +108,14 @@ window.onscroll = () => {
     const scrollTop = document.querySelector(".scroll-top");
     if (!scrollTop && document.documentElement.scrollTop >= 100) {
         const button = Object.assign(document.createElement("button"), {
-            className: "scroll-top",
-            style: "opacity: 0;",
+            className: "scroll-top loading",
             onclick: () => window.scrollTo({top: 0, behavior: "smooth"}),
-            innerHTML: [
-                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="6 0 12 24">',
-                    '<path d="M12 0 6 6A1 1 0 007 7L11 5 11 24 13 24 13 5 17 7A1 1 0 0018 6" fill="currentcolor"/>',
-                '</svg>'
-            ].join('')
+            innerHTML: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="6 0 12 24"><path d="M12 0 6 6A1 1 0 007 7L11 5 11 24 13 24 13 5 17 7A1 1 0 0018 6" fill="currentcolor"/></svg>'
         });
         document.body.appendChild(button);
-        setTimeout(() => button.removeAttribute("style"), 0);
+        setTimeout(() => button.classList.remove("loading"), 0);
     } else if (scrollTop && document.documentElement.scrollTop < 100) {
-        scrollTop.style = "opacity: 0; pointer-events: none;";
+        scrollTop.setAttribute("style", "opacity: 0; pointer-events: none;");
         setTimeout(() => scrollTop.remove(), time / 4);
     }
 }
