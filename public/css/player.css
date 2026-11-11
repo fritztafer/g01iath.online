@@ -163,8 +163,8 @@
 }
 
 .player-button svg {
-    width: inherit;
-    height: inherit;
+    width: 100%;
+    height: 100%;
 }
 
 .player-button:hover {
