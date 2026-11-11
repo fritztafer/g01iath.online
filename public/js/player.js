@@ -47,21 +47,19 @@ const audio = new Audio(),
     skipNextBtn = document.getElementById("player-skip-next"),
     muteBtn = document.getElementById("player-volume-mute"),
     playerReady = (async () => {
-        const getResource = (tag, attrs, parent) =>
+        const getResource = (tag, attrs) =>
             new Promise(resolve => {
                 const element = Object.assign(document.createElement(tag), attrs);
                 element.onload = () => resolve(element);
-                parent.appendChild(element);
+                document.head.appendChild(element);
             });
         await Promise.all([
             getResource("link", {
                 href: `//${window.location.hostname}/css/player.css`,
                 rel: "stylesheet"
-            }, document.head),
+            }),
             audio.canPlayType("application/vnd.apple.mpegurl") ? Promise.resolve()
-            : getResource("script", {
-                src: `//${window.location.hostname}/js/hls.min.js`
-            }, document.head)
+            : getResource("script", {src: `//${window.location.hostname}/js/hls.min.js`})
         ]);
         playerParent.classList.remove("hidden");
     })();
