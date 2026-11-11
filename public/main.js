@@ -129,7 +129,7 @@ window.onscroll = () => {
 
 window.addEventListener("load", () => {
     document.head.appendChild(Object.assign(document.createElement("link"), {
-        href: `//${window.location.hostname}/css/bg.css`,
+        href: `//${window.location.hostname}/css/before.css`,
         rel: "stylesheet"
     }));
 }, {once: true});
