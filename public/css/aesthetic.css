@@ -1,0 +1,40 @@
+.aesthetic {
+    width: fit-content;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    column-gap: 4px;
+    align-items: flex-start;
+}
+
+.aesthetic-column {
+    width: 300px;
+}
+
+.aesthetic-item {
+    width: 100%;
+    height: auto;
+    margin-bottom: 4px;
+    display: block;
+    transition: opacity calc(var(--time) / 2) ease;
+}
+
+.aesthetic-item-quote {
+    text-align: center;
+    margin: 16px;
+    margin-bottom: 32px;
+    padding-top: 48px;
+    border-top: 1px var(--dark-color) solid;
+}
+
+.aesthetic-item-person {
+    font-weight: bold;
+    text-align: center;
+    width: fit-content;
+    max-width: 100%;
+    margin: 16px auto;
+    padding-bottom: 48px;
+    border-bottom: 1px var(--dark-color) solid;
+}

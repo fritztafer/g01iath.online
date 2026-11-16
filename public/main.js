@@ -20,35 +20,44 @@ document.body.append(
 const time = 2501;
 let transitioning;
 
-function run(content="socials") {
+async function run(content="socials") {
     if (transitioning) return;
     const current = document.querySelector("main").firstElementChild;
     if (current && current.className === content) return;
     transitioning = true;
 
-    document.head.appendChild(Object.assign(document.createElement("script"), {
-        src: `//${window.location.hostname}/js/${content}.js`,
-        onload: async () => {
-            const parent = await loadContent(content);
-            document.querySelector("main").appendChild(parent);
+    await Promise.all([
+        getResource("link", {href: `//${window.location.hostname}/css/${content}.css`, rel: "stylesheet"}),
+        getResource("script", {src: `//${window.location.hostname}/js/${content}.js`})
+    ]);
 
-            if (current === null) {
-                document.querySelectorAll(".header-item-parent, .header-hr, .footer-item").forEach(el => el.classList.remove("hidden"));
-                transitionHandler(parent);
-                fadeGroup(document.querySelectorAll(".header-item-parent, .header-hr, .header-item.active, main"), "in");
-                setTimeout(() => fadeGroup([document.querySelector(".footer-item")], "in"), 940);
-                setTimeout(() => transitioning = false, time / 2);
-            } else {
-                fadeGroup(document.querySelectorAll(".header-item.active, main"), "out");
-                document.querySelector(".header-item.active").classList.remove("active");
-                setTimeout(() => {
-                    transitionHandler(parent, current);
-                    fadeGroup(document.querySelectorAll(".header-item.active, main"), "in");
-                }, time / 2);
-                setTimeout(() => transitioning = false, time);
-            }
-        }
-    }));
+    const parent = await loadContent(content);
+    document.querySelector("main").appendChild(parent);
+
+    if (current === null) {
+        document.querySelectorAll(".header-item-parent, .header-hr, .footer-item").forEach(el => el.classList.remove("hidden"));
+        transitionHandler(parent);
+        fadeGroup(document.querySelectorAll(".header-item-parent, .header-hr, .header-item.active, main"), "in");
+        setTimeout(() => fadeGroup([document.querySelector(".footer-item")], "in"), 940);
+        setTimeout(() => transitioning = false, time / 2);
+    } else {
+        fadeGroup(document.querySelectorAll(".header-item.active, main"), "out");
+        document.querySelector(".header-item.active").classList.remove("active");
+        setTimeout(() => {
+            transitionHandler(parent, current);
+            fadeGroup(document.querySelectorAll(".header-item.active, main"), "in");
+        }, time / 2);
+        setTimeout(() => transitioning = false, time);
+    }
+}
+
+function getResource(tag, attrs) {
+    return new Promise((resolve, reject) => {
+        const element = Object.assign(document.createElement(tag), attrs);
+        element.onload = () => resolve();
+        element.onerror = (error) => reject(error);
+        document.head.appendChild(element);
+    });
 }
 
 function loadContent(content) {
@@ -74,6 +83,7 @@ function unloadCurrent(current) {
             break;
         case "about": break;
     }
+    document.head.querySelector(`link[href="//${window.location.hostname}/css/${current.className}.css"]`).remove();
     document.head.querySelector(`script[src="//${window.location.hostname}/js/${current.className}.js"]`).remove();
     current.remove();
 }
@@ -121,8 +131,5 @@ window.onscroll = () => {
 }
 
 window.addEventListener("load", () => {
-    document.head.appendChild(Object.assign(document.createElement("link"), {
-        href: `//${window.location.hostname}/css/before.css`,
-        rel: "stylesheet"
-    }));
+    getResource("link", {href: `//${window.location.hostname}/css/before.css`, rel: "stylesheet"})
 }, {once: true});

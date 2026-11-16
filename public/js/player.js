@@ -47,12 +47,6 @@ const audio = new Audio(),
     skipNextBtn = document.getElementById("player-skip-next"),
     muteBtn = document.getElementById("player-volume-mute"),
     playerReady = (async () => {
-        const getResource = (tag, attrs) =>
-            new Promise(resolve => {
-                const element = Object.assign(document.createElement(tag), attrs);
-                element.onload = () => resolve(element);
-                document.head.appendChild(element);
-            });
         await Promise.all([
             getResource("link", {
                 href: `//${window.location.hostname}/css/player.css`,

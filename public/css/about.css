@@ -1,0 +1,35 @@
+.about {
+    width: fit-content;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.about-contact {
+    font-size: 1.4em;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 24px;
+}
+
+.about-image {
+    text-align: center;
+    margin: auto;
+}
+
+.about-image img {
+    height: auto;
+    width: 300px;
+}
+
+.about-bio {
+    text-align: center;
+    margin: auto;
+}
+
+.about-bio div {
+    font-size: 36px;
+    line-height: 1;
+    letter-spacing: 24px;
+    margin-right: -24px;
+    margin-bottom: 24px;
+}
