@@ -26,38 +26,31 @@ async function run(content="socials") {
     if (current && current.className === content) return;
     transitioning = true;
 
-    await Promise.all([
-        getResource("link", {href: `//${window.location.hostname}/css/${content}.css`, rel: "stylesheet"}),
-        getResource("script", {src: `//${window.location.hostname}/js/${content}.js`})
-    ]);
-
-    const parent = await loadContent(content);
-    document.querySelector("main").appendChild(parent);
+    const ready = Promise.all([
+        getResource("script", {src: `//${window.location.hostname}/js/${content}.js`}),
+        getResource("link", {href: `//${window.location.hostname}/css/${content}.css`, rel: "stylesheet"})
+    ]).then(() => loadContent(content)).then(parent => {
+        document.querySelector("main").appendChild(parent);
+        return parent;
+    });
 
     if (current === null) {
+        const parent = await ready;
         document.querySelectorAll(".header-item-parent, .header-hr, .footer-item").forEach(el => el.classList.remove("hidden"));
         transitionHandler(parent);
         fadeGroup(document.querySelectorAll(".header-item-parent, .header-hr, .header-item.active, main"), "in");
         setTimeout(() => fadeGroup([document.querySelector(".footer-item")], "in"), 940);
         setTimeout(() => transitioning = false, time / 2);
     } else {
-        fadeGroup(document.querySelectorAll(".header-item.active, main"), "out");
+        fadeGroup(document.querySelectorAll(".header-item.active, main"), "out", ready);
         document.querySelector(".header-item.active").classList.remove("active");
+        const parent = await ready;
         setTimeout(() => {
             transitionHandler(parent, current);
             fadeGroup(document.querySelectorAll(".header-item.active, main"), "in");
         }, time / 2);
         setTimeout(() => transitioning = false, time);
     }
-}
-
-function getResource(tag, attrs) {
-    return new Promise((resolve, reject) => {
-        const element = Object.assign(document.createElement(tag), attrs);
-        element.onload = () => resolve();
-        element.onerror = (error) => reject(error);
-        document.head.appendChild(element);
-    });
 }
 
 function loadContent(content) {
@@ -88,29 +81,37 @@ function unloadCurrent(current) {
     current.remove();
 }
 
-function fadeGroup(elements, type) {
-    elements.forEach(el => {
+ function fadeGroup(elements, type, ready=Promise.resolve()) {
+    elements.forEach(async (el) => {
         const activeFade = el.className === "header-item active";
         el.setAttribute("style", (() => {
             if (type === "out")
                 return activeFade ? "color: var(--color); transition: color calc(var(--time) / 2) ease;" :
                     "animation: fadeOut calc(var(--time) / 2) forwards;";
-            if (type === "in")
+            if (type === "in") {
                 return activeFade ? "transition: color calc(var(--time) / 2) ease;" :
                     "animation: fadeIn calc(var(--time) / 2) forwards;";
+            }
         })());
-        setTimeout(() => {
-            el.removeAttribute("style");
-        }, time / 2);
+        await ready;
+        setTimeout(() => el.removeAttribute("style"), time / 2);
     });
 }
 
 function transitionHandler(parent, current=null) {
     if (current) unloadCurrent(current);
     parent.classList.remove("hidden");
-
     document.querySelectorAll(".header-item").forEach(item => {
         if (item.textContent.toLowerCase() === parent.className) item.classList.add("active");
+    });
+}
+
+function getResource(tag, attributes) {
+    return new Promise((resolve, reject) => {
+        const element = Object.assign(document.createElement(tag), attributes);
+        element.onload = () => resolve();
+        element.onerror = (error) => reject(error);
+        document.head.appendChild(element);
     });
 }
 
