@@ -1,15 +1,15 @@
-var galleryIndex = 0, // track which files loaded
-    galleryAmount = 16, // amount of files per load
-    galleryTimeout, // debounce scrollHandler()
-    galleryLoading = false, // debounce loadItems()
-    galleryFiles = galleryFiles ?? [], // holds file names
+var galleryIndex = 0,
+    galleryAmount = 16,
+    galleryTimeout,
+    galleryLoading = false,
+    galleryFiles = galleryFiles ?? [],
     galleryReady = galleryReady ?? fetch(`//${window.location.hostname}/gallery/.file-list.json`)
         .then(response => response.json())
         .then(array => galleryFiles = shuffleArray(array))
         .catch(error => console.error(error));
 
 async function aesthetic() {
-    let parent = Object.assign(document.createElement("div"), {className: "aesthetic hidden"}),
+    const parent = Object.assign(document.createElement("div"), {className: "aesthetic hidden"}),
         colAmt = (() => {
             if (window.innerWidth >= 1280) return 4;
             if (window.innerWidth >= 960) return 3;
@@ -27,7 +27,7 @@ async function aesthetic() {
 async function loadItems(parent) {
     if (galleryLoading || galleryIndex >= galleryFiles.length) return;
     galleryLoading = true;
-    let columns = parent.childNodes;
+    const columns = parent.childNodes;
     await Promise.all(galleryFiles.slice(galleryIndex, galleryIndex + galleryAmount).map(filename => {
         if (filename.endsWith(".txt")) {
             return fetch(`//${window.location.hostname}/gallery/${filename}`)
@@ -59,20 +59,20 @@ async function loadItems(parent) {
 }
 
 function renderItem(file, columns) {
-    let lengths = Array.from(columns).map(col => col.offsetHeight),
+    const lengths = Array.from(columns).map(col => col.offsetHeight),
         column = lengths.indexOf(Math.min(...lengths));
     columns[column].appendChild(file);
     setTimeout(() => file.classList.remove("loading"), 100); // timeout for animation
 }
 
 function adoptItems(colAmt) {
-    let parent = document.getElementsByClassName("aesthetic")[0],
-        columns = document.getElementsByClassName("aesthetic-column"),
+    let columns = document.getElementsByClassName("aesthetic-column");
+    const parent = document.getElementsByClassName("aesthetic")[0],
         galleryAmount = Math.max(...Array.from(columns).map(col => col.childNodes.length)),
         foster = [],
         ratio = window.scrollY / document.body.scrollHeight;
 
-    parent.style.visibility = "hidden";
+    parent.setAttribute("style", "visibility: hidden;");
 
     // get currently loaded files by rough display order and push them to foster
     for (let i = 0; i < galleryAmount; i++) {
@@ -89,7 +89,7 @@ function adoptItems(colAmt) {
 
     // append children to new columns
     for (let child of foster) {
-        let lengths = Array.from(columns).map(col => col.offsetHeight),
+        const lengths = Array.from(columns).map(col => col.offsetHeight),
             column = lengths.indexOf(Math.min(...lengths));
         columns[column].appendChild(child);
     }
@@ -97,7 +97,7 @@ function adoptItems(colAmt) {
     // scroll roughly to files that were displayed
     window.scrollTo({top: ratio * document.body.scrollHeight, behavior: "auto"});
 
-    parent.style.visibility = "visible";
+    parent.removeAttribute("style");
 }
 
 function loadColumns(colAmt, parent) {
@@ -116,7 +116,7 @@ function shuffleArray(array) { // Durstenfeld shuffle
 }
 
 function resizeHandler() {
-    let columns = document.getElementsByClassName("aesthetic-column");
+    const columns = document.getElementsByClassName("aesthetic-column");
     if (columns.length != 4 && window.innerWidth >= 1280) adoptItems(4);
     else if (columns.length != 3 && window.innerWidth >= 960 && window.innerWidth < 1280) adoptItems(3);
     else if (columns.length != 2 && window.innerWidth >= 640 && window.innerWidth < 960) adoptItems(2);
@@ -126,7 +126,7 @@ function resizeHandler() {
 function scrollHandler() {
     clearTimeout(galleryTimeout);
     galleryTimeout = setTimeout(() => {
-        let bottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 200;
+        const bottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 200;
         if (bottom && galleryIndex < galleryFiles.length && !galleryLoading) loadItems(document.getElementsByClassName("aesthetic")[0]);
         else if (galleryIndex >= galleryFiles.length && !galleryLoading) window.removeEventListener("scroll", scrollHandler);
     }, 100);
