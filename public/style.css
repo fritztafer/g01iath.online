@@ -200,10 +200,6 @@ img {
         bottom: 4px;
         right: 4px;
     }
-
-    .socials-item {
-        width: 48px;
-    }
 }
 
 @keyframes fadeIn {

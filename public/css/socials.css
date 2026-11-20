@@ -45,3 +45,9 @@
         width: 88vw;
     }
 }
+
+@media (max-width: 639px) {
+    .socials-item {
+        width: 48px;
+    }
+}
