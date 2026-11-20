@@ -24,7 +24,7 @@ async function run(content="socials") {
         setTimeout(() => transitioning = false, time / 2);
     } else {
         fadeGroup(document.querySelectorAll(".header-item.active, main"), "out", ready);
-        document.querySelector(".header-item.active").classList.remove("active");
+        document.querySelector(".header-item.active")?.classList.remove("active");
         const parent = await ready;
         setTimeout(() => {
             transitionHandler(parent, current);
@@ -69,10 +69,9 @@ function unloadCurrent(current) {
             if (type === "out")
                 return activeFade ? "color: var(--color); transition: color calc(var(--time) / 2) ease;" :
                     "animation: fadeOut calc(var(--time) / 2) forwards;";
-            if (type === "in") {
+            if (type === "in")
                 return activeFade ? "transition: color calc(var(--time) / 2) ease;" :
                     "animation: fadeIn calc(var(--time) / 2) forwards;";
-            }
         })());
         await ready;
         setTimeout(() => el.removeAttribute("style"), time / 2);
