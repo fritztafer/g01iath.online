@@ -1,22 +1,3 @@
-document.body.append(
-    Object.assign(document.createElement("header"), {
-        innerHTML: [
-            '<div class="title">GØ1IATH</div>',
-            '<div class="header-item-parent hidden">',
-                '<a class="header-item" href="javascript:" onclick="run(\'socials\')">SOCIALS</a>',
-                '<a class="header-item" href="javascript:" onclick="run(\'listen\')">LISTEN</a>',
-                '<a class="header-item" href="javascript:" onclick="run(\'aesthetic\')">AESTHETIC</a>',
-                '<a class="header-item" href="javascript:" onclick="run(\'about\')">ABOUT</a>',
-            '</div>',
-            '<hr class="header-hr hidden">'
-        ].join('')
-    }),
-    document.createElement("main"),
-    Object.assign(document.createElement("footer"), {
-        innerHTML: '<div class="footer-item hidden" style="opacity: 0;">//G01IATH.ONLINE/2026/</div>'
-    })
-);
-
 const time = 2501;
 let transitioning;
 
@@ -132,5 +113,24 @@ window.onscroll = () => {
 }
 
 window.addEventListener("load", () => {
+    document.body.append(
+        Object.assign(document.createElement("header"), {
+            innerHTML: [
+                '<div class="title">GØ1IATH</div>',
+                '<div class="header-item-parent hidden">',
+                    '<a class="header-item" href="javascript:" onclick="run(\'socials\')">SOCIALS</a>',
+                    '<a class="header-item" href="javascript:" onclick="run(\'listen\')">LISTEN</a>',
+                    '<a class="header-item" href="javascript:" onclick="run(\'aesthetic\')">AESTHETIC</a>',
+                    '<a class="header-item" href="javascript:" onclick="run(\'about\')">ABOUT</a>',
+                '</div>',
+                '<hr class="header-hr hidden">'
+            ].join('')
+        }),
+        document.createElement("main"),
+        Object.assign(document.createElement("footer"), {
+            innerHTML: '<div class="footer-item hidden" style="opacity: 0;">//G01IATH.ONLINE/2026/</div>'
+        })
+    );
+    run();
     getResource("link", {href: `//${window.location.hostname}/css/before.css`, rel: "stylesheet"})
 }, {once: true});
