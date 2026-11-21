@@ -1,16 +1,23 @@
-const time = 2501;
+const paths = {
+"/": undefined,
+"/socials": {name: "socials", load: () => socials(), header: true},
+"/listen": {name: "listen", load: () => listen(), header: true},
+"/aesthetic": {name: "aesthetic", load: () => aesthetic(), header: true},
+"/about": {name: "about", load: () => about(), header: true},
+error: {name: "error", load: () => error()}
+}, time = 2501;
 let transitioning;
 
-async function run(content="socials") {
+async function run(content=paths["/socials"]) {
     if (transitioning) return;
     const current = document.querySelector("main").firstElementChild;
-    if (current && current.className === content) return;
+    if (current && current.className === content.name) return;
     transitioning = true;
 
     const ready = Promise.all([
-        getResource("script", {src: `//${window.location.hostname}/js/${content}.js`}),
-        getResource("link", {href: `//${window.location.hostname}/css/${content}.css`, rel: "stylesheet"})
-    ]).then(() => loadContent(content)).then(parent => {
+        getResource("script", {src: `//${window.location.hostname}/js/${content.name}.js`}),
+        getResource("link", {href: `//${window.location.hostname}/css/${content.name}.css`, rel: "stylesheet"})
+    ]).then(() => content.load()).then(parent => {
         document.querySelector("main").appendChild(parent);
         return parent;
     });
@@ -34,28 +41,18 @@ async function run(content="socials") {
     }
 }
 
-function loadContent(content) {
-    switch (content) {
-        case "socials": return socials();
-        case "listen": return listen();
-        case "aesthetic": return aesthetic();
-        case "about": return about();
-        default: return error();
-    }
-}
-
 function unloadCurrent(current) {
     switch (current.className) {
-        case "socials": break;
-        case "listen":
+        case paths["/socials"].name: break;
+        case paths["/listen"].name:
             if (titleObserver) titleObserver.disconnect();
             if (playObserver) playObserver.disconnect();
             break;
-        case "aesthetic":
+        case paths["/aesthetic"].name:
             window.removeEventListener("resize", resizeHandler);
             window.removeEventListener("scroll", scrollHandler);
             break;
-        case "about": break;
+        case paths["/about"].name: break;
     }
     document.head.querySelector(`link[href="//${window.location.hostname}/css/${current.className}.css"]`).remove();
     document.head.querySelector(`script[src="//${window.location.hostname}/js/${current.className}.js"]`).remove();
@@ -112,19 +109,11 @@ window.onscroll = () => {
 }
 
 window.addEventListener("load", () => {
-    const paths = {
-        "/": undefined,
-        "/socials": "socials",
-        "/listen": "listen",
-        "/aesthetic": "aesthetic",
-        "/about": "about"
-    };
     document.body.append(
         Object.assign(document.createElement("header"), {
             innerHTML: [
                 '<div class="title">GØ1IATH</div>',
-                '<div class="header-item-parent hidden">',
-                '</div>',
+                '<div class="header-item-parent hidden"></div>',
                 '<hr class="header-hr hidden">'
             ].join('')
         }),
@@ -133,15 +122,16 @@ window.addEventListener("load", () => {
             innerHTML: '<div class="footer-item hidden" style="opacity: 0;">//G01IATH.ONLINE/2026/</div>'
         })
     );
-    Object.values(paths).forEach(path => {if (path) {
+    Object.values(paths).forEach(content => {if (content && content.header) {
         const item = Object.assign(document.createElement("a"), {
             className: "header-item",
             href: "javascript:",
-            onclick: () => run(path),
-            textContent: path.toUpperCase()
+            onclick: () => run(content),
+            textContent: content.name.toUpperCase()
         });
         document.querySelector(".header-item-parent").appendChild(item);
     }});
-    run(Object.hasOwn(paths, window.location.pathname) ? paths[window.location.pathname] : "error");
+
+    run(Object.hasOwn(paths, window.location.pathname) ? paths[window.location.pathname] : paths["error"]);
     getResource("link", {href: `//${window.location.hostname}/css/before.css`, rel: "stylesheet"})
 }, {once: true});
