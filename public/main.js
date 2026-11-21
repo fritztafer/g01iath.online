@@ -112,15 +112,18 @@ window.onscroll = () => {
 }
 
 window.addEventListener("load", () => {
+    const paths = {
+        "/": undefined,
+        "/socials": "socials",
+        "/listen": "listen",
+        "/aesthetic": "aesthetic",
+        "/about": "about"
+    };
     document.body.append(
         Object.assign(document.createElement("header"), {
             innerHTML: [
                 '<div class="title">GØ1IATH</div>',
                 '<div class="header-item-parent hidden">',
-                    '<a class="header-item" href="javascript:" onclick="run(\'socials\')">SOCIALS</a>',
-                    '<a class="header-item" href="javascript:" onclick="run(\'listen\')">LISTEN</a>',
-                    '<a class="header-item" href="javascript:" onclick="run(\'aesthetic\')">AESTHETIC</a>',
-                    '<a class="header-item" href="javascript:" onclick="run(\'about\')">ABOUT</a>',
                 '</div>',
                 '<hr class="header-hr hidden">'
             ].join('')
@@ -130,6 +133,15 @@ window.addEventListener("load", () => {
             innerHTML: '<div class="footer-item hidden" style="opacity: 0;">//G01IATH.ONLINE/2026/</div>'
         })
     );
-    run();
+    Object.values(paths).forEach(path => {if (path) {
+        const item = Object.assign(document.createElement("a"), {
+            className: "header-item",
+            href: "javascript:",
+            onclick: () => run(path),
+            textContent: path.toUpperCase()
+        });
+        document.querySelector(".header-item-parent").appendChild(item);
+    }});
+    run(Object.hasOwn(paths, window.location.pathname) ? paths[window.location.pathname] : "error");
     getResource("link", {href: `//${window.location.hostname}/css/before.css`, rel: "stylesheet"})
 }, {once: true});
