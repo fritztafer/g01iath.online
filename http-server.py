@@ -11,6 +11,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=DIRECTORY, **kwargs)
 
+    def list_directory(self, path):
+        self.send_error(403)
+        return None
+
     def send_error(self, code, message=None, explain=None):
         error_file = os.path.join(DIRECTORY, "error.html")
         if os.path.exists(error_file):
