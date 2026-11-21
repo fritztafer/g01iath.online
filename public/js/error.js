@@ -48,7 +48,7 @@ async function error() {
     return Object.assign(document.createElement("div"), {
         className: "error hidden",
         innerHTML: [
-            '<div style="text-align: center; font-size: 18px;">',
+            '<div class="error-text">',
                 message,
                 '<br><br>',
                 '<a href="/">HOME</a>',
