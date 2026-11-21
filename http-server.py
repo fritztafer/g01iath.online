@@ -16,7 +16,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         return None
 
     def send_error(self, code, message=None, explain=None):
-        error_file = os.path.join(DIRECTORY, "error.html")
+        error_file = "./http-error.html"
         if os.path.exists(error_file):
             self.send_response(code)
             self.send_header("Content-type", "text/html; charset=utf-8")
