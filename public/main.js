@@ -6,7 +6,7 @@ async function run(path=R.paths["/socials"]) {
     if (current && current.className === path.name) return;
     R.transitioning = true;
 
-    const ready = Promise.all([R.loadJS(path), R.loadCSS(path)])
+    const ready = Promise.all([R.loadContent(path)])
         .then(([parent]) => {
             U.getElement("main").appendChild(parent);
             return parent;

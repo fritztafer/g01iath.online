@@ -10,8 +10,8 @@ getElements(query) {return document.querySelectorAll(query)},
 /**
 @template {keyof HTMLElementTagNameMap} T
 @param {T} tag
-@param {Object} [attributes]
-@param {HTMLElement} parent
+@param {Object} attributes
+@param {HTMLElement} [parent]
 @returns {HTMLElementTagNameMap[T]} */
 newElement(tag, attributes={}, parent=undefined) {
     const element = Object.assign(document.createElement(tag), attributes);
@@ -21,7 +21,7 @@ newElement(tag, attributes={}, parent=undefined) {
 /**
 @template {keyof HTMLElementTagNameMap} T
 @param {T} tag
-@param {Object} [attributes]
+@param {Object} attributes
 @param {HTMLElement} parent
 @returns {Promise<HTMLElementTagNameMap[T]>} */
 newResource(tag, attributes, parent=document.head) {
@@ -34,8 +34,6 @@ newResource(tag, attributes, parent=document.head) {
 },
 
 };
-
-
 
 const R = {
 time: 2501,
@@ -50,7 +48,6 @@ error: {name: "error"}
 },
 unloadCurrent(current) {
     try {R.paths[`/${current.className}`].module.cleanup()} catch (e) {};
-    delete R.paths[`/${current.className}`].module;
     document.head.querySelector(`link[href="//${window.location.hostname}/css/${current.className}.css"]`).remove();
     document.head.querySelector(`script[src="//${window.location.hostname}/js/${current.className}.js"]`).remove();
     current.remove();
@@ -78,33 +75,29 @@ transitionHandler(parent, current=null) {
         if (item.textContent.toLowerCase() === parent.className) item.classList.add("active");
     });
 },
-async loadJS(path) {
+async loadContent(path) {
     const script = import(`./${path.name}.js`);
-    const [module, parent, _] = await Promise.all([
+    const [module, parent, stylesheet] = await Promise.all([
         script,
-        script.then(parent => parent[path.name]()),
-        U.newResource("script", {src: `//${window.location.hostname}/js/${path.name}.js`, type: "module"})
+        script.then(module => module[path.name]()),
+        import(`../css/${path.name}.css`, {with: {type: "css"}}),
+        U.newResource("script", {src: `//${window.location.hostname}/js/${path.name}.js`, type: "module"}),
+        U.newResource("link", {href: `//${window.location.hostname}/css/${path.name}.css`, rel: "stylesheet"})
     ]);
     path.module = path.module ?? module;
+    path.stylesheet = path.stylesheet ?? stylesheet;
     return parent;
 },
-loadCSS(path) {return U.newResource("link", {href: `//${window.location.hostname}/css/${path.name}.css`, rel: "stylesheet"})},
 
 };
-
-
 
 const P = {
 
 };
 
-
-
 const G = {
 
 };
-
-
 
 export default U;
 export {R, P, G};
