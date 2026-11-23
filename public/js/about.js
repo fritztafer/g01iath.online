@@ -1,14 +1,16 @@
-async function about() {
-    const parent = Object.assign(document.createElement("div"), {className: "about hidden"}),
-        aboutContact = Object.assign(document.createElement("div"), {
+import U from "./common.js"
+
+export async function about() {
+    const parent = U.newElement("div", {className: "about hidden"}),
+        aboutContact = U.newElement("div", {
             className: "about-contact",
             innerHTML: 'CONTACT: <a href="mailto:fritz@g01iath.online">fritz@g01iath.online</a>'
         }),
-        aboutImage = Object.assign(document.createElement("div"), {
+        aboutImage = U.newElement("div", {
             className: "about-image",
             innerHTML: `<img src="//${window.location.hostname}/img/2011.jpg">`
         }),
-        aboutBio = Object.assign(document.createElement("div"), {
+        aboutBio = U.newElement("div", {
             className: "about-bio",
             innerHTML: "<div>GØ1IATH</div>"
         }),

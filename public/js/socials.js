@@ -1,5 +1,7 @@
-async function socials() {
-    const parent = Object.assign(document.createElement("div"), {className: "socials hidden"}),
+import U from "./common.js"
+
+export async function socials() {
+    const parent = U.newElement("div", {className: "socials hidden"}),
         children = {
             Bandcamp: {
                 "href": "//fritztafer.bandcamp.com/",
@@ -24,7 +26,7 @@ async function socials() {
     let cascade = 340;
 
     for (const child in children) {
-        const a = Object.assign(document.createElement("a"), {
+        const a = U.newElement("a", {
             className: "socials-item loading",
             target: "_blank",
             href: children[child].href,

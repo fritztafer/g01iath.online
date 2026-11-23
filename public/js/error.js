@@ -1,4 +1,6 @@
-async function error() {
+import U from "./common.js"
+
+export async function error() {
     const code = window.performance.getEntriesByType('navigation')[0].responseStatus;
     const message = code ? (() => {
         const status = {
@@ -45,7 +47,7 @@ async function error() {
         return `${code} ${status[code] || "UNDEFINED STATUS"}`;
     })() : "HTTP ERROR CHECK CONSOLE";
 
-    return Object.assign(document.createElement("div"), {
+    return U.newElement("div", {
         className: "error hidden",
         innerHTML: [
             '<div class="error-text">',
