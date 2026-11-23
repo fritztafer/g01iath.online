@@ -1,5 +1,4 @@
 import U, {P} from "./common.js"
-import {iconsP} from "./listen.js"
 
 U.newElement("div", {
     className: "player hidden",
@@ -18,17 +17,17 @@ U.newElement("div", {
         '</div>',
         '<div id="player-button-parent">',
             '<button id="player-play" class="player-button">',
-                iconsP.play,
+                P.icons.play,
             '</button>',
             '<button id="player-skip-prev" class="player-button player-item">',
-                iconsP.prev,
+                P.icons.prev,
             '</button>',
             '<button id="player-skip-next" class="player-button player-item">',
-                iconsP.next,
+                P.icons.next,
             '</button>',
             '<span id="player-volume-parent">',
                 '<button id="player-volume-mute" class="player-button player-item">',
-                    iconsP.speak3,
+                    P.icons.speak3,
                 '</button>',
                 '<input id="player-volume-range" type="range" min="0" max="1" step=".05" value="1">',
             '</span>',
@@ -140,10 +139,10 @@ function mute() {
 }
 
 function volume(level) {
-    if (level < .05) P.mute.innerHTML = iconsP.speak0;
-    else if (level >= .05 && level < .40) P.mute.innerHTML = iconsP.speak1;
-    else if (level >= .40 && level < .70) P.mute.innerHTML = iconsP.speak2; 
-    else if (level >= .70) P.mute.innerHTML = iconsP.speak3;
+    if (level < .05) P.mute.innerHTML = P.icons.speak0;
+    else if (level >= .05 && level < .40) P.mute.innerHTML = P.icons.speak1;
+    else if (level >= .40 && level < .70) P.mute.innerHTML = P.icons.speak2; 
+    else if (level >= .70) P.mute.innerHTML = P.icons.speak3;
     audio.volume = level;
 }
 
@@ -229,11 +228,11 @@ document.addEventListener("keydown", (e) => {
 
 P.play.addEventListener("mouseup", (e) => {if (predicate(e)) audio.paused ? audio.play() : audio.pause()});
 audio.addEventListener("play", () => {
-    P.play.innerHTML = iconsP.pause;
+    P.play.innerHTML = P.icons.pause;
     if (document.visibilityState === 'visible') requestWakeLock();
 });
 audio.addEventListener("pause", () => {
-    P.play.innerHTML = iconsP.play;
+    P.play.innerHTML = P.icons.play;
     releaseWakeLock();
 });
 

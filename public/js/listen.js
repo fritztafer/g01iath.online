@@ -1,12 +1,11 @@
 import U, {P} from "./common.js"
 
-var musicFiles = musicFiles ?? [],
-    musicReady = musicReady ?? fetch(`//${window.location.hostname}/music/.file-list.json`)
-        .then(response => response.json())
-        .then(array => musicFiles = array)
-        .catch(error => console.error(error));
-
-export const iconsP = {
+P.files = P.files ?? [];
+P.ready = P.ready ?? fetch(`//${window.location.hostname}/music/.file-list.json`)
+    .then(response => response.json())
+    .then(array => array.forEach(file => P.files.push(file)))
+    .catch(error => console.error(error));
+P.icons = P.icons ?? {
     play: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 24 12" fill="currentColor"/></svg>',
     pause: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 5 24 5 0M12 0 12 24 17 24 17 0" fill="currentColor"/></svg>',
     prev: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 2 24 2 0M13 0 2 12 13 24M24 0 13 12 24 24" fill="currentcolor"/></svg>',
@@ -24,16 +23,15 @@ export async function listen() {
         infoText = U.getElement("#player-info-text");
 
     parent.append(current, playlist);
-    await musicReady;
+    await P.ready;
 
-    P.tracks = P.tracks ?? musicFiles.map(file => ({
+    P.tracks = P.tracks ?? P.files.map(file => ({
         title: file.replace("_", " "),
         stream: `//${window.location.hostname}/music/${file}/stream.m3u8`,
         cover: `//${window.location.hostname}/music/${file}/cover.jpg`
     }));
 
-    const tracks = P.tracks;
-    for (const track of tracks) {
+    for (const track of P.tracks) {
         const item = U.newElement("div", {
             onclick: () => {
                 player(track);
@@ -49,7 +47,7 @@ export async function listen() {
             alt: ""
         }),
         btn = U.newElement("span", {
-            innerHTML: iconsP.play,
+            innerHTML: P.icons.play,
             className: "listen-item-button"
         }),
         title = U.newElement("span", {
@@ -122,10 +120,10 @@ function activateItem(item) {
 //             if (cover.src !== current.firstChild.src) current.replaceChild(cover, current.firstChild);
 //             items[i].classList.replace("inactive", "active");
 //             items[i].children[3].textContent = time ?? "0:00";
-//             btn.innerHTML = iconsP.pause;
+//             btn.innerHTML = P.icons.pause;
 //         } else {
 //             items[i].classList.replace("active", "inactive");
-//             btn.innerHTML = iconsP.play;
+//             btn.innerHTML = P.icons.play;
 //         }
 //     }
 }
