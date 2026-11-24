@@ -36,28 +36,28 @@ U.newElement("div", {
 }, document.body);
 
 const audio = new Audio();
-    P.parent = U.getElement(".player"),
-    P.volume = U.getElement("#player-volume-range"),
-    P.progress = U.getElement("#player-time-seek-progress"),
-    P.seek = U.getElement("#player-time-seek-parent"),
-    P.title = U.getElement("#player-info-text"),
-    P.current = U.getElement("#player-time-current"),
-    P.total = U.getElement("#player-time-total"),
-    P.play = U.getElement("#player-play"),
-    P.prev = U.getElement("#player-skip-prev"),
-    P.next = U.getElement("#player-skip-next"),
-    P.mute = U.getElement("#player-volume-mute"),
-    P.ready = (async () => {
-        await Promise.all([
-            U.newResource("link", {
-                href: `//${window.location.hostname}/css/player.css`,
-                rel: "stylesheet"
-            }),
-            audio.canPlayType("application/vnd.apple.mpegurl") ? Promise.resolve()
-            : U.newResource("script", {src: `//${window.location.hostname}/js/hls.min.js`})
-        ]);
-        P.parent.classList.remove("hidden");
-    })();
+P.parent = U.getElement(".player");
+P.volume = U.getElement("#player-volume-range");
+P.progress = U.getElement("#player-time-seek-progress");
+P.seek = U.getElement("#player-time-seek-parent");
+P.title = U.getElement("#player-info-text");
+P.current = U.getElement("#player-time-current");
+P.total = U.getElement("#player-time-total");
+P.play = U.getElement("#player-play");
+P.prev = U.getElement("#player-skip-prev");
+P.next = U.getElement("#player-skip-next");
+P.mute = U.getElement("#player-volume-mute");
+P.ready = (async () => {
+    await Promise.all([
+        audio.canPlayType("application/vnd.apple.mpegurl") ? Promise.resolve()
+            : import("./hls.min.js"),
+        U.newResource("link", {
+            href: `//${window.location.hostname}/css/player.css`,
+            rel: "stylesheet"
+        })
+    ]);
+    P.parent.classList.remove("hidden");
+})();
 let volumeState = 1,
     trackIndex,
     wakeLock = null;
@@ -65,10 +65,10 @@ let volumeState = 1,
 audio.volume = volumeState;
 P.volume.value = volumeState;
 
-export async function select(track) {
+async function select(track) {
     await P.ready;
     const selectionIndex = P.tracks.indexOf(track);
-    if (selectionIndex === trackIndex) audio.paused ? audio.play() : audio.pause();
+    if ((audio.src || P.stream) && selectionIndex === trackIndex) audio.paused ? audio.play() : audio.pause();
     else {
         trackIndex = selectionIndex;
         load(track);
@@ -76,28 +76,29 @@ export async function select(track) {
 }
 
 function load(track) {
-    if (window.hls) {
-        window.hls.destroy();
-        window.hls = null;
-    }
-
     if (audio.canPlayType("application/vnd.apple.mpegurl")) {
         audio.src = track.stream;
         audio.play();
     } else if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(track.stream);
-        hls.attachMedia(audio);
-        window.hls = hls;
-        hls.on(Hls.Events.MANIFEST_PARSED, () => audio.play());
+        if (P.stream) {
+            P.stream.destroy();
+            delete P.stream;
+        }
+        P.stream = new Hls();
+        P.stream.loadSource(track.stream);
+        P.stream.attachMedia(audio);
+        P.stream.on(Hls.Events.MANIFEST_PARSED, () => audio.play());
+    } else {
+        P.parent.remove();
+        return console.error("hls unsupported");
     }
 
     P.play.classList.add('pulse');
-    P.play.addEventListener('animationend', function removePulse() {
+    P.play.addEventListener('animationend', () => {
         P.play.classList.remove('pulse');
     }, {once: true});
 
-    audio.addEventListener("loadedmetadata", function getMetaData() {
+    audio.addEventListener("loadedmetadata", () => {
         const totalMinutes = Math.floor(audio.duration / 60),
             totalSeconds = Math.floor(audio.duration % 60).toString().padStart(2, "0");
         P.total.textContent = `${totalMinutes}:${totalSeconds}`;
@@ -155,10 +156,10 @@ function nudgeVolume(delta) {
 function timeUpdate() {
     if (audio.duration) {
         const progressPercent = (audio.currentTime / audio.duration) * 100,
-            currentMins = Math.floor(audio.currentTime / 60),
-            currentSecs = Math.floor(audio.currentTime % 60).toString().padStart(2, "0");
+            currentMinutes = Math.floor(audio.currentTime / 60),
+            currentSeconds = Math.floor(audio.currentTime % 60).toString().padStart(2, "0");
         P.progress.style.width = `${progressPercent}%`;
-        P.current.textContent = `${currentMins}:${currentSecs}`;
+        P.current.textContent = `${currentMinutes}:${currentSeconds}`;
     } else {
         P.progress.style.width = "0%";
         P.current.textContent = "0:00";
@@ -171,7 +172,7 @@ function seekEvent(event) {
     audio.currentTime = (clickX / width) * audio.duration;
 }
 
-function predicate(e) { // left click only
+function predicate(e) {
     if (e.button === 0) return true;
     return false;
 }
@@ -252,3 +253,5 @@ P.seek.addEventListener("touchstart", (e) => {if (predicate(e)) seekEvent(e)}, {
 P.volume.addEventListener("input", () => {volume(P.volume.value)});
 P.volume.addEventListener("mouseup", () => {if (P.volume.value > 0) volumeState = +P.volume.value});
 P.mute.addEventListener("mouseup", (e) => {if (predicate(e)) mute()});
+
+export {select}
