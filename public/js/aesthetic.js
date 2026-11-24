@@ -3,26 +3,36 @@ import U, {G} from "./common.js"
 G.amount = 16;
 G.timeout;
 G.loading = false;
-G.files = G.files ?? [];
-G.ready = G.ready ?? fetch(`//${window.location.hostname}/gallery/.file-list.json`)
-        .then(response => response.json())
-        .then(array => G.files = array)
-        .catch(error => console.error(error));
+G.files = [];
+G.ready = fetch(`//${window.location.hostname}/gallery/.file-list.json`)
+    .then(response => response.json())
+    .then(array => G.files = array)
+    .catch(error => console.error(error));
 
 async function aesthetic() {
-            if (window.innerWidth >= 1280) return 4;
-            if (window.innerWidth >= 960) return 3;
-            if (window.innerWidth >= 640) return 2;
-            if (window.innerWidth < 640) return 1;
-        })();
-    loadColumns(colAmt, parent);
+    const parent = U.newElement("div", {className: "aesthetic hidden"});
+
+    loadColumns((() => {
+        if (window.innerWidth >= 1280) return 4;
+        if (window.innerWidth >= 960) return 3;
+        if (window.innerWidth >= 640) return 2;
+        if (window.innerWidth < 640) return 1;
+    })(), parent);
 
     await G.ready;
     G.files = shuffleArray(G.files);
     G.index = 0;
     loadItems(parent);
 
+    window.addEventListener("resize", resizeHandler);
+    window.addEventListener("scroll", scrollHandler);
+
     return parent;
+}
+
+function cleanup() {
+    window.removeEventListener("resize", resizeHandler);
+    window.removeEventListener("scroll", scrollHandler);
 }
 
 async function loadItems(parent) {
@@ -51,10 +61,7 @@ async function loadItems(parent) {
                         renderItem(item, columns);
                         resolve();
                     },
-                    onerror: (e) => {
-                        console.error(e);
-                        resolve();
-                    }
+                    onerror: () => resolve()
                 });
             });
         }
