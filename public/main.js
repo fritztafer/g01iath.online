@@ -6,26 +6,25 @@ async function run(path=R.paths["/socials"]) {
     if (current && current.className === path.name) return;
     R.transitioning = true;
 
-    const ready = Promise.all([R.loadContent(path)])
-        .then(([parent]) => {
-            U.getElement("main").appendChild(parent);
-            return parent;
-        });
+    const ready = R.loadContent(path).then(parent => {
+        U.getElement("main").appendChild(parent);
+        return parent;
+    });
 
     if (current === null) {
         const parent = await ready;
         U.getElements(".header-item-parent, .header-hr, .footer-item").forEach(el => el.classList.remove("hidden"));
         R.transitionHandler(parent);
-        R.fadeElements(U.getElements(".header-item-parent, .header-hr, .header-item.active, main"), "in");
+        R.fadeElements([...U.getElements(".header-item-parent, .header-hr, .header-item.active"), parent], "in");
         setTimeout(() => R.fadeElements([U.getElement(".footer-item")], "in"), 940);
         setTimeout(() => R.transitioning = false, R.time / 2);
     } else {
-        R.fadeElements(U.getElements(".header-item.active, main"), "out", ready);
+        R.fadeElements([...U.getElements(".header-item.active"), current], "out", ready);
         R.removeActive();
         const parent = await ready;
         setTimeout(() => {
             R.transitionHandler(parent, current);
-            R.fadeElements(U.getElements(".header-item.active, main"), "in");
+            R.fadeElements([...U.getElements(".header-item.active"), parent], "in");
         }, R.time / 2);
         setTimeout(() => R.transitioning = false, R.time);
     }
