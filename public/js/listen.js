@@ -16,7 +16,7 @@ P.icons = P.icons ?? {
     speak3: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 6 0 18 5 18 13 24 13 0 5 6M14 15A1 1 0 0015 16Q19 12 15 8A1 1 0 0014 9Q17 12 14 15M17 18A1 1 0 0018 19Q23 12 18 5A1 1 0 0017 6Q21 12 17 18M20 21A1 1 0 0021 22Q27 12 21 2A1 1 0 0020 3Q25 12 20 21" fill="currentcolor"/></svg>'
 };
 
-export async function listen() {
+async function listen() {
     const parent = U.newElement("div", {className: "listen hidden"}),
         current = U.newElement("div", {className: "listen-current", innerHTML: '<div class="pos0" style="font-size: 10em; pointer-events: none; -webkit-user-select: none; user-select: none;">♫</div>'}),
         playlist = U.newElement("div", {className: "listen-playlist"}),
@@ -82,10 +82,10 @@ export async function listen() {
 async function player(track) {
     if (U.getElement(".player")) return P.module.select(track);
 
-    U.newResource("script", {
-        src: `//${window.location.hostname}/js/player.js`,
-        type: "module",
-    });
+    // U.newResource("script", {
+    //     src: `//${window.location.hostname}/js/player.js`,
+    //     type: "module",
+    // });
 
     P.module = P.module ?? await import("./player.js");
     P.module.select(track);
@@ -158,3 +158,5 @@ function activateItem(item) {
 
 //     playObserver.observe(playBtn, {childList: true});
 // }
+
+export {listen};

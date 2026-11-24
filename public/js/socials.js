@@ -1,6 +1,6 @@
 import U from "./common.js"
 
-export async function socials() {
+async function socials() {
     const parent = U.newElement("div", {className: "socials hidden"}),
         children = {
             Bandcamp: {
@@ -42,3 +42,5 @@ export async function socials() {
 
     return parent;
 }
+
+export {socials};

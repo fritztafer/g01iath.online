@@ -1,6 +1,6 @@
 import U from "./common.js"
 
-export async function error() {
+async function error() {
     const code = window.performance.getEntriesByType('navigation')[0].responseStatus;
     const message = code ? (() => {
         const status = {
@@ -60,3 +60,5 @@ export async function error() {
         ].join('')
     });
 }
+
+export {error};

@@ -9,9 +9,7 @@ G.ready = G.ready ?? fetch(`//${window.location.hostname}/gallery/.file-list.jso
         .then(array => G.files = array)
         .catch(error => console.error(error));
 
-export async function aesthetic() {
-    const parent = U.newElement("div", {className: "aesthetic hidden"}),
-        colAmt = (() => {
+async function aesthetic() {
             if (window.innerWidth >= 1280) return 4;
             if (window.innerWidth >= 960) return 3;
             if (window.innerWidth >= 640) return 2;
@@ -139,10 +137,4 @@ function scrollHandler() {
     }, 100);
 }
 
-export function cleanup() {
-    window.removeEventListener("resize", resizeHandler);
-    window.removeEventListener("scroll", scrollHandler);
-}
-
-window.addEventListener("resize", resizeHandler);
-window.addEventListener("scroll", scrollHandler);
+export {aesthetic, cleanup};

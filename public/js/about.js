@@ -1,6 +1,6 @@
 import U from "./common.js"
 
-export async function about() {
+async function about() {
     const parent = U.newElement("div", {className: "about hidden"}),
         aboutContact = U.newElement("div", {
             className: "about-contact",
@@ -20,3 +20,5 @@ export async function about() {
 
     return parent;
 }
+
+export {about};
