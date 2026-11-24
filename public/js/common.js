@@ -28,7 +28,7 @@ newResource(tag, attributes, parent=document.head) {
     return new Promise((resolve, reject) => {
         const element = Object.assign(document.createElement(tag), attributes);
         element.onload = () => resolve();
-        element.onerror = (error) => reject(error);
+        element.onerror = (e) => reject(e);
         parent.appendChild(element);
     });
 },
@@ -46,10 +46,19 @@ paths: {
 "/about": {name: "about", header: true},
 error: {name: "error"}
 },
+async loadContent(path) {
+    const script = import(`./${path.name}.js`);
+    const [module, parent] = await Promise.all([
+        script,
+        script.then(module => module[path.name]()),
+        U.newResource("link", {href: `//${window.location.hostname}/css/${path.name}.css`, rel: "stylesheet"})
+    ]);
+    path.module = path.module ?? module;
+    return parent;
+},
 unloadCurrent(current) {
     try {R.paths[`/${current.className}`].module.cleanup()} catch (e) {};
-    document.head.querySelector(`link[href="//${window.location.hostname}/css/${current.className}.css"]`).remove();
-    document.head.querySelector(`script[src="//${window.location.hostname}/js/${current.className}.js"]`).remove();
+    U.getElement(`link[href="//${window.location.hostname}/css/${current.className}.css"]`).remove();
     current.remove();
 },
 fadeElements(elements, type, ready=Promise.resolve()) {
@@ -67,26 +76,22 @@ fadeElements(elements, type, ready=Promise.resolve()) {
         setTimeout(() => el.removeAttribute("style"), R.time / 2);
     });
 },
-removeActive() {U.getElement(".header-item.active")?.classList.remove("active")},
+removeActive() {
+    const active = U.getElement(".header-item.active");
+    if (active) {
+        delete R.paths[`/${active.textContent.toLowerCase()}`].active;
+        active.classList.remove("active");
+    }
+},
 transitionHandler(parent, current=null) {
     if (current) R.unloadCurrent(current);
     parent.classList.remove("hidden");
-    U.getElements(".header-item").forEach(item => {
-        if (item.textContent.toLowerCase() === parent.className) item.classList.add("active");
+    U.getElements(".header-item").forEach(el => {
+        if (el.textContent.toLowerCase() === parent.className) {
+            R.paths[`/${el.textContent.toLowerCase()}`].active = true;
+            el.classList.add("active");
+        }
     });
-},
-async loadContent(path) {
-    const script = import(`./${path.name}.js`);
-    const [module, parent, stylesheet] = await Promise.all([
-        script,
-        script.then(module => module[path.name]()),
-        import(`../css/${path.name}.css`, {with: {type: "css"}}),
-        U.newResource("script", {src: `//${window.location.hostname}/js/${path.name}.js`, type: "module"}),
-        U.newResource("link", {href: `//${window.location.hostname}/css/${path.name}.css`, rel: "stylesheet"})
-    ]);
-    path.module = path.module ?? module;
-    path.stylesheet = path.stylesheet ?? stylesheet;
-    return parent;
 },
 
 };
