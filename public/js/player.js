@@ -1,4 +1,5 @@
 import U, {P} from "./common.js"
+import {activateTrack} from "./listen.js"
 
 U.newElement("div", {
     className: "player hidden",
@@ -47,6 +48,7 @@ P.play = U.getElement("#player-play");
 P.prev = U.getElement("#player-skip-prev");
 P.next = U.getElement("#player-skip-next");
 P.mute = U.getElement("#player-volume-mute");
+P.track = {};
 P.ready = (async () => {
     await Promise.all([
         audio.canPlayType("application/vnd.apple.mpegurl") ? Promise.resolve()
@@ -59,7 +61,6 @@ P.ready = (async () => {
     P.parent.classList.remove("hidden");
 })();
 let volumeState = 1,
-    trackIndex,
     wakeLock = null;
 
 audio.volume = volumeState;
@@ -67,11 +68,10 @@ P.volume.value = volumeState;
 
 async function select(track) {
     await P.ready;
-    const selectionIndex = P.tracks.indexOf(track);
-    if ((audio.src || P.stream) && selectionIndex === trackIndex) audio.paused ? audio.play() : audio.pause();
+    if (track === P.track) audio.paused ? audio.play() : audio.pause();
     else {
-        trackIndex = selectionIndex;
-        load(track);
+        P.track = track;
+        load(P.track);
     }
 }
 
@@ -112,20 +112,22 @@ function load(track) {
             });
         }
     }, {once: true});
+
+    if (U.getElement(".listen")) activateTrack(track);
 }
 
 function skip(direction) {
     switch (direction) {
         case "prev":
-            trackIndex -= 1;
-            if (trackIndex < 0) trackIndex = P.tracks.length - 1;
+            // trackIndex -= 1;
+            // if (trackIndex < 0) trackIndex = P.tracks.length - 1;
             break;
         case "next":
-            trackIndex += 1;
-            if (trackIndex > P.tracks.length - 1) trackIndex = 0;
+            // trackIndex += 1;
+            // if (trackIndex > P.tracks.length - 1) trackIndex = 0;
             break;
     }
-    load(P.tracks[trackIndex]);
+    // load(P.tracks[trackIndex]);
 }
 
 function mute() {

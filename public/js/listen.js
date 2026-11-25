@@ -1,11 +1,10 @@
 import U, {P} from "./common.js"
 
-P.files = P.files ?? [];
-P.ready = P.ready ?? fetch(`//${window.location.hostname}/music/.file-list.json`)
-    .then(response => response.json())
-    .then(array => array.forEach(file => P.files.push(file)))
-    .catch(error => console.error(error));
-P.icons = P.icons ?? {
+const files = fetch(`//${window.location.hostname}/music/.file-list.json`)
+    .then(response => response.json()).then(json => {return json})
+    .catch(e => console.error(e));
+P.library = null;
+P.icons = {
     play: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 24 12" fill="currentColor"/></svg>',
     pause: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 5 24 5 0M12 0 12 24 17 24 17 0" fill="currentColor"/></svg>',
     prev: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0 0 24 2 24 2 0M13 0 2 12 13 24M24 0 13 12 24 24" fill="currentcolor"/></svg>',
@@ -19,27 +18,43 @@ P.icons = P.icons ?? {
 async function listen() {
     const parent = U.newElement("div", {className: "listen hidden"}),
         current = U.newElement("div", {className: "listen-current", innerHTML: '<div class="pos0" style="font-size: 10em; pointer-events: none; -webkit-user-select: none; user-select: none;">♫</div>'}),
-        playlist = U.newElement("div", {className: "listen-playlist"}),
-        infoText = U.getElement("#player-info-text");
+        playlist = U.newElement("div", {className: "listen-playlist"});
+
+    P.library = P.library ?? loadLibrary(await files);
+    loadPlaylist(P.library, playlist);
 
     parent.append(current, playlist);
-    await P.ready;
+    return parent;
+}
 
-    P.tracks = P.tracks ?? P.files.map(file => ({
-        title: file.replace("_", " "),
-        stream: `//${window.location.hostname}/music/${file}/stream.m3u8`,
-        cover: `//${window.location.hostname}/music/${file}/cover.jpg`
-    }));
+function loadLibrary(files, path="") {
+    return Object.fromEntries(
+        Object.entries(files).map(([key, value]) => {
+            if (Object.hasOwn(value, "duration")) return [key, {
+                title: value.title ?? key.replaceAll("_", " "),
+                artist: value.artist ?? "GØ1IATH",
+                time: getTime(value.duration) ?? "0:00",
+                stream: `//${window.location.hostname}/music/${path}${key}/stream.m3u8`,
+                cover: `//${window.location.hostname}/music/.cover/${value.cover}.jpg`
+            }];
+            return [key, loadLibrary(value, `${path}${key}/`)];
+        })
+    );
+}
 
-    for (const track of P.tracks) {
+function loadPlaylist(tracks, playlist) {
+    for (const key in tracks) {
+        const track = tracks[key];
+
+        if (!Object.hasOwn(track, "time")) {
+            loadPlaylist(track, playlist);
+            continue;
+        }
+
         const item = U.newElement("div", {
-            onclick: () => {
-                player(track);
-                // waitForPlayer();
-                activateItem(item);
-            },
+            onclick: () => player(track),
             href: "javascript:",
-            className: "listen-item inactive"
+            className: "listen-item"
         }),
         img = U.newElement("img", {
             src: track.cover,
@@ -55,59 +70,32 @@ async function listen() {
             className: "listen-item-title"
         }),
         time = U.newElement("span", {
-            textContent: "0:00",
+            textContent: track.time,
             className: "listen-item-time"
         }),
         children = [img, btn, title, time];
 
-        if (infoText && infoText.textContent === title.textContent) {
-            setTimeout(() => { // timeout for animation
-                activateItem(item);
-                btn.innerHTML = U.getElement("#player-play").innerHTML;
-            }, 0);
-        }
-
+        if (track === P.track) activateTrack(track);
+    
         item.append(...children);
         playlist.appendChild(item);
     }
-
-    // if (document.querySelector(".player")) {
-    //     observeTitleMutation();
-    //     observePlayMutation();
-    // }
-
-    return parent;
 }
 
 async function player(track) {
     if (U.getElement(".player")) return P.module.select(track);
 
-    // U.newResource("script", {
-    //     src: `//${window.location.hostname}/js/player.js`,
-    //     type: "module",
-    // });
-
     P.module = P.module ?? await import("./player.js");
     P.module.select(track);
 }
 
-// function waitForPlayer() {
-//     if (!U.getElement(".player")) {
-//         const target = document.body;
-//         const tempObserver = new MutationObserver((_, observer) => {
-//             const infoText = U.getElement("#player-info-text");
-//             if (infoText) {
-//                 observeTitleMutation();
-//                 observePlayMutation();
-//                 observer.disconnect();
-//             }
-//         });
+function getTime(duration) {
+    return [Math.floor(duration / 60), Math.floor(duration % 60).toString().padStart(2, "0")].join(':')
+}
 
-//         tempObserver.observe(target, {childList: true});
-//     }
-// }
+function activateTrack(track) {
+    // add or remove .active
 
-function activateItem(item) {
 //     const current = U.getElement(".listen-current"),
 //         items = U.getElements(".listen-item"),
 //         time = U.getElement("#player-time-total")?.textContent ?? null;
@@ -127,6 +115,22 @@ function activateItem(item) {
 //         }
 //     }
 }
+
+// function waitForPlayer() {
+//     if (!U.getElement(".player")) {
+//         const target = document.body;
+//         const tempObserver = new MutationObserver((_, observer) => {
+//             const infoText = U.getElement("#player-info-text");
+//             if (infoText) {
+//                 observeTitleMutation();
+//                 observePlayMutation();
+//                 observer.disconnect();
+//             }
+//         });
+
+//         tempObserver.observe(target, {childList: true});
+//     }
+// }
 
 // function observeTitleMutation() {
 //     if (titleObserver) return;
@@ -159,4 +163,4 @@ function activateItem(item) {
 //     playObserver.observe(playBtn, {childList: true});
 // }
 
-export {listen};
+export {listen, activateTrack};
