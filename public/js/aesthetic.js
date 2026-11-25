@@ -1,12 +1,12 @@
 import U, {G} from "./common.js"
 
+G.index = 0;
 G.amount = 16;
 G.timeout;
 G.loading = false;
-G.files = [];
-G.ready = fetch(`//${window.location.hostname}/gallery/.file-list.json`)
-    .then(response => response.json())
-    .then(array => {return array})
+G.gallery = [];
+const files = fetch(`//${window.location.hostname}/gallery/.file-list.json`)
+    .then(response => response.json()).then(json => {return json})
     .catch(e => console.error(e));
 
 async function aesthetic() {
@@ -19,8 +19,8 @@ async function aesthetic() {
         if (window.innerWidth < 640) return 1;
     })(), parent);
 
-    G.files = shuffleArray(await G.ready);
     G.index = 0;
+    G.gallery = shuffleArray(await files);
     loadItems(parent);
 
     window.addEventListener("resize", resizeHandler);
@@ -35,10 +35,10 @@ function cleanup() {
 }
 
 async function loadItems(parent) {
-    if (G.loading || G.index >= G.files.length) return;
+    if (G.loading || G.index >= G.gallery.length) return;
     G.loading = true;
     const columns = parent.childNodes;
-    await Promise.all(G.files.slice(G.index, G.index + G.amount).map(filename => {
+    await Promise.all(G.gallery.slice(G.index, G.index + G.amount).map(filename => {
         if (filename.endsWith(".txt")) {
             return fetch(`//${window.location.hostname}/gallery/${filename}`)
                 .then(response => response.text())
@@ -138,8 +138,8 @@ function scrollHandler() {
     clearTimeout(G.timeout);
     G.Timeout = setTimeout(() => {
         const bottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 200;
-        if (bottom && G.index < G.files.length && !G.loading) loadItems(U.getElements(".aesthetic")[0]);
-        else if (G.index >= G.files.length && !G.loading) window.removeEventListener("scroll", scrollHandler);
+        if (bottom && G.index < G.gallery.length && !G.loading) loadItems(U.getElements(".aesthetic")[0]);
+        else if (G.index >= G.gallery.length && !G.loading) window.removeEventListener("scroll", scrollHandler);
     }, 100);
 }
 
