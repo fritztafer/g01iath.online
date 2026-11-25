@@ -55,21 +55,7 @@ function init() {
     U.getElement(".header-item-parent").append(...headerItems);
 }
 
-window.onscroll = () => {
-    const scrollTop = U.getElement(".scroll-top");
-    if (!scrollTop && document.documentElement.scrollTop >= 100) {
-        const button = U.newElement("button", {
-            className: "scroll-top loading",
-            onclick: () => window.scrollTo({top: 0, behavior: "smooth"}),
-            innerHTML: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="6 0 12 24"><path d="M12 0 6 6A1 1 0 007 7L11 5 11 24 13 24 13 5 17 7A1 1 0 0018 6" fill="currentcolor"/></svg>'
-        });
-        document.body.appendChild(button);
-        setTimeout(() => button.classList.remove("loading"), 0);
-    } else if (scrollTop && document.documentElement.scrollTop < 100) {
-        scrollTop.setAttribute("style", "opacity: 0; pointer-events: none;");
-        setTimeout(() => scrollTop.remove(), R.time / 4);
-    }
-}
+window.onscroll = U.scrollTop(document.documentElement);
 
 window.addEventListener("load", () => {
     init();
