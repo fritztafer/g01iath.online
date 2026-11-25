@@ -6,8 +6,8 @@ G.loading = false;
 G.files = [];
 G.ready = fetch(`//${window.location.hostname}/gallery/.file-list.json`)
     .then(response => response.json())
-    .then(array => G.files = array)
-    .catch(error => console.error(error));
+    .then(array => {return array})
+    .catch(e => console.error(e));
 
 async function aesthetic() {
     const parent = U.newElement("div", {className: "aesthetic hidden"});
@@ -19,8 +19,7 @@ async function aesthetic() {
         if (window.innerWidth < 640) return 1;
     })(), parent);
 
-    await G.ready;
-    G.files = shuffleArray(G.files);
+    G.files = shuffleArray(await G.ready);
     G.index = 0;
     loadItems(parent);
 
