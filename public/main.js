@@ -30,6 +30,31 @@ async function run(path=R.paths["/socials"]) {
     }
 }
 
+function init() {
+    U.getElement("header").innerHTML += [
+        '<div class="header-item-parent hidden"></div>',
+        '<hr class="header-hr hidden">'
+    ].join('');
+    U.newElement("main", {}, document.body);
+    U.newElement("footer", {innerHTML: [
+        '<div class="footer-item hidden" style="opacity: 0;">',
+            '//G01IATH.ONLINE/2026/',
+        '</div>'
+    ].join('')}, document.body);
+
+    const headerItems = [];
+    Object.values(R.paths).forEach(path => {if (path && path.header) {
+        const item = U.newElement("a", {
+            className: "header-item",
+            href: "javascript:",
+            onclick: () => run(path),
+            textContent: path.name.toUpperCase()
+        });
+        headerItems.push(item);
+    }});
+    U.getElement(".header-item-parent").append(...headerItems);
+}
+
 window.onscroll = () => {
     const scrollTop = U.getElement(".scroll-top");
     if (!scrollTop && document.documentElement.scrollTop >= 100) {
@@ -47,31 +72,7 @@ window.onscroll = () => {
 }
 
 window.addEventListener("load", () => {
-    document.body.append(
-        U.newElement("header", {
-            innerHTML: [
-                '<div class="title">GØ1IATH</div>',
-                '<div class="header-item-parent hidden"></div>',
-                '<hr class="header-hr hidden">'
-            ].join('')
-        }),
-        U.newElement("main"),
-        U.newElement("footer", {
-            innerHTML: '<div class="footer-item hidden" style="opacity: 0;">//G01IATH.ONLINE/2026/</div>'
-        })
-    );
-    const headerItems = [];
-    Object.values(R.paths).forEach(path => {if (path && path.header) {
-        const item = U.newElement("a", {
-            className: "header-item",
-            href: "javascript:",
-            onclick: () => run(path),
-            textContent: path.name.toUpperCase()
-        });
-        headerItems.push(item);
-    }});
-    U.getElement(".header-item-parent").append(...headerItems);
-
+    init();
     run(Object.hasOwn(R.paths, window.location.pathname) ? R.paths[window.location.pathname] : R.paths["error"]);
     U.newResource("link", {href: `//${window.location.hostname}/css/before.css`, rel: "stylesheet"});
 }, {once: true});
