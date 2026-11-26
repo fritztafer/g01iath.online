@@ -1,4 +1,4 @@
-$TargetDir = Join-Path $PSScriptRoot "..\public\gallery"
+$TargetDir = Join-Path $PSScriptRoot "..\staged\gallery"
 $OutputFile = "$TargetDir\.file-list.json"
 
 $extensionsPattern = '\.(jpe?g|png|gif|webp|txt)$'

@@ -1,8 +1,8 @@
-﻿$OutputDir = "..\stage\music"
-$Encoder = Read-Host -Prompt "ABSOLUTE PATH OF ffmpeg\bin"
-$EncodeDir = Read-Host -Prompt "SET `$EncodeDir (..\audio\`$EncodeDir)"
+﻿$EncodeDir = Read-Host -Prompt "SET `$EncodeDir (..\audio\`$EncodeDir)"
 $Files = @(Get-ChildItem -LiteralPath "..\audio\$EncodeDir" -File).FullName
+$Encoder = Read-Host -Prompt "ABSOLUTE PATH OF ffmpeg\bin"
 $Playlist = Read-Host -Prompt "PLAYLIST"
+$OutputDir = "..\staged\music"
 function Format-Json { # jonathancrozier.com
     param
     (
@@ -51,7 +51,7 @@ $Files | ForEach-Object -Process {
     $cover = 
         Read-Host -Prompt "COVER"
         $cover = 
-            if ([string]::IsNullOrWhiteSpace($cover)) {"default"}
+            if ([string]::IsNullOrWhiteSpace($cover) -and (-not [string]::IsNullOrWhiteSpace($Playlist))) {"default"}
             elseif ([string]::IsNullOrWhiteSpace($Playlist)) {$cover}
             else {$Playlist}
     $trackDir = 
@@ -61,12 +61,11 @@ $Files | ForEach-Object -Process {
     if (Test-Path $trackDir) {
         Write-Warning "DIRECTORY EXISTS - $trackDir"
         Read-Host -Prompt "PRESS Enter TO ENCODE" | Out-Null
-        Write-Host "ENCODING..."
     } else {
         New-Item -ItemType Directory -Path $trackDir | Out-Null
         Write-Host "DIRECTORY CREATED: $trackDir" -ForegroundColor Green
-        Write-Host "ENCODING..."
-    }
+    } Write-Host "ENCODING..."
+
     & "$Encoder\ffmpeg.exe" -loglevel error -i $_ -c:a aac -b:a 320k -ar 48000 -hls_time 8 -hls_playlist_type vod "$trackDir\stream.m3u8"
     & "$Encoder\ffprobe.exe" -loglevel error -print_format json -show_format "$trackDir\stream.m3u8" |
         ConvertFrom-Json |

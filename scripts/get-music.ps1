@@ -1,5 +1,7 @@
-﻿$SourceDir = "..\stage\music\"
-$OutputDir = "..\stage\music\"
+﻿$Source = Read-Host -Prompt "SOURCE HLS DATA (public OR staged)"
+$SourceDir = "..\$Source\music\"
+$OutputDir = "..\staged\music\"
+$OutputFile = Join-Path $OutputDir ".file-list.json"
 
 function Get-FolderStructure {
     param(
@@ -66,5 +68,5 @@ function Format-Json { # jonathancrozier.com
 $json = Get-FolderStructure -Path $SourceDir | ConvertTo-Json -Depth 10 | Format-Json
 
 New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
-Set-Content -LiteralPath "$OutputDir\.file-list.json" -Value $json -Encoding UTF8
-Write-Host "FILE LIST SAVED TO: $OutputDir\.file-list.json" -ForegroundColor Green
+Set-Content -LiteralPath $OutputFile -Value $json -Encoding UTF8
+Write-Host "FILE LIST SAVED TO: $OutputFile" -ForegroundColor Green
