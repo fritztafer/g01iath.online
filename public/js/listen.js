@@ -106,7 +106,7 @@ function activateTrack(track) {
 }
 
 function playIconSync(icon) {
-    const item = U.getElement(".listen-item.active")
+    const item = U.getElement(".listen-item.active");
     if (item) item.querySelector(".listen-item-button").innerHTML = icon;
 }
 
