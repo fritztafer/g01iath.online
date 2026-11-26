@@ -1,28 +1,82 @@
-$EncoderDir = Read-Host -Prompt "ABSOLUTE PATH OF ffmpeg\bin"
-$PlaylistName = Read-Host -Prompt "PLAYLIST NAME (OPTIONAL)"
-$Files = Read-Host -Prompt "ABSOLUTE PATH OF FILE(S)"
+﻿$OutputDir = "..\stage\music"
+$Encoder = Read-Host -Prompt "ABSOLUTE PATH OF ffmpeg\bin"
+$EncodeDir = Read-Host -Prompt "SET `$EncodeDir (..\audio\`$EncodeDir)"
+$Files = @(Get-ChildItem -LiteralPath "..\audio\$EncodeDir" -File).FullName
+$Playlist = Read-Host -Prompt "PLAYLIST"
+function Format-Json { # jonathancrozier.com
+    param
+    (
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+        [String]$Json,
 
-foreach ($File in ($Files -split ',').Trim()) {
-    $Name = [System.IO.Path]::GetFileNameWithoutExtension($File)
-    $TargetDir = Join-Path $PSScriptRoot "..\public\music"
+        [ValidateRange(1, 1024)]
+        [Int]$Indentation = 4
+    )
 
-    if ([string]::IsNullOrWhiteSpace($PlaylistName)) {$TargetDir = Join-Path $TargetDir $Name}
-    else {$TargetDir = Join-Path "$TargetDir\$PlaylistName" $Name}
+    $lines = $Json -split '\n'
 
-    if (Test-Path $TargetDir) {
-        Write-Warning "DIRECTORY EXISTS - $TargetDir"
-        Read-Host -Prompt "PRESS Enter TO CONTINUE" | Out-Null
-    } else {
-        Write-Host "CREATED DIRECTORY: $TargetDir" -ForegroundColor Green
-        New-Item -ItemType Directory -Path $TargetDir | Out-Null
+    $indentLevel = 0
+
+    $result = $lines | ForEach-Object `
+    {
+        if ($_ -match "[\}\]]")
+        {
+            $indentLevel--
+        }
+
+        $line = (' ' * $indentLevel * $Indentation) + $_.TrimStart().Replace(":  ", ": ")
+
+        if ($_ -match "[\{\[]")
+        {
+            $indentLevel++
+        }
+
+        return $line
     }
 
-    & "$EncoderDir\ffmpeg.exe" -loglevel error -i "$File" -c:a aac -b:a 320k -ar 48000 -hls_time 8 -hls_playlist_type vod "$TargetDir\stream.m3u8"
-    & "$EncoderDir\ffprobe.exe" -loglevel error -print_format json -show_format "$TargetDir\stream.m3u8" |
-        ConvertFrom-Json |
-        Add-Member -MemberType NoteProperty -Name "cover" -Value $(if ([string]::IsNullOrWhiteSpace($PlaylistName)) {$Name} else {$PlaylistName}) -PassThru |
-        ConvertTo-Json |
-        Set-Content -LiteralPath "$TargetDir\meta.json" -Encoding UTF8
+    return $result -join "`n"
+}
 
-    Write-Host "HLS DATA SAVED TO: $TargetDir" -ForegroundColor Green
+$Files | ForEach-Object -Process {
+    $track = [System.IO.Path]::GetFileNameWithoutExtension($_)
+
+    Write-Host "---NEW TRACK---"
+    Write-Host $track -ForegroundColor Blue
+    $title = 
+        Read-Host -Prompt "TITLE"
+        if ([string]::IsNullOrWhiteSpace($title)) {$title = $track -replace '_', ' '}
+    $artist = 
+        Read-Host -Prompt "ARTIST"
+        if ([string]::IsNullOrWhiteSpace($artist)) {$artist = "GØ1IATH"}
+    $cover = 
+        Read-Host -Prompt "COVER"
+        $cover = 
+            if ([string]::IsNullOrWhiteSpace($cover)) {"default"}
+            elseif ([string]::IsNullOrWhiteSpace($Playlist)) {$cover}
+            else {$Playlist}
+    $trackDir = 
+        if ([string]::IsNullOrWhiteSpace($Playlist)) {"$OutputDir\$track"}
+        else {"$OutputDir\$Playlist\$track"}
+
+    if (Test-Path $trackDir) {
+        Write-Warning "DIRECTORY EXISTS - $trackDir"
+        Read-Host -Prompt "PRESS Enter TO ENCODE" | Out-Null
+        Write-Host "ENCODING..."
+    } else {
+        New-Item -ItemType Directory -Path $trackDir | Out-Null
+        Write-Host "DIRECTORY CREATED: $trackDir" -ForegroundColor Green
+        Write-Host "ENCODING..."
+    }
+    & "$Encoder\ffmpeg.exe" -loglevel error -i $_ -c:a aac -b:a 320k -ar 48000 -hls_time 8 -hls_playlist_type vod "$trackDir\stream.m3u8"
+    & "$Encoder\ffprobe.exe" -loglevel error -print_format json -show_format "$trackDir\stream.m3u8" |
+        ConvertFrom-Json |
+        Add-Member -MemberType NoteProperty -Name "title" -Value $title -PassThru |
+        Add-Member -MemberType NoteProperty -Name "artist" -Value $artist -PassThru |
+        Add-Member -MemberType NoteProperty -Name "cover" -Value $cover -PassThru |
+        ConvertTo-Json -Depth 10 | Format-Json |
+        Set-Content -LiteralPath "$trackDir\meta.json" -Encoding UTF8
+
+    Write-Host "HLS DATA SAVED TO: $trackDir" -ForegroundColor Green
+} -End {
+    Write-Host "DONE"
 }

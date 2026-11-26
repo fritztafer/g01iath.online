@@ -49,6 +49,15 @@ scrollTop(element) {
         setTimeout(() => scrollTop.remove(), R.time / 4);
     }
 },
+/**
+@param {number} duration
+@returns {string} */
+timeMinSec(duration) {
+    return [
+        Math.floor(duration / 60),
+        Math.floor(duration % 60).toString().padStart(2, "0")
+    ].join(':');
+},
 
 };
 

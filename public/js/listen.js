@@ -31,20 +31,20 @@ function loadLibrary(files, path="") {
     return Object.fromEntries(
         Object.entries(files).map(([key, value]) => {
             if (Object.hasOwn(value, "duration")) return [key, {
-                title: value.title ?? key.replaceAll("_", " "),
-                artist: value.artist ?? "GØ1IATH",
-                time: getTime(value.duration) ?? "0:00",
-                stream: `//${window.location.hostname}/music/${path}${key}/stream.m3u8`,
+                title: value.title,
+                artist: value.artist,
+                time: U.timeMinSec(value.duration),
+                stream: `//${window.location.hostname}/music/${path+key}/stream.m3u8`,
                 cover: `//${window.location.hostname}/music/.cover/${value.cover}.jpg`
             }];
-            return [key, loadLibrary(value, `${path}${key}/`)];
+            return [key, loadLibrary(value, `${path+key}/`)];
         })
     );
 }
 
-function loadPlaylist(tracks, playlist) {
-    for (const key in tracks) {
-        const track = tracks[key];
+function loadPlaylist(library, playlist) {
+    for (const key in library) {
+        const track = library[key];
 
         if (!Object.hasOwn(track, "time")) {
             loadPlaylist(track, playlist);
@@ -87,10 +87,6 @@ async function player(track) {
 
     P.module = P.module ?? await import("./player.js");
     P.module.select(track);
-}
-
-function getTime(duration) {
-    return [Math.floor(duration / 60), Math.floor(duration % 60).toString().padStart(2, "0")].join(':')
 }
 
 function activateTrack(track) {
