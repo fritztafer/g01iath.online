@@ -1,5 +1,5 @@
 import U, {P} from "./common.js"
-import {activateTrack} from "./listen.js"
+import {activateTrack, playIconSync} from "./listen.js"
 
 U.newElement("div", {
     className: "player hidden",
@@ -61,7 +61,8 @@ P.ready = (async () => {
     P.parent.classList.remove("hidden");
 })();
 let volumeState = 1,
-    wakeLock = null;
+    wakeLock = null,
+    index;
 
 audio.volume = volumeState;
 P.volume.value = volumeState;
@@ -69,13 +70,13 @@ P.volume.value = volumeState;
 async function select(track) {
     await P.ready;
     if (track === P.track) audio.paused ? audio.play() : audio.pause();
-    else {
-        P.track = track;
-        load(P.track);
-    }
+    else load(track);
 }
 
 function load(track) {
+    if (U.getElement(".listen")) activateTrack(track);
+    P.track = track;
+
     if (audio.canPlayType("application/vnd.apple.mpegurl")) {
         audio.src = track.stream;
         audio.play();
@@ -99,9 +100,7 @@ function load(track) {
     }, {once: true});
 
     audio.addEventListener("loadedmetadata", () => {
-        const totalMinutes = Math.floor(audio.duration / 60),
-            totalSeconds = Math.floor(audio.duration % 60).toString().padStart(2, "0");
-        P.total.textContent = `${totalMinutes}:${totalSeconds}`;
+        P.total.textContent = U.timeMinSec(audio.duration);
         P.title.textContent = track.title;
         if ("mediaSession" in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
@@ -112,22 +111,31 @@ function load(track) {
             });
         }
     }, {once: true});
-
-    if (U.getElement(".listen")) activateTrack(track);
 }
 
 function skip(direction) {
+    const tracks = collectTracks(P.library);
+    index = tracks.findIndex(track => track === P.track);
     switch (direction) {
         case "prev":
-            // trackIndex -= 1;
-            // if (trackIndex < 0) trackIndex = P.tracks.length - 1;
+            index -= 1;
+            if (index < 0) index = tracks.length - 1;
             break;
         case "next":
-            // trackIndex += 1;
-            // if (trackIndex > P.tracks.length - 1) trackIndex = 0;
+            index += 1;
+            if (index > tracks.length - 1) index = 0;
             break;
     }
-    // load(P.tracks[trackIndex]);
+    load(tracks[index]);
+}
+
+function collectTracks(library) {
+    const tracks = [];
+    for (const value of Object.values(library)) {
+        if (Object.hasOwn(value, "time")) tracks.push(value);
+        else tracks.push(...collectTracks(value));
+    }
+    return tracks;
 }
 
 function mute() {
@@ -157,11 +165,9 @@ function nudgeVolume(delta) {
 
 function timeUpdate() {
     if (audio.duration) {
-        const progressPercent = (audio.currentTime / audio.duration) * 100,
-            currentMinutes = Math.floor(audio.currentTime / 60),
-            currentSeconds = Math.floor(audio.currentTime % 60).toString().padStart(2, "0");
+        const progressPercent = (audio.currentTime / audio.duration) * 100;
         P.progress.style.width = `${progressPercent}%`;
-        P.current.textContent = `${currentMinutes}:${currentSeconds}`;
+        P.current.textContent = U.timeMinSec(audio.currentTime);
     } else {
         P.progress.style.width = "0%";
         P.current.textContent = "0:00";
@@ -232,10 +238,12 @@ document.addEventListener("keydown", (e) => {
 P.play.addEventListener("mouseup", (e) => {if (predicate(e)) audio.paused ? audio.play() : audio.pause()});
 audio.addEventListener("play", () => {
     P.play.innerHTML = P.icons.pause;
+    playIconSync(P.icons.pause);
     if (document.visibilityState === 'visible') requestWakeLock();
 });
 audio.addEventListener("pause", () => {
     P.play.innerHTML = P.icons.play;
+    playIconSync(P.icons.play);
     releaseWakeLock();
 });
 

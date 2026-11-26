@@ -27,24 +27,27 @@ async function listen() {
     return parent;
 }
 
-function loadLibrary(files, path="") {
-    return Object.fromEntries(
-        Object.entries(files).map(([key, value]) => {
-            if (Object.hasOwn(value, "duration")) return [key, {
+function loadLibrary(files, path = "") {
+    const library = {};
+    for (const [key, value] of Object.entries(files)) {
+        if (Object.hasOwn(value, "duration")) {
+            library[key] = {
                 title: value.title,
                 artist: value.artist,
                 time: U.timeMinSec(value.duration),
-                stream: `//${window.location.hostname}/music/${path+key}/stream.m3u8`,
+                stream: `//${window.location.hostname}/music/${path + key}/stream.m3u8`,
                 cover: `//${window.location.hostname}/music/.cover/${value.cover}.jpg`
-            }];
-            return [key, loadLibrary(value, `${path+key}/`)];
-        })
-    );
+            };
+        } else {
+            library[key] = loadLibrary(value, `${path + key}/`);
+        }
+    }
+    return library;
 }
 
 function loadPlaylist(library, playlist) {
-    for (const key in library) {
-        const track = library[key];
+    for (const value of Object.values(library)) {
+        const track = value;
 
         if (!Object.hasOwn(track, "time")) {
             loadPlaylist(track, playlist);
@@ -90,73 +93,21 @@ async function player(track) {
 }
 
 function activateTrack(track) {
-    // add or remove .active
+    const items = U.getElements(".listen-item");
 
-//     const current = U.getElement(".listen-current"),
-//         items = U.getElements(".listen-item"),
-//         time = U.getElement("#player-time-total")?.textContent ?? null;
-
-//     for (let i = 0; i < items.length; i++) {
-//         const btn = items[i].children[1];
-
-//         if (item === items[i]) {
-//             const cover = U.newElement("img", {className: "pos0", src: tracks[i].cover, alt: ""});
-//             if (cover.src !== current.firstChild.src) current.replaceChild(cover, current.firstChild);
-//             items[i].classList.replace("inactive", "active");
-//             items[i].children[3].textContent = time ?? "0:00";
-//             btn.innerHTML = P.icons.pause;
-//         } else {
-//             items[i].classList.replace("active", "inactive");
-//             btn.innerHTML = P.icons.play;
-//         }
-//     }
+    for (const item of items) {
+        const title = item.querySelector(".listen-item-title"),
+            button = item.querySelector(".listen-item-button");
+        if (item.classList.contains("active")) {
+            item.classList.remove("active");
+            button.innerHTML = P.icons.play;
+        } else if (title.textContent === track.title) item.classList.add("active");
+    }
 }
 
-// function waitForPlayer() {
-//     if (!U.getElement(".player")) {
-//         const target = document.body;
-//         const tempObserver = new MutationObserver((_, observer) => {
-//             const infoText = U.getElement("#player-info-text");
-//             if (infoText) {
-//                 observeTitleMutation();
-//                 observePlayMutation();
-//                 observer.disconnect();
-//             }
-//         });
+function playIconSync(icon) {
+    const item = U.getElement(".listen-item.active")
+    if (item) item.querySelector(".listen-item-button").innerHTML = icon;
+}
 
-//         tempObserver.observe(target, {childList: true});
-//     }
-// }
-
-// function observeTitleMutation() {
-//     if (titleObserver) return;
-//     const infoText = U.getElement("#player-info-text");
-
-//     titleObserver = new MutationObserver(() => {
-//         const item = (() => {
-//             const items = U.getElements(".listen-item");
-//             for (const item of items) if (item.children[2].textContent === infoText.textContent) return item;
-//         })();
-//         if (item !== undefined) activateItem(item);
-//     });
-
-//     titleObserver.observe(infoText, {childList: true});
-// }
-
-// function observePlayMutation() {
-//     if (playObserver) return;
-//     const infoText = U.getElement("#player-info-text");
-//     const playBtn = U.getElement("#player-play"); // P needs some work
-
-//     playObserver = new MutationObserver(() => {
-//         const btn = (() => {
-//             const items = U.getElements(".listen-item");
-//             for (const item of items) if (item.children[2].textContent === infoText.textContent) return item.children[1];
-//         })();
-//         if (btn !== undefined) btn.innerHTML = U.getElement("#player-play").innerHTML;
-//     });
-
-//     playObserver.observe(playBtn, {childList: true});
-// }
-
-export {listen, activateTrack};
+export {listen, activateTrack, playIconSync};
