@@ -94,14 +94,15 @@ function load(track) {
         return console.error("hls unsupported");
     }
 
+    P.total.textContent = track.time;
+    P.title.textContent = track.title;
+
     P.play.classList.add('pulse');
     P.play.addEventListener('animationend', () => {
         P.play.classList.remove('pulse');
     }, {once: true});
 
     audio.addEventListener("loadedmetadata", () => {
-        P.total.textContent = U.timeMinSec(audio.duration);
-        P.title.textContent = track.title;
         if ("mediaSession" in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: track.title,
