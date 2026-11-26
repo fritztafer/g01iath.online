@@ -1,3 +1,5 @@
 *
 !.gitignore
+!gallery
 !music
+!music/.cover
