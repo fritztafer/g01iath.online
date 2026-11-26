@@ -51,7 +51,7 @@ $Files | ForEach-Object -Process {
     $cover = 
         Read-Host -Prompt "COVER"
         $cover = 
-            if ([string]::IsNullOrWhiteSpace($cover) -and (-not [string]::IsNullOrWhiteSpace($Playlist))) {"default"}
+            if ([string]::IsNullOrWhiteSpace($cover) -and [string]::IsNullOrWhiteSpace($Playlist)) {"default"}
             elseif ([string]::IsNullOrWhiteSpace($Playlist)) {$cover}
             else {$Playlist}
     $trackDir = 
